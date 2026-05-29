@@ -81,8 +81,27 @@ class TitanBot extends Client {
       startupLog('Handlers loaded');
       
       startupLog('Logging into Discord...');
-      await this.login(this.config.bot.token);
-      startupLog('Discord login successful');
+
+// DEBUG INFO
+console.log('=================================');
+console.log('DISCORD LOGIN DEBUG');
+console.log('=================================');
+console.log('TOKEN EXISTS:', !!this.config.bot.token);
+
+if (this.config.bot.token) {
+  console.log('TOKEN LENGTH:', this.config.bot.token.length);
+  console.log('TOKEN STARTS WITH:', this.config.bot.token.substring(0, 10));
+} else {
+  console.log('TOKEN IS UNDEFINED!');
+}
+
+console.log('CLIENT_ID:', process.env.CLIENT_ID || 'NOT SET');
+console.log('GUILD_ID:', process.env.GUILD_ID || 'NOT SET');
+console.log('=================================');
+
+await this.login(this.config.bot.token);
+
+startupLog('Discord login successful');
       
       startupLog('Registering slash commands...');
       await this.registerCommands();
