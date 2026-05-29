@@ -75,19 +75,19 @@ function buildSelectMenu(guildId) {
                 .setDescription('Change the message displayed on the ticket creation panel')
                 .setValue('panel_message')
                 .setEmoji('📝'),
-             new StringSelectMenuOptionBuilder()
-                .setLabel('Edit Panel Message')
-                .setDescription('Change the message displayed on the ticket creation panel 2')
-                .setValue('panel_message')
-                .setEmoji('📝'),
-             new StringSelectMenuOptionBuilder()
-                .setLabel('Edit Panel Message')
-                .setDescription('Change the message displayed on the ticket creation panel 3')
-                .setValue('panel_message')
-                .setEmoji('📝'),
             new StringSelectMenuOptionBuilder()
                 .setLabel('Edit Button Label')
                 .setDescription('Change the label on the Create Ticket button')
+                .setValue('button_label')
+                .setEmoji('🏷️'),
+            new StringSelectMenuOptionBuilder()
+                .setLabel('Edit Button Label')
+                .setDescription('Change the label on the Create Ticket button 2')
+                .setValue('button_label')
+                .setEmoji('🏷️'),
+            new StringSelectMenuOptionBuilder()
+                .setLabel('Edit Button Label')
+                .setDescription('Change the label on the Create Ticket button 3')
                 .setValue('button_label')
                 .setEmoji('🏷️'),
             new StringSelectMenuOptionBuilder()
