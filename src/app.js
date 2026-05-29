@@ -72,15 +72,21 @@ class TitanBot extends Client {
       startupLog('Starting web server...');
       this.startWebServer();
       
-      startupLog('Loading commands...');
-      await loadCommands(this);
-      startupLog(`Commands loaded: ${this.commands.size}`);
-      
-      startupLog('Loading handlers...');
-      await this.loadHandlers();
-      startupLog('Handlers loaded');
-      
-      startupLog('Logging into Discord...');
+     startupLog('Loading commands...');
+await loadCommands(this);
+console.log('DEBUG: COMMANDS LOADED');
+
+startupLog('Loading handlers...');
+await this.loadHandlers();
+console.log('DEBUG: HANDLERS LOADED');
+
+startupLog('Logging into Discord...');
+console.log('DEBUG: TOKEN EXISTS', !!this.config.bot.token);
+
+await this.login(this.config.bot.token);
+
+console.log('DEBUG: DISCORD LOGIN SUCCESS');
+startupLog('Discord login successful');
 
 // DEBUG INFO
 console.log('=================================');
