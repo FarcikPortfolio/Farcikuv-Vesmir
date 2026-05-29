@@ -25,9 +25,9 @@ export const botConfig = {
     activities: [
       {
         // Text users will see (example: "Playing /help | Titan Bot").
-        name: "Made with ❤️",
+        name: "/help | Farcikův Vesmír",
         // Activity type number (0 = Playing).
-        type: 0, 
+        type: 3, 
       },
     ],
   },
@@ -88,8 +88,8 @@ export const botConfig = {
   embeds: {
     colors: {
       // Main brand colors.
-      primary: "#336699", 
-      secondary: "#2F3136", 
+      primary: "#A30000", 
+      secondary: "#750000", 
 
       // Standard status colors for success/error/warning/info messages.
       success: "#57F287", 
@@ -136,7 +136,7 @@ export const botConfig = {
     },
     footer: {
       // Default footer text used in bot embeds.
-      text: "Titan Bot",
+      text: "Farcikův Vesmír",
       // Footer icon URL (null = no icon).
       icon: null,
     },
@@ -156,25 +156,25 @@ export const botConfig = {
   economy: {
     currency: {
       // Currency display name.
-      name: "coins",
+      name: "Vesmírné zlaťáky",
       // Plural display name.
-      namePlural: "coins",
+      namePlural: "Vesmírné zlaťáky",
       // Currency symbol shown in balances.
       symbol: "$",
     },
 
     // Starting balance for new users.
-    startingBalance: 0,
+    startingBalance: 50,
 
     // Maximum bank amount before upgrades (if upgrades are used).
-    baseBankCapacity: 100000,
+    baseBankCapacity: 1000000,
 
     // Daily reward amount.
-    dailyAmount: 100,
+    dailyAmount: 150,
 
     // Work command random payout range.
     workMin: 10,
-    workMax: 100,
+    workMax: 75,
 
     // Beg command random payout range.
     begMin: 5,
@@ -185,7 +185,7 @@ export const botConfig = {
 
     // Jail time after failed rob (milliseconds).
     // 3600000 = 1 hour.
-    robFailJailTime: 3600000, 
+    robFailJailTime: 1800000, 
   },
 
   // =========================
@@ -201,10 +201,10 @@ export const botConfig = {
   // =========================
   tickets: {
     // Category ID where new tickets are created (null = no forced category).
-    defaultCategory: null,
+    defaultCategory: "1429223763916095689",
 
     // Role IDs allowed to manage/support tickets.
-    supportRoles: [],
+    supportRoles: [1509256420518924449],
 
     // Priority options users/staff can assign.
     priorities: {
@@ -239,10 +239,10 @@ export const botConfig = {
     defaultPriority: "none",
 
     // Category ID where closed tickets are archived.
-    archiveCategory: null,
+    archiveCategory: "1429223763916095689",
 
     // Channel ID where ticket logs are sent.
-    logChannel: null,
+    logChannel: "1430647278741229840",
   },
 
   // =========================
@@ -264,7 +264,7 @@ export const botConfig = {
     maximumDuration: 2592000000, 
 
     // Role IDs allowed to host giveaways.
-    allowedRoles: [],
+    allowedRoles: [1468290783219155168],
 
     // Role IDs that bypass giveaway restrictions.
     bypassRoles: [],
@@ -278,10 +278,10 @@ export const botConfig = {
     defaultRole: null,
 
     // Channel ID where birthday announcements are posted.
-    announcementChannel: null,
+    announcementChannel: "1467470912667521196",
 
     // Timezone used to calculate birthday dates.
-    timezone: "UTC",
+    timezone: "CEST",
   },
 
   // =========================
@@ -289,10 +289,10 @@ export const botConfig = {
   // =========================
   verification: {
     // Message shown when posting the verification panel.
-    defaultMessage: "Click the button below to verify yourself and gain access to the server!",
+    defaultMessage: "Klikni na tlačítko níže aby jsi viděl všechny kanály.",
 
     // Text on the verification button.
-    defaultButtonText: "Verify",
+    defaultButtonText: "Ověřit",
 
     // Automatic verification behavior.
     autoVerify: {
@@ -300,10 +300,10 @@ export const botConfig = {
       // - "none"        = everyone is auto-verified immediately
       // - "account_age" = account must be older than set days
       // - "server_size" = auto-verify everyone only in smaller servers
-      defaultCriteria: "none",
+      defaultCriteria: "account_age",
 
       // Days used when `defaultCriteria` is `account_age`.
-      defaultAccountAgeDays: 7,
+      defaultAccountAgeDays: 14,
 
       // Member count threshold used when `defaultCriteria` is `server_size`.
       // Example: 1000 means auto-verify if server has fewer than 1000 members.
@@ -358,14 +358,28 @@ export const botConfig = {
   welcome: {
     // Welcome template posted when a user joins.
     // Placeholders: {user}, {server}, {memberCount}
-    defaultWelcomeMessage:
-      "Welcome {user} to {server}! We now have {memberCount} members!",
+   defaultWelcomeMessage: `
+   > 🪼 Uživatel
+   > ${user}
+
+   > 🏷️ Tag
+   > ${usertag}
+
+   > 👾 Člen číslo
+   > ${guildmembercount}
+
+   > 🏢 Účet vytvořen
+   > ${usercreatedat}
+
+   > 🎯 Připojení
+   > ${userjoinedat}
+   `,
     // Goodbye template posted when a user leaves.
     // Placeholders: {user}, {memberCount}
     defaultGoodbyeMessage:
       "{user} has left the server. We now have {memberCount} members.",
     // Channel ID for welcome messages.
-    defaultWelcomeChannel: null,
+    defaultWelcomeChannel: "1429032923469713511",
     // Channel ID for goodbye messages.
     defaultGoodbyeChannel: null,
   },
@@ -399,18 +413,18 @@ export const botConfig = {
       // Built-in counter types and how each count is calculated.
       members: {
         name: "👥 Members",
-        description: "Total members in the server",
+        description: "Všichni lidi na Discord Serveru.",
         getCount: (guild) => guild.memberCount.toString(),
       },
       bots: {
         name: "🤖 Bots",
-        description: "Total bot accounts in the server",
+        description: "Všichni Discord Boti na serveru.",
         getCount: (guild) =>
           guild.members.cache.filter((m) => m.user.bot).size.toString(),
       },
       members_only: {
         name: "👤 Humans",
-        description: "Total human members (non-bots)",
+        description: "Všichni členové na Discord Serveru.",
         getCount: (guild) =>
           guild.members.cache.filter((m) => !m.user.bot).size.toString(),
       },
