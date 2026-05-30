@@ -45,7 +45,7 @@ console.log('FORMATTED MESSAGE:', welcomeMessage);
                 const messageContent = welcomeConfig.welcomePing ? user.toString() : null;
 
                 const embedTitle = formatWelcomeMessage(
-                    welcomeConfig.welcomeEmbed?.title || '🎉 Welcome!',
+                    welcomeConfig.welcomeEmbed?.title || '🌌 Vítej mezi námi astronaute!',
                     formatData
                 );
                 const embedFooter = welcomeConfig.welcomeEmbed?.footer
