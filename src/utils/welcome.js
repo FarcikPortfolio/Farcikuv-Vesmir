@@ -35,13 +35,13 @@ export function formatWelcomeMessage(message, data) {
     }
 
     const tokens = {
-        '{user}': user?.toString?.() || 'User',
-        '{user.mention}': user?.toString?.() || 'User',
-        '{user.tag}': user?.tag || 'Unknown#0000',
-        '{user.username}': user?.username || 'Unknown',
-        '{username}': user?.username || 'Unknown',
-        '{user.discriminator}': user?.discriminator || '0000',
-        '{user.id}': user?.id || 'unknown',
+       '{user}': user?.toString?.() || 'User',
+       '{usertag}': user?.tag || 'Unknown#0000',
+       '{guildmembercount}': guild?.memberCount?.toString?.() || '0',
+       '{usercreatedat}': `<t:${Math.floor((user?.createdTimestamp || Date.now()) / 1000)}:F>`,
+       '{userjoinedat}': data?.member?.joinedTimestamp
+        ? `<t:${Math.floor(data.member.joinedTimestamp / 1000)}:F>`
+        : 'Unknown',
         '{server}': guild?.name || 'Server',
         '{server.name}': guild?.name || 'Server',
         '{guild.name}': guild?.name || 'Server',
