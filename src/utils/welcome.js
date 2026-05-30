@@ -35,21 +35,30 @@ export function formatWelcomeMessage(message, data) {
     }
 
     const tokens = {
-       '{user}': user?.toString?.() || 'User',
-       '{usertag}': user?.tag || 'Unknown#0000',
-       '{guildmembercount}': guild?.memberCount?.toString?.() || '0',
-       '{usercreatedat}': `<t:${Math.floor((user?.createdTimestamp || Date.now()) / 1000)}:F>`,
-       '{userjoinedat}': data?.member?.joinedTimestamp
+    '{user}': user?.toString?.() || 'User',
+    '{username}': user?.username || 'Unknown',
+    '{usertag}': user?.tag || 'Unknown#0000',
+    '{userid}': user?.id || 'Unknown',
+
+    '{guildmembercount}': guild?.memberCount?.toString?.() || '0',
+    '{memberCount}': guild?.memberCount?.toString?.() || '0',
+
+    '{usercreatedat}': `<t:${Math.floor((user?.createdTimestamp || Date.now()) / 1000)}:F>`,
+    '{usercreatedrelative}': `<t:${Math.floor((user?.createdTimestamp || Date.now()) / 1000)}:R>`,
+
+    '{userjoinedat}': data?.member?.joinedTimestamp
         ? `<t:${Math.floor(data.member.joinedTimestamp / 1000)}:F>`
         : 'Unknown',
-        '{server}': guild?.name || 'Server',
-        '{server.name}': guild?.name || 'Server',
-        '{guild.name}': guild?.name || 'Server',
-        '{guild.id}': guild?.id || 'unknown',
-        '{guild.memberCount}': guild?.memberCount?.toString?.() || '0',
-        '{memberCount}': guild?.memberCount?.toString?.() || '0',
-        '{membercount}': guild?.memberCount?.toString?.() || '0'
-    };
+
+    '{userjoinedrelative}': data?.member?.joinedTimestamp
+        ? `<t:${Math.floor(data.member.joinedTimestamp / 1000)}:R>`
+        : 'Unknown',
+
+    '{server}': guild?.name || 'Server',
+    '{server.name}': guild?.name || 'Server',
+    '{guild.name}': guild?.name || 'Server',
+    '{guild.id}': guild?.id || 'unknown'
+};
 
     let result = message;
     for (const [token, value] of Object.entries(tokens)) {
