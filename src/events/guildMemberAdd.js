@@ -13,17 +13,22 @@ export default {
   once: false,
   
   async execute(member) {
+    console.log("guildMemberAdd fired:", member.user.tag);
+
     try {
         const { guild, user } = member;
         
         const config = await getGuildConfig(member.client, guild.id);
         
         const welcomeConfig = await getWelcomeConfig(member.client, guild.id);
+        console.log("WELCOME CONFIG:", welcomeConfig);
         
         const welcomeChannelId = welcomeConfig?.channelId;
 
         if (welcomeConfig?.enabled && welcomeChannelId) {
-            const channel = guild.channels.cache.get(welcomeChannelId);
+            const channel =
+            guild.channels.cache.get(welcomeChannelId) ||
+            await guild.channels.fetch(welcomeChannelId).catch(() => null);
             if (channel?.isTextBased?.()) {
                 const me = guild.members.me;
                 const permissions = me ? channel.permissionsFor(me) : null;
