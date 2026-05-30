@@ -50,7 +50,7 @@ console.log('FORMATTED MESSAGE:', welcomeMessage);
                 );
                 const embedFooter = welcomeConfig.welcomeEmbed?.footer
                     ? formatWelcomeMessage(welcomeConfig.welcomeEmbed.footer, formatData)
-                    : `Welcome to ${guild.name}!`;
+                    : `${guild.name} | Vítej!`;
 
                 const canEmbed = permissions.has(PermissionFlagsBits.EmbedLinks);
 
@@ -64,10 +64,6 @@ console.log('FORMATTED MESSAGE:', welcomeMessage);
                         .setTitle(embedTitle)
                         .setDescription(welcomeMessage)
                         .setThumbnail(user.displayAvatarURL())
-                        .addFields(
-                            { name: 'User', value: `${user.tag} (${user.id})`, inline: true },
-                            { name: 'Member Count', value: guild.memberCount.toString(), inline: true }
-                        )
                         .setTimestamp()
                         .setFooter({ text: embedFooter });
                     
