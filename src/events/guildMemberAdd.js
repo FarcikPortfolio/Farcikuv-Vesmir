@@ -31,9 +31,9 @@ export default {
                     return;
                 }
 
-                const formatData = { user, guild, member };
                 const welcomeMessage = formatWelcomeMessage(
-                    welcomeConfig.welcomeMessage || welcomeConfig.welcomeEmbed?.description || 'Welcome {user} to {server}!',
+                    (welcomeConfig.welcomeMessage || welcomeConfig.welcomeEmbed?.description || 'Welcome {user} to {server}!')
+                    .replace(/\\n/g, '\n'),
                     formatData
                 );
 
