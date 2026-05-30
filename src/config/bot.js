@@ -359,21 +359,21 @@ export const botConfig = {
     // Welcome template posted when a user joins.
     // Placeholders: {user}, {server}, {memberCount}
    defaultWelcomeMessage: `
-   > 🪼 Uživatel
-   > ${user}
+> 🪼 Uživatel
+> {user}
 
-   > 🏷️ Tag
-   > ${usertag}
+> 🏷️ Tag
+> {usertag}
 
-   > 👾 Člen číslo
-   > ${guildmembercount}
+> 👾 Člen číslo
+> {guildmembercount}
 
-   > 🏢 Účet vytvořen
-   > ${usercreatedat}
+> 🏢 Účet vytvořen
+> {usercreatedat}
 
-   > 🎯 Připojení
-   > ${userjoinedat}
-   `,
+> 🎯 Připojení
+> {userjoinedat}
+`,
     // Goodbye template posted when a user leaves.
     // Placeholders: {user}, {memberCount}
     defaultGoodbyeMessage:
