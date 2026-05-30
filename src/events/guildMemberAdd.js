@@ -11,9 +11,9 @@ import { logger } from '../utils/logger.js';
 export default {
   name: Events.GuildMemberAdd,
   once: false,
-  
+
   async execute(member) {
-    console.log("guildMemberAdd fired:", member.user.tag);
+    console.log('GUILD MEMBER ADD FIRED:', member.user.tag);
 
     try {
         const { guild, user } = member;
