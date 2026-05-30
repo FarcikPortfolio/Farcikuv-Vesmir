@@ -187,9 +187,9 @@ if (now - lastCreation < VOICE_CREATE_COOLDOWN_MS) {
                     finalName = `${triggerChannel.name} ${existingChannels + 1}`;
                 }
 
-                const channelName = sanitizeVoiceChannelName(finalName);
 
 const channelName = sanitizeVoiceChannelName(finalName);
+
                 if (!member.voice?.channel || member.voice.channel.id !== triggerChannel.id) {
                     logger.debug(`Member ${member.id} no longer in trigger channel ${triggerChannel.id}, aborting temporary channel creation`);
                     channelCreationCooldown.delete(cooldownKey);
