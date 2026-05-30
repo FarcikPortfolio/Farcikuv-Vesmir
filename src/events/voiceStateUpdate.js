@@ -176,6 +176,8 @@ if (now - lastCreation < VOICE_CREATE_COOLDOWN_MS) {
                     nameTemplate.includes('{username}') ||
                     nameTemplate.includes('{displayName}')
                 ) {
+                    console.log("TEMPLATE:", nameTemplate);
+                    
                     finalName = formatChannelName(nameTemplate, {
                         username: member.user.username,
                         userTag: member.user.tag,
