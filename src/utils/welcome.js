@@ -61,12 +61,15 @@ export function formatWelcomeMessage(message, data) {
 };
 
     let result = message;
-    for (const [token, value] of Object.entries(tokens)) {
-        if (value === undefined || value === null) continue;
-        result = replaceAll(result, token, String(value));
-    }
 
-    return result;
+for (const [token, value] of Object.entries(tokens)) {
+    if (value === undefined || value === null) continue;
+    result = replaceAll(result, token, String(value));
+}
+
+result = result.replace(/\\n/g, '\n');
+
+return result;
 }
 
 export function getDefaultWelcomeMessage() {

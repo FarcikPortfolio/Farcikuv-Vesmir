@@ -31,12 +31,16 @@ export default {
                     return;
                 }
                 const formatData = { user, guild, member };
-                
+
+                console.log('RAW MESSAGE:', welcomeConfig.welcomeMessage);
+
                 const welcomeMessage = formatWelcomeMessage(
-                    (welcomeConfig.welcomeMessage || welcomeConfig.welcomeEmbed?.description || 'Welcome {user} to {server}!')
-                    .replace(/\\n/g, '\n'),
-                    formatData
+                (welcomeConfig.welcomeMessage || welcomeConfig.welcomeEmbed?.description || 'Welcome {user} to {server}!')
+                     .replace(/\\n/g, '\n'),
+                formatData
                 );
+
+console.log('FORMATTED MESSAGE:', welcomeMessage);
 
                 const messageContent = welcomeConfig.welcomePing ? user.toString() : null;
 
