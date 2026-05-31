@@ -1,9 +1,8 @@
+import { logger } from '../utils/logger.js';
+
 console.log("APP STARTING");
 process.on("uncaughtException", console.error);
 process.on("unhandledRejection", console.error);
-
-import { logger } from '../utils/logger.js';
-
 
 export const botConfig = {
   // =========================
