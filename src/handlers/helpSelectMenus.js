@@ -13,27 +13,27 @@ const BACK_BUTTON_ID = "help-back-to-main";
 const ALL_COMMANDS_ID = "help-all-commands";
 const PAGINATION_PREFIX = "help-page";
 const CATEGORY_SELECT_ID = "help-category-select";
-const FOOTER_TEXT = "Made with ❤️";
+const FOOTER_TEXT = "Help | Farcikův Vesmír";
 const SUBCOMMAND_TYPE = 1;
 const SUBCOMMAND_GROUP_TYPE = 2;
 
 const CATEGORY_ICONS = {
-    Core: "ℹ️",
-    Moderation: "🛡️",
-    Economy: "💰",
-    Fun: "🎮",
-    Leveling: "📊",
-    Utility: "🔧",
-    Ticket: "🎫",
-    Welcome: "👋",
-    Giveaway: "🎉",
-    Counter: "🔢",
-    Tools: "🛠️",
-    Search: "🔍",
-    Reaction_Roles: "🎭",
-    Community: "👥",
-    Birthday: "🎂",
-    Config: "⚙️",
+   Informace: "ℹ️",
+   Moderace: "🛡️",
+   Ekonomika: "💰",
+   Zábava: "🎮",
+   Leveling: "📊",
+   Nástroje: "🔧",
+   Tickety: "🎫",
+   Uvítání: "👋",
+   Soutěže: "🎉",
+   Počítadla: "🔢",
+   Pokročilé_Nástroje: "🛠️",
+   Vyhledávání: "🔍",
+   Role_Reakcemi: "🎭",
+   Komunita: "👥",
+   Narozeniny: "🎂",
+   Nastavení: "⚙️"
 };
 
 function buildHelpEntries(command, category) {

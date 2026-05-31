@@ -9,7 +9,7 @@ export default {
 
     async execute(interaction) {
         const githubButton = new ButtonBuilder()
-            .setLabel('?? Nahlašte chybu nebo navrhněte vylepšení')
+            .setLabel('🎟️ TICKET SYSTÉM')
             .setStyle(ButtonStyle.Link)
             .setURL('https://discord.com/channels/1429032922446430422/1429485456667443220');
 
@@ -17,7 +17,7 @@ export default {
 
         const bugReportEmbed = createEmbed({
             title: '?? Bug Report',
-            description: 'Narazili jste na chybu nebo máte návrh na vylepšení? Dejte nám vědět přes ticket v <#1429485456667443220>.\n\n' +
+            description: 'Narazili jste na chybu nebo máte návrh na vylepšení? Dejte nám vědět pomocí Ticket systému.\n\n' +
            '**Prosíme, přiložte:**\n' +
            '🔹 Co přesně se stalo\n' +
            '🔹 Jak chybu znovu vyvolat\n' +

@@ -22,22 +22,22 @@ const BUG_REPORT_BUTTON_ID = "help-bug-report";
 const HELP_MENU_TIMEOUT_MS = 5 * 60 * 1000;
 
 const CATEGORY_ICONS = {
-    Core: "ℹ️",
-    Moderation: "🛡️",
-    Economy: "💰",
-    Fun: "🎮",
-    Leveling: "📊",
-    Utility: "🔧",
-    Ticket: "🎫",
-    Welcome: "👋",
-    Giveaway: "🎉",
-    Counter: "🔢",
-    Tools: "🛠️",
-    Search: "🔍",
-    Reaction_Roles: "🎭",
-    Community: "👥",
-    Birthday: "🎂",
-    Config: "⚙️",
+   Informace: "ℹ️",
+   Moderace: "🛡️",
+   Ekonomika: "💰",
+   Zábava: "🎮",
+   Leveling: "📊",
+   Nástroje: "🔧",
+   Tickety: "🎫",
+   Uvítání: "👋",
+   Soutěže: "🎉",
+   Počítadla: "🔢",
+   Pokročilé_Nástroje: "🛠️",
+   Vyhledávání: "🔍",
+   Role_Reakcemi: "🎭",
+   Komunita: "👥",
+   Narozeniny: "🎂",
+   Nastavení: "⚙️"
 };
 
 
@@ -55,8 +55,8 @@ export async function createInitialHelpMenu(client) {
 
     const options = [
         {
-            label: "📋 All Commands",
-            description: "View all available commands with pagination",
+            label: "📋 Všechny příkazy",
+            description: "Zobrazit všechny dostupné příkazy",
             value: ALL_COMMANDS_ID,
         },
         ...categoryDirs.map((category) => {
@@ -66,127 +66,127 @@ export async function createInitialHelpMenu(client) {
             const icon = CATEGORY_ICONS[categoryName] || "🔍";
             return {
                 label: `${icon} ${categoryName}`,
-                description: `View commands in the ${categoryName} category`,
+                description: `Zobrazit příkazy v kategorii ${categoryName}`,
                 value: category,
             };
         }),
     ];
 
     const botName = client?.user?.username || "Bot";
-    const embed = createEmbed({ 
-        title: `🤖 ${botName} Help Center`,
-        description: "Your all-in-one Discord companion for moderation, economy, fun, and server management.",
-        color: 'primary'
-    });
+    const embed = createEmbed({
+  title: `🤖 ${botName}`,
+  description: "Jsem tu pro moderaci, ekonomiku, zábavu a správu serveru.",
+  color: 'primary'
+});
 
-    embed.addFields(
-        {
-            name: "🛡️ **Moderation**",
-            value: "Server moderation, user management, and enforcement tools",
-            inline: true
-        },
-        {
-            name: "💰 **Economy**",
-            value: "Currency system, shops, and virtual economy",
-            inline: true
-        },
-        {
-            name: "🎮 **Fun**",
-            value: "Games, entertainment, and interactive commands",
-            inline: true
-        },
-        {
-            name: "📊 **Leveling**",
-            value: "User levels, XP system, and progression tracking",
-            inline: true
-        },
-        {
-            name: "🎫 **Tickets**",
-            value: "Support ticket system for server management",
-            inline: true
-        },
-        {
-            name: "🎉 **Giveaways**",
-            value: "Automated giveaway management and distribution",
-            inline: true
-        },
-        {
-            name: "👋 **Welcome**",
-            value: "Member welcome messages and onboarding",
-            inline: true
-        },
-        {
-            name: "🎂 **Birthdays**",
-            value: "Birthday tracking and celebration features",
-            inline: true
-        },
-        {
-            name: "👥 **Community**",
-            value: "Community tools, applications, and member engagement",
-            inline: true
-        },
-        {
-            name: "⚙️ **Config**",
-            value: "Server and bot configuration management commands",
-            inline: true
-        },
-        {
-            name: "🔢 **Counter**",
-            value: "Live counter channel setup and counter controls",
-            inline: true
-        },
-        {
-            name: "🎙️ **Join to Create**",
-            value: "Dynamic voice channel creation and management",
-            inline: true
-        },
-        {
-            name: "🎭 **Reaction Roles**",
-            value: "Self-assignable roles using reaction-role systems",
-            inline: true
-        },
-        {
-            name: "✅ **Verification**",
-            value: "Member verification workflows and access gating",
-            inline: true
-        },
-        {
-            name: "🔧 **Utilities**",
-            value: "Useful tools and server utilities",
-            inline: true
-        }
-    );
+embed.addFields(
+  {
+    name: "🛡️ **Moderace**",
+    value: "Nástroje pro správu členů a udržování pořádku na serveru.",
+    inline: true
+},
+{
+    name: "💰 **Ekonomika**",
+    value: "Virtuální měna, obchodování a ekonomické funkce.",
+    inline: true
+},
+{
+    name: "🎮 **Zábava**",
+    value: "Hry, interaktivní příkazy, minecraft eventy a zábavné funkce.",
+    inline: true
+},
+{
+    name: "📈 **Leveling**",
+    value: "XP systém, úrovně a odměny za aktivitu.",
+    inline: true
+},
+{
+    name: "🎫 **Tickety**",
+    value: "Přehledná komunikace s A-TEAMEM pomocí ticketu.",
+    inline: true
+},
+{
+    name: "🎉 **Soutěže**",
+    value: "Vytváření a správa giveaway soutěží.",
+    inline: true
+},
+{
+    name: "👋 **Uvítání**",
+    value: "Automatické uvítání nových členů.",
+    inline: true
+},
+{
+    name: "🎂 **Narozeniny**",
+    value: "Připomenutí narozenin vybraných členů členů.",
+    inline: true
+},
+{
+    name: "👥 **Komunita**",
+    value: "Přihlášky, komunitní funkce a zapojení členů.",
+    inline: true
+},
+{
+    name: "⚙️ **Nastavení**",
+    value: "Správa konfigurace serveru a bota.",
+    inline: true
+},
+{
+    name: "🔢 **Počítadla**",
+    value: "Dynamická počítadla pro statistiky serveru.",
+    inline: true
+},
+{
+    name: "🎙️ **Join to Create**",
+    value: "Automatické vytváření soukromých hlasových místností.",
+    inline: true
+},
+{
+    name: "🎭 **Reakční role**",
+    value: "Výběr rolí pomocí reakcí nebo menu.",
+    inline: true
+},
+{
+    name: "✅ **Ověření**",
+    value: "Ověřovací systémy pro zabezpečení serveru.",
+    inline: true
+},
+{
+    name: "🔧 **Nástroje**",
+    value: "Praktické příkazy pro každodenní použití.",
+    inline: true
+}
+);
 
     embed.setFooter({ 
-        text: "Made with ❤️" 
+        text: "Help | Farcikův Vesmír" 
     });
     embed.setTimestamp();
 
     const bugReportButton = new ButtonBuilder()
         .setCustomId(BUG_REPORT_BUTTON_ID)
-        .setLabel("Report Bug")
+        .setLabel("Nahlásit chybu")
         .setStyle(ButtonStyle.Danger);
 
-    const supportButton = new ButtonBuilder()
-        .setLabel("Support Server")
-        .setURL("https://discord.gg/QnWNz2dKCE")
+    const ticketButton = new ButtonBuilder()
+        .setLabel("🎟️ TICKET SYSTÉM")
+        .setURL("https://discord.com/channels/1429032922446430422/1429485456667443220")
         .setStyle(ButtonStyle.Link);
 
-    const touchpointButton = new ButtonBuilder()
-        .setLabel("Learn from Touchpoint")
-        .setURL("https://www.youtube.com/@TouchDisc")
+    const youtubeButton = new ButtonBuilder()
+        .setLabel("Farcikův YouTube kanál")
+        .setURL("https://www.youtube.com/@NotFarc1k")
         .setStyle(ButtonStyle.Link);
 
     const selectRow = createSelectMenu(
         CATEGORY_SELECT_ID,
-        "Select to view the commands",
+        "Klikni pro zobrazení příkazů",
         options,
     );
 
     const buttonRow = new ActionRowBuilder().addComponents([
         bugReportButton,
-        supportButton,
-        touchpointButton,
+        ticketButton,
+        youtubeButton,
     ]);
 
     return {
@@ -198,7 +198,7 @@ export async function createInitialHelpMenu(client) {
 export default {
     data: new SlashCommandBuilder()
         .setName("help")
-        .setDescription("Displays the help menu with all available commands"),
+        .setDescription("Zobrazí interaktivní menu s informacemi o příkazech a funkcích bota."),
 
     async execute(interaction, guildConfig, client) {
         
@@ -215,8 +215,8 @@ export default {
         setTimeout(async () => {
             try {
                 const closedEmbed = createEmbed({
-                    title: "Help menu closed",
-                    description: "Help menu has been closed, use /help again.",
+                    title: "⏰ Help menu closed",
+                    description: "Help menu byl uzavřen, použij /help znovu.",
                     color: "secondary",
                 });
 
