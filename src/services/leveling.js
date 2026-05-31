@@ -213,7 +213,15 @@ export async function getLevelingConfig(client, guildId) {
       ignoredChannels: [],
       ignoredRoles: [],
       blacklistedUsers: [],
-      roleRewards: {},
+      roleRewards: {
+      5: "1465776586652651550",
+      10: "1465776112750825522",
+      15: "1465776276697518080",
+      25: "1465776297883209748",
+      30: "1465776323690627084",
+      35: "1465776346641727657",
+      40: "1465776369446162608"
+    },
       announceLevelUp: true,
       xpMultiplier: 1
     };

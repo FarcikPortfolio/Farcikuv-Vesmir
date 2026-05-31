@@ -85,12 +85,12 @@ export default {
             inline: true
           },
           {
-            name: '✨ Total XP',
+            name: '✨ Celkový počet XP',
             value: safeUserData.totalXp.toString(),
             inline: true
           },
           {
-            name: `Progress to Level ${safeUserData.level + 1}`,
+            name: `Progress do levelu ${safeUserData.level + 1}`,
             value: `${progressBar} ${progress}%`
           }
         )

@@ -128,22 +128,46 @@ export async function addXp(client, guild, member, xpToAdd) {
 
 async function awardRoleReward(guild, member, roleId, level) {
   try {
+
+    const levelRoles = {
+      5: "1465776586652651550",
+      10: "1465776112750825522",
+      15: "1465776276697518080",
+      25: "1465776297883209748",
+      30: "1465776323690627084",
+      35: "1465776346641727657",
+      40: "1465776369446162608"
+    };
+
     const role = guild.roles.cache.get(roleId);
-    
+
     if (!role) {
-      logger.warn(`Role ${roleId} not found for level ${level} reward in guild ${guild.id}`);
+      logger.warn(`Role ${roleId} not found`);
       return;
     }
 
-    
-    if (member.roles.cache.has(roleId)) {
-      return;
+    for (const rewardRoleId of Object.values(levelRoles)) {
+      if (
+        rewardRoleId !== roleId &&
+        member.roles.cache.has(rewardRoleId)
+      ) {
+        await member.roles.remove(rewardRoleId);
+      }
     }
 
-    await member.roles.add(role, `Level ${level} reward`);
-    logger.info(`✅ Awarded role ${role.name} to ${member.user.tag} for reaching level ${level}`);
+    if (!member.roles.cache.has(roleId)) {
+      await member.roles.add(role);
+    }
+
+    logger.info(
+      `${member.user.tag} received level role ${role.name}`
+    );
+
   } catch (error) {
-    logger.error(`Failed to award role reward to ${member.user.id}:`, error);
+    logger.error(
+      'Failed to award level role:',
+      error
+    );
   }
 }
 
