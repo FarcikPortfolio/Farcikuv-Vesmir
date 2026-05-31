@@ -18,12 +18,15 @@ export default {
     try {
         const { guild, user } = member;
         
-        const config = await getGuildConfig(member.client, guild.id);
-        
-        const welcomeConfig = await getWelcomeConfig(member.client, guild.id);
-        console.log("WELCOME CONFIG:", welcomeConfig);
-        
-        const welcomeChannelId = welcomeConfig?.channelId;
+       const config = await getGuildConfig(member.client, guild.id);
+
+const welcomeConfig = await getWelcomeConfig(member.client, guild.id);
+
+console.log('WELCOME CONFIG:', welcomeConfig);
+console.log('WELCOME ENABLED:', welcomeConfig?.enabled);
+console.log('WELCOME CHANNEL:', welcomeConfig?.channelId);
+
+const welcomeChannelId = welcomeConfig?.channelId;
 
         if (welcomeConfig?.enabled && welcomeChannelId) {
             const channel =
