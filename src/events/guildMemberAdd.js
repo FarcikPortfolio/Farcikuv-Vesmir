@@ -8,11 +8,6 @@ import { getServerCounters, updateCounter } from '../services/serverstatsService
 import { setBirthday as dbSetBirthday } from '../utils/database.js';
 import { logger } from '../utils/logger.js';
 
-async execute(member) {
-    console.log("GUILD MEMBER ADD FIRED:", member.user.tag);
-
-    try {
-      
 export default {
   name: Events.GuildMemberAdd,
   once: false,
