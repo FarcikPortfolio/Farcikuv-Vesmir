@@ -179,7 +179,7 @@ export function createGiveawayEmbed(giveaway, status, winners = []) {
         
         const embed = new EmbedBuilder()
             .setTitle(`${statusEmoji} ${giveaway.prize}`)
-            .setDescription('React with the button below to enter!')
+            .setDescription('Klikni na tlačítko níže a přioj se!')
             .setColor(color)
             .addFields(
                 { name: '👤 Hostuje', value: `<@${giveaway.hostId}>`, inline: true },
@@ -237,12 +237,12 @@ export function createGiveawayButtons(ended = false) {
             row.addComponents(
                 new ButtonBuilder()
                     .setCustomId('giveaway_join')
-                    .setLabel('🎉 Join')
+                    .setLabel('🎉 Připojit')
                     .setStyle(ButtonStyle.Primary)
                     .setDisabled(false),
                 new ButtonBuilder()
                     .setCustomId('giveaway_end')
-                    .setLabel('🛑 End')
+                    .setLabel('🛑 Ukončit')
                     .setStyle(ButtonStyle.Danger)
                     .setDisabled(false)
             );
