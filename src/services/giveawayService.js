@@ -182,19 +182,19 @@ export function createGiveawayEmbed(giveaway, status, winners = []) {
             .setDescription('React with the button below to enter!')
             .setColor(color)
             .addFields(
-                { name: '👤 Hosted by', value: `<@${giveaway.hostId}>`, inline: true },
-                { name: '🏆 Winners', value: giveaway.winnerCount.toString(), inline: true },
-                { name: '👥 Entries', value: giveaway.participants?.length?.toString() || '0', inline: true }
+                { name: '👤 Hostuje', value: `<@${giveaway.hostId}>`, inline: true },
+                { name: '🏆 Počet výherců', value: giveaway.winnerCount.toString(), inline: true },
+                { name: '👥 Počet účastníků', value: giveaway.participants?.length?.toString() || '0', inline: true }
             );
 
         if (isEnded) {
             const winnerDisplay = winners.length > 0 
                 ? winners.map(id => `<@${id}>`).join(', ')
                 : 'No valid entries';
-            embed.addFields({ name: '🎯 Winners', value: winnerDisplay, inline: false });
+            embed.addFields({ name: '🎯 Výherci', value: winnerDisplay, inline: false });
         } else {
             const endTime = giveaway.endsAt || giveaway.endTime;
-            embed.addFields({ name: '⏰ Ends', value: `<t:${Math.floor(endTime / 1000)}:R>`, inline: false });
+            embed.addFields({ name: '⏰ Končí', value: `<t:${Math.floor(endTime / 1000)}:R>`, inline: false });
         }
 
         embed.setTimestamp();
@@ -498,12 +498,12 @@ export async function checkGiveaways(client) {
                     inline: true
                   },
                   {
-                    name: '🏆 Winners',
+                    name: '🏆 Počet výherců',
                     value: winners.map(id => `<@${id}>`).join(', '),
                     inline: false
                   },
                   {
-                    name: '👥 Entries',
+                    name: '👥 Počet účastníků',
                     value: participants.length.toString(),
                     inline: true
                   }

@@ -117,7 +117,7 @@ export default {
             
             
             const giveawayMessage = await targetChannel.send({
-                content: "🎉 **NEW GIVEAWAY** 🎉",
+                content: "🎉 **NOVÁ GIVEAWAY** 🎉",
                 embeds: [embed],
                 components: [row],
             });
@@ -151,12 +151,12 @@ export default {
                                 inline: true
                             },
                             {
-                                name: '🏆 Winners',
+                                name: '🏆 Počet výherců',
                                 value: winnerCount.toString(),
                                 inline: true
                             },
                             {
-                                name: '⏰ Duration',
+                                name: '⏰ Končí',
                                 value: durationString,
                                 inline: true
                             },

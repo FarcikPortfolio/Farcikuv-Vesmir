@@ -164,12 +164,12 @@ export default {
                                     inline: true
                                 },
                                 {
-                                    name: '🏆 Winners',
+                                    name: '🏆 Počet výherců',
                                     value: winnerMentions,
                                     inline: false
                                 },
                                 {
-                                    name: '👥 Entries',
+                                    name: '👥 Počet účastníků',
                                     value: endResult.participantCount.toString(),
                                     inline: true
                                 }

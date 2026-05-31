@@ -105,8 +105,8 @@ export const giveawayJoinHandler = {
                 await interaction.reply({
                     embeds: [
                         successEmbed(
-                            'Success! You have entered the giveaway! 🎉',
-                            `Good luck! There are now ${participants.length} entry/entries.`
+                            'Úspěšně ses připojil do giveaweye! 🎉',
+                            `Hodně štěstí! Už se připojil/o ${participants.length} účastník/ů.`
                         )
                     ],
                     flags: MessageFlags.Ephemeral
@@ -155,7 +155,7 @@ export const giveawayEndHandler = {
                 throw new TitanBotError(
                     'Giveaway not found in database',
                     ErrorTypes.VALIDATION,
-                    'This giveaway is no longer active.',
+                    'Tato giveaway už není aktivní.',
                     { messageId: interaction.message.id, guildId: interaction.guildId }
                 );
             }
@@ -164,7 +164,7 @@ export const giveawayEndHandler = {
                 throw new TitanBotError(
                     'Giveaway already ended',
                     ErrorTypes.VALIDATION,
-                    'This giveaway has already ended.',
+                    'Tato giveaway už byla ukončena.',
                     { messageId: interaction.message.id }
                 );
             }
@@ -188,7 +188,7 @@ export const giveawayEndHandler = {
             const updatedRow = createGiveawayButtons(true);
 
             await interaction.message.edit({
-                content: '🎉 **GIVEAWAY ENDED** 🎉',
+                content: '🎉 **GIVEAWAY SKONČILA** 🎉',
                 embeds: [updatedEmbed],
                 components: [updatedRow]
             });
@@ -200,7 +200,7 @@ export const giveawayEndHandler = {
                     guildId: interaction.guildId,
                     eventType: EVENT_TYPES.GIVEAWAY_WINNER,
                     data: {
-                        description: `Giveaway ended with ${winners.length} winner(s)`,
+                        description: `Giveaway skončila. Výherci: ${winners.length}`,
                         channelId: interaction.channelId,
                         userId: interaction.user.id,
                         fields: [
@@ -210,14 +210,14 @@ export const giveawayEndHandler = {
                                 inline: true
                             },
                             {
-                                name: '🏆 Winners',
+                                name: '🏆 Počet výherců',
                                 value: winners.length > 0 
                                     ? winners.map(id => `<@${id}>`).join(', ')
                                     : 'No valid entries',
                                 inline: false
                             },
                             {
-                                name: '👥 Total Entries',
+                                name: '👥 Počet účastníků',
                                 value: participants.length.toString(),
                                 inline: true
                             }
@@ -231,8 +231,8 @@ export const giveawayEndHandler = {
             await interaction.reply({
                 embeds: [
                     successEmbed(
-                        `Giveaway Ended ✅`,
-                        `The giveaway has been ended and ${winners.length} winner(s) have been selected!`
+                        `Giveaway skončila ✅`,
+                        `Tato giveaway skončila a ${winners.length} výherce byli vybráni!`
                     )
                 ],
                 flags: MessageFlags.Ephemeral
@@ -322,7 +322,7 @@ export const giveawayRerollHandler = {
             const updatedRow = createGiveawayButtons(true);
 
             await interaction.message.edit({
-                content: '🔄 **GIVEAWAY REROLLED** 🔄',
+                content: '🔄 **GIVEAWAY PŘEHRÁNA** 🔄',
                 embeds: [updatedEmbed],
                 components: [updatedRow]
             });
@@ -364,7 +364,7 @@ export const giveawayRerollHandler = {
                 embeds: [
                     successEmbed(
                         'Giveaway Rerolled ✅',
-                        `New winner(s) have been selected!`
+                        `Nový výherci byli vybráni!`
                     )
                 ],
                 flags: MessageFlags.Ephemeral
@@ -426,7 +426,7 @@ export const giveawayViewHandler = {
             await interaction.reply({
                 embeds: [
                     successEmbed(
-                        `Winners for ${giveaway.prize || 'this giveaway'} 🎉`,
+                        `Výherci pro ${giveaway.prize || 'tuto giveaway'} 🎉`,
                         winnerMentions
                     )
                 ],
