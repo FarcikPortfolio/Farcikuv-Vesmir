@@ -183,7 +183,7 @@ async function handleSetup(interaction, guild, client) {
     await InteractionHelper.safeDefer(interaction);
 
     const verifyEmbed = createEmbed({
-        title: "✅ Server Verification",
+        title: "✅ Verifikuj se pro přístup na server!",
         description: message,
         color: getColor('success')
     });
@@ -249,7 +249,7 @@ async function handleRemove(interaction, guild, client) {
         });
 
         return await InteractionHelper.safeReply(interaction, {
-            embeds: [successEmbed("Verification Removed", `Verification removed from ${targetUser.tag}.`)]
+            embeds: [successEmbed("✅ Verifikace odstraněna", `Verifikace odstraněna u ${targetUser.tag}.`)]
         });
 
     } catch (error) {

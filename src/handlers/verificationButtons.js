@@ -64,8 +64,8 @@ export async function handleVerificationButton(interaction, client) {
 
         await InteractionHelper.safeEditReply(interaction, {
             embeds: [successEmbed(
-                "✅ Verification Successful!",
-                `You have been verified and given the **${result.roleName}** role!\n\nYou now have access to all server channels and features. Welcome! 🎉`
+                "✅ Verifikace úspěšná!",
+                `Byl jsi úspěšně verifikován a byla ti přidána role **${result.roleName}**!\n\nNyní máš přístup ke všem kanálům a funkcím serveru. Vítej v našem vesmíru! 🎉`
             )],
         });
 

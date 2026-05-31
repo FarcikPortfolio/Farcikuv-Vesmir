@@ -38,8 +38,8 @@ export default {
 
             await InteractionHelper.safeReply(interaction, {
                 embeds: [successEmbed(
-                    "Verification Complete",
-                    `You have been verified and given the **${result.roleName}** role! Welcome to the server! 🎉`
+                    "✅ Verifikace úspěšná!",
+                    `Byl jsi úspěšně verifikován a byla ti přidána role **${result.roleName}**!\n\nNyní máš přístup ke všem kanálům a funkcím serveru. Vítej v našem vesmíru! 🎉`
                 )],
                 flags: MessageFlags.Ephemeral
             });
