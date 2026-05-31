@@ -5,13 +5,13 @@ import { InteractionHelper } from '../../utils/interactionHelper.js';
 export default {
     data: new SlashCommandBuilder()
         .setName("bug")
-        .setDescription("Nahlašte bug nebo problém s Discord Botem"),
+        .setDescription("Nahlašte chybu nebo navrhněte vylepšení pro Discord Bota!"),
 
     async execute(interaction) {
         const githubButton = new ButtonBuilder()
-            .setLabel('?? Report Bug on GitHub')
+            .setLabel('?? Nahlašte chybu nebo navrhněte vylepšení')
             .setStyle(ButtonStyle.Link)
-            .setURL('https://github.com/codebymitch/TitanBot/issues');
+            .setURL('https://discord.com/channels/1429032922446430422/1429485456667443220');
 
         const row = new ActionRowBuilder().addComponents(githubButton);
 
