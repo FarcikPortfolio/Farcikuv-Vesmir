@@ -16,7 +16,7 @@ export default {
         const row = new ActionRowBuilder().addComponents(githubButton);
 
         const bugReportEmbed = createEmbed({
-            title: '?? Bug Report',
+            title: '?? ¨Nahlášení chyby',
             description: 'Narazili jste na chybu nebo máte návrh na vylepšení? Dejte nám vědět pomocí Ticket systému.\n\n' +
            '**Prosíme, přiložte:**\n' +
            '🔹 Co přesně se stalo\n' +
