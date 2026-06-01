@@ -45,16 +45,16 @@ const facts = [
   "Piglini tě napadnou, pokud otevřeš truhlu v Netheru bez jejich svolení.",
   "Warden je nejsilnější nepřátelský mob v Minecraftu.",
   "Nether byl původně nazýván 'Hell World'.",
-  "Zlaté jablko bylo jedním z prvních speciálních itemů ve hře.",
+  "Zlaté jablko bylo jedním z prvních speciálních itemů ve hře Minecraft.",
   "Minecraft obsahuje více než 600 různých bloků a itemů.",
-  "Když pojmenuješ ovci jménem 'jeb_', bude měnit barvy duhy.",
-  "Když pojmenuješ nepřítele 'Dinnerbone', otočí se vzhůru nohama.",
+  "Když v minecraftu pojmenuješ ovci jménem 'jeb_', bude měnit barvy duhy.",
+  "Když v minecraftu pojmenuješ nepřítele 'Dinnerbone', otočí se vzhůru nohama.",
   "Ender Dragon byl první oficiální boss v Minecraftu.",
   "V Minecraftu lze doletět až na Měsíc jen pomocí modů, v základní hře ne.",
   "V jedné Minecraft mapě může být přes 60 milionů bloků od středu světa na každou stranu.",
   "Blue Axolotl má v Minecraftu pouze velmi malou šanci na získání při rozmnožování.",
   "Beacon dokáže dát hráčům speciální efekty na velkou vzdálenost.",
-  "Totem nesmrtelnosti dokáže zachránit hráče před smrtí pouze jednou.",
+  "Totem nesmrtelnosti v minecraftu dokáže zachránit hráče před smrtí pouze jednou.",
   "Netherite je silnější než diamant a navíc neshoří v lávě.",
   "Minecraft Redstone funguje podobně jako jednoduché elektrické obvody."
 ];
@@ -62,7 +62,7 @@ const facts = [
 export default {
     data: new SlashCommandBuilder()
     .setName("fact")
-    .setDescription("Sdílí náhodný zajímavý fakt, který vás možná překvapí!"),
+    .setDescription("Pošle náhodný zajímavý fakt, který vás možná překvapí!"),
   category: 'Fun',
 
   async execute(interaction, config, client) {
