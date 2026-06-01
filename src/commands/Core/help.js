@@ -215,8 +215,8 @@ export default {
         setTimeout(async () => {
             try {
                 const closedEmbed = createEmbed({
-                    title: "⏰ Help menu closed",
-                    description: "Help menu byl uzavřen, použij /help znovu.",
+                    title: "⏰ HELP MENU UZAVŘENO",
+                    description: "Help menu se uzavřelo, použij /help znovu.",
                     color: "secondary",
                 });
 

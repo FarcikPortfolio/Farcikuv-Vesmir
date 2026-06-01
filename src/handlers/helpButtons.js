@@ -42,25 +42,26 @@ export const helpBugReportButton = {
     name: BUG_REPORT_BUTTON_ID,
     async execute(interaction, client) {
         const githubButton = new ButtonBuilder()
-            .setLabel('🐛 Report Bug on GitHub')
+            .setLabel('🐛 Nahlásit chybu')
             .setStyle(ButtonStyle.Link)
-            .setURL('https://github.com/codebymitch/TitanBot/issues');
+            .setURL('https://discord.com/channels/1429032922446430422/1429485456667443220');
 
         const bugRow = new ActionRowBuilder().addComponents(githubButton);
 
         const bugReportEmbed = createEmbed({
-            title: '🐛 Bug Report',
-            description: 'Found a bug? Please report it on our GitHub Issues page!\n\n' +
-                '**When reporting a bug, please include:**\n' +
-                '• 📝 Detailed description of the issue\n' +
-                '• 📋 Steps to reproduce the problem\n' +
-                '• 📸 Screenshots if applicable\n' +
-                '• 💻 Your bot version and environment\n\n' +
-                'This helps us fix issues faster and more effectively!',
+            title: '🐛 Nahlásit chybu',
+            description: 'Narazili jste na chybu nebo máte návrh na vylepšení? Dejte nám vědět pomocí Ticket systému.\n\n' +
+                '**Prosíme, přiložte::**\n' +
+                '• 📝 Podrobný popis problému\n' +
+                '• 📋 Jak chybu znovu vyvolat\n' +
+                '• 📸 Screenshoty nebo záznam obrazovky\n' +
+                '• 💻 Jaký příkaz a další důležité informace\n\n' +
+                'Díky tomu dokážeme problém vyřešit mnohem rychleji.'
+        }, {
             color: 'error'
         });
         bugReportEmbed.setFooter({
-            text: 'TitanBot Bug Reporting System',
+            text: 'Nahlášení chyby | Farcikův Vesmír',
             iconURL: client.user.displayAvatarURL()
         });
         bugReportEmbed.setTimestamp();
