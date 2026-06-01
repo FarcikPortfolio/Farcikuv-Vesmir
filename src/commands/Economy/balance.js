@@ -23,13 +23,13 @@ export default {
             const targetUser = interaction.options.getUser("user") || interaction.user;
             const guildId = interaction.guildId;
 
-            logger.debug(`[ECONOMY] Balance check for ${targetUser.id}`, { userId: targetUser.id, guildId });
+            logger.debug(`[ECONOMY] Kontrola zůstatku pro ${targetUser.id}`, { userId: targetUser.id, guildId });
 
             if (targetUser.bot) {
                 throw createError(
-                    "Bot user queried for balance",
+                    "Selhání při kontrole zůstatku pro bot uživatele",
                     ErrorTypes.VALIDATION,
-                    "Bots don't have an economy balance."
+                    "Boti nemají ekonomický zůstatek."
                 );
             }
 
@@ -37,9 +37,9 @@ export default {
             
             if (!userData) {
                 throw createError(
-                    "Failed to load economy data",
+                    "Selhání při načítání ekonomických dat uživatele",
                     ErrorTypes.DATABASE,
-                    "Failed to load economy data. Please try again later.",
+                    "Selhání při načítání ekonomických dat uživatele. Prosím zkuste to později.",
                     { userId: targetUser.id, guildId }
                 );
             }
@@ -51,21 +51,21 @@ export default {
 
             const embed = createEmbed({
                 title: `💰 ${targetUser.username}'s Balance`,
-                description: `Here is the current financial status for ${targetUser.username}.`,
+                description: `Tady je tvůj aktuální finanční stav ${targetUser.username}.`,
             })
                 .addFields(
                     {
-                        name: "💵 Cash",
+                        name: "💵 Peníze",
                         value: `$${wallet.toLocaleString()}`,
                         inline: true,
                     },
                     {
-                        name: "🏦 Bank",
+                        name: "🏦 Banka",
                         value: `$${bank.toLocaleString()} / $${maxBank.toLocaleString()}`,
                         inline: true,
                     },
                     {
-                        name: "💎 Total",
+                        name: "💎 Celkem",
                         value: `$${(wallet + bank).toLocaleString()}`,
                         inline: true,
                     }
@@ -75,7 +75,7 @@ export default {
                     iconURL: interaction.user.displayAvatarURL(),
                 });
 
-            logger.info(`[ECONOMY] Balance retrieved`, { userId: targetUser.id, wallet, bank });
+            logger.info(`[ECONOMY] Zůstatek načten`, { userId: targetUser.id, wallet, bank });
 
             await InteractionHelper.safeEditReply(interaction, { embeds: [embed] });
     }, { command: 'balance' })
