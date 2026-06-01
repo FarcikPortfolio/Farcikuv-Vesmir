@@ -22,9 +22,9 @@ import appDashboard from './modules/app_dashboard.js';
 function getApplicationStatusPresentation(statusValue) {
     const normalized = typeof statusValue === 'string' ? statusValue.trim().toLowerCase() : 'unknown';
     const statusLabel =
-        normalized === 'pending' ? 'In Progress' :
-        normalized === 'approved' ? 'Accepted' :
-        normalized === 'denied' ? 'Denied' :
+        normalized === 'pending' ? 'Probíhá' :
+        normalized === 'approved' ? 'Přijato' :
+        normalized === 'denied' ? 'Odmítnuto' :
         'Unknown';
     const statusEmoji =
         normalized === 'pending' ? '🟡' :
@@ -43,38 +43,38 @@ export default {
     .addSubcommand((subcommand) =>
         subcommand
             .setName("setup")
-            .setDescription("Set up a new application")
+            .setDescription("Nastavit novou žádost")
     )
     .addSubcommand((subcommand) =>
         subcommand
             .setName("review")
-            .setDescription("Approve or deny an application")
+            .setDescription("Povolit nebo zamítnout konkrétní žádost")
             .addStringOption((option) =>
                 option
                     .setName("id")
-                    .setDescription("The application ID")
+                    .setDescription("ID žádosti k posouzení")
                     .setRequired(true),
             ),
     )
     .addSubcommand((subcommand) =>
         subcommand
             .setName("list")
-            .setDescription("List all applications")
+            .setDescription("Zobrázit seznam všech žádostí")
             .addStringOption((option) =>
                 option
                     .setName("status")
                     .setDescription("Filter by status")
                     .addChoices(
-                        { name: "Pending", value: "pending" },
-                        { name: "Approved", value: "approved" },
-                        { name: "Denied", value: "denied" },
+                        { name: "Čeká na vyřízení", value: "pending" },
+                        { name: "Přijato", value: "approved" },
+                        { name: "Odmítnuto", value: "denied" },
                     ),
             )
             .addStringOption((option) =>
-                option.setName("role").setDescription("Filter by role ID"),
+                option.setName("role").setDescription("Filtrovat podle role ID"),
             )
             .addUserOption((option) =>
-                option.setName("user").setDescription("Filter by user"),
+                option.setName("user").setDescription("Filtrovat podle uživatele"),
             )
             .addNumberOption((option) =>
                 option
@@ -89,11 +89,11 @@ export default {
     .addSubcommand((subcommand) =>
         subcommand
             .setName("dashboard")
-            .setDescription("Open the applications configuration dashboard")
+            .setDescription("Otevřít interaktivní dashboard pro správu žádostí")
             .addStringOption((option) =>
                 option
                     .setName("application")
-                    .setDescription("Select an application to configure")
+                    .setDescription("Zobrazit konkrétní žádostí v dashboardu")
                     .setRequired(false)
                     .setAutocomplete(true),
             ),

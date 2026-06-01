@@ -18,9 +18,9 @@ import {
 function getApplicationStatusPresentation(statusValue) {
     const normalized = typeof statusValue === 'string' ? statusValue.trim().toLowerCase() : 'unknown';
     const statusLabel =
-        normalized === 'pending' ? 'In Progress' :
-        normalized === 'approved' ? 'Accepted' :
-        normalized === 'denied' ? 'Denied' :
+        normalized === 'pending' ? 'Probíhá' :
+        normalized === 'approved' ? 'Přijato' :
+        normalized === 'denied' ? 'Odmítnuto' :
         'Unknown';
     const statusEmoji =
         normalized === 'pending' ? '🟡' :
@@ -38,7 +38,7 @@ export default {
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("submit")
-                .setDescription("Submit an application for a role")
+                .setDescription("Předložit žádost o roli")
                 .addStringOption((option) =>
                     option
                         .setName("application")
@@ -50,18 +50,18 @@ export default {
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("status")
-                .setDescription("Check the status of your application")
+                .setDescription("Zkontrolovat stav žádosti")
                 .addStringOption((option) =>
                     option
                         .setName("id")
-                        .setDescription("Application ID (leave empty to see all)")
+                        .setDescription("ID žádosti k zobrazení (nepovinné)"),
                         .setRequired(false),
                 ),
         )
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("list")
-                .setDescription("List available applications to apply for"),
+                .setDescription("Zobrazit seznam všech žádostí"),
         ),
 
     category: "Community",
@@ -192,7 +192,7 @@ export async function handleApplicationModal(interaction) {
                         `**Application:** ${applicationRole.name}\n` +
                         `**Role:** ${role.name}\n` +
                         `**Application ID:** \`${application.id}\`\n` +
-                        `**Status:** 🟡 In Progress`
+                        `**Status:** 🟡 Probíhá`
                 }).setColor(getColor('warning'));
                 
                 const logMessage = await logChannel.send({ embeds: [logEmbed] });
@@ -281,7 +281,7 @@ async function handleSubmit(interaction, settings) {
             embeds: [
                 errorEmbed(
                     "Application not found.",
-                    "Use `/apply list` to see available applications."
+                    "Use `/apply list` pro zobrazení dostupných žádostí."
                 ),
             ],
             flags: ["Ephemeral"],
@@ -293,13 +293,13 @@ async function handleSubmit(interaction, settings) {
         interaction.guild.id,
         interaction.user.id,
     );
-    const pendingApp = userApps.find((app) => app.status === "pending");
+    const pendingApp = userApps.find((app) => app.status === "Probíhá");
 
     if (pendingApp) {
         return InteractionHelper.safeEditReply(interaction, {
             embeds: [
                 errorEmbed(
-                    `You already have a pending application. Please wait for it to be reviewed.`,
+                    `Už máte otevřenou žádost. Počkej, až bude zpracována.`,
                 ),
             ],
             flags: ["Ephemeral"],

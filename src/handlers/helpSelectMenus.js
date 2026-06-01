@@ -160,9 +160,9 @@ async function createCategoryCommandsMenu(category, client) {
     }
 
     const embed = createEmbed({
-        title: `${icon} ${categoryName} Commands`,
+        title: `${icon} ${categoryName} Příkazy`,
         description: categoryCommands.length > 0
-            ? `Click any command mention below to use it:`
+            ? `Klikni na libovolný uvedený příkaz níže pro jeho použití:`
             : `No commands found in the **${categoryName}** category.`
     });
 
@@ -180,7 +180,7 @@ async function createCategoryCommandsMenu(category, client) {
         const maxLength = 1000;
         if (commandMentions.length <= maxLength) {
             embed.addFields({
-                name: "Commands",
+                name: "Příkazy",
                 value: commandMentions,
                 inline: false,
             });
@@ -201,7 +201,7 @@ async function createCategoryCommandsMenu(category, client) {
 
             chunks.forEach((chunk, index) => {
                 embed.addFields({
-                    name: `Commands (Part ${index + 1})`,
+                    name: `Příkazy (Část ${index + 1})`,
                     value: chunk,
                     inline: false,
                 });
@@ -214,7 +214,7 @@ async function createCategoryCommandsMenu(category, client) {
 
     const backButton = createButton(
         BACK_BUTTON_ID,
-        "Back",
+        "Zpět",
         "primary",
         "⬅️",
         false,
@@ -299,8 +299,8 @@ export async function createAllCommandsMenu(page = 1, client) {
     const pageCommands = allCommands.slice(startIndex, endIndex);
 
     const embed = createEmbed({
-        title: "📋 All Commands",
-        description: `(${allCommands.length} total commands, including subcommands)`
+        title: "📋 Všechny příkazy",
+        description: `(${allCommands.length} celkové příkazy, včetně podpříkazů)`
     });
 
     embed.setFooter({ text: FOOTER_TEXT });
@@ -326,7 +326,7 @@ export async function createAllCommandsMenu(page = 1, client) {
             if (!chunk) continue;
 
             embed.addFields({
-                name: i === 0 ? `Commands (Page ${page})` : "Commands (cont.)",
+                name: i === 0 ? `Příkazy (Stránka ${page})` : "Příkazy (cont.)",
                 value: chunk,
                 inline: columnCount > 1,
             });
@@ -346,7 +346,7 @@ export async function createAllCommandsMenu(page = 1, client) {
 
     const backButton = createButton(
         BACK_BUTTON_ID,
-        "Back",
+        "Zpět",
         "primary",
         "⬅️",
         false,
