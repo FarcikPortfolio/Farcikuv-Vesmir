@@ -81,7 +81,7 @@ export default {
             const embed = createEmbed({
                 title: `Ekonomický žebříček`,
                 description,
-                footer: `Váš pořadí: ${userRank > 0 ? `#${userRank}` : "Žádná data k hodnocení dostupná"}`,
+                footer: `Tvoje pořadí: ${userRank > 0 ? `#${userRank}` : "Žádná data k hodnocení dostupná"}`,
             });
 
             await InteractionHelper.safeEditReply(interaction, { embeds: [embed] });
