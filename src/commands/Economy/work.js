@@ -25,7 +25,7 @@ const WORK_JOBS = [
 export default {
     data: new SlashCommandBuilder()
         .setName('work')
-        .setDescription('Pracuj a vydělávej peníze! Můžete pracovat každých 30 minut. Pokud máte položku "extra work", můžete ji použít pro další směnu během cooldownu.'),
+       .setDescription('Pracuj a vydělávej peníze každých 30 minut.'),
 
     execute: withErrorHandling(async (interaction, config, client) => {
         const deferred = await InteractionHelper.safeDefer(interaction);

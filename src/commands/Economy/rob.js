@@ -13,7 +13,7 @@ const FINE_PERCENTAGE = 0.1;
 export default {
     data: new SlashCommandBuilder()
         .setName('rob')
-        .setDescription('Pokus o okradení jiného uživatele. Máte šanci získat nějaké peníze, ale buďte opatrní, můžete také být chyceni! Oběť musí mít alespoň $500 v hotovosti.')
+        .setDescription('Pokus se okrást jiného uživatele.')
         .addUserOption(option =>
             option
                 .setName('user')

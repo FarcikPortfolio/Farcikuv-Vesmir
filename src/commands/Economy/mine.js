@@ -22,7 +22,7 @@ const MINE_LOCATIONS = [
 export default {
     data: new SlashCommandBuilder()
         .setName('mine')
-        .setDescription('Jděte těžit a získejte peníze! Můžete najít různé minerály a získat bonusy, pokud máte v inventáři krumpáč.'),
+        .setDescription('Těž minerály a získej odměnu.'),
 
     execute: withErrorHandling(async (interaction, config, client) => {
         const deferred = await InteractionHelper.safeDefer(interaction);
@@ -45,7 +45,7 @@ export default {
                 );
 
                 throw createError(
-                    "Mining cooldown active",
+                    "Těžební cooldown aktivní",
                     ErrorTypes.RATE_LIMIT,
                     `Váš krumpáč se právě zahřál. Počkejte **${hours}h ${minutes}m** před dalším těžením.`,
                     { remaining, cooldownType: 'mine' }

@@ -14,7 +14,7 @@ const GAMBLE_COOLDOWN = 5 * 60 * 1000;
 export default {
     data: new SlashCommandBuilder()
         .setName('gamble')
-        .setDescription('Hazardujte o peníze! Zadejte částku, kterou chcete vsadit, a zkuste své štěstí. Můžete také použít své šťastné předměty pro zvýšení šance na výhru. Můžete také prohrát svou sázku!')
+        .setDescription('Hazardujte o peníze! Zadejte částku, kterou chcete vsadit, a zkuste své štěstí.')
         .addIntegerOption(option =>
             option
                 .setName('amount')
