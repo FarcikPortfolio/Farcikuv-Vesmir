@@ -10,7 +10,7 @@ import EconomyService from '../../services/economyService.js';
 export default {
     data: new SlashCommandBuilder()
         .setName('pay')
-        .setDescription('Zaplť někomu jinému peníze z tvé peněženky.')
+        .setDescription('Zaplať někomu jinému peníze z tvé peněženky.')
         .addUserOption(option =>
             option
                 .setName('user')
