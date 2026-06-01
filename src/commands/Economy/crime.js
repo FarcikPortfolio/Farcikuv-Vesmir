@@ -22,18 +22,18 @@ const CRIME_TYPES = [
 export default {
     data: new SlashCommandBuilder()
         .setName('crime')
-        .setDescription('Commit a crime to earn money (risky)')
+        .setDescription('Spáchejte zločin a získejte peníze! Ale buďte opatrní, můžete být chyceni a posláni do vězení!')
         .addStringOption(option =>
             option
                 .setName('type')
-                .setDescription('Type of crime to commit')
+                .setDescription('Typ zločinu, který chcete spáchat')
                 .setRequired(true)
                 .addChoices(
-                    { name: 'Pickpocketing', value: 'pickpocketing' },
-                    { name: 'Burglary', value: 'burglary' },
-                    { name: 'Bank Heist', value: 'bank-heist' },
-                    { name: 'Art Theft', value: 'art-theft' },
-                    { name: 'Cybercrime', value: 'cybercrime' },
+                    { name: 'Okrádání kolemjdoucích', value: 'pickpocketing' },
+                    { name: 'Vloupání do objektu', value: 'burglary' },
+                    { name: 'Přepadení banky', value: 'bank-heist' },
+                    { name: 'Krádež uměleckých děl', value: 'art-theft' },
+                    { name: 'Kybernetický útok', value: 'cybercrime' },
                 )
         ),
 

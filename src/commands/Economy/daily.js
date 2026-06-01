@@ -14,7 +14,7 @@ const PREMIUM_BONUS_PERCENTAGE = 0.1;
 export default {
     data: new SlashCommandBuilder()
         .setName('daily')
-        .setDescription('Claim your daily cash reward'),
+        .setDescription('Vyzvedněte si svůj denní příjem. Získáte peníze každých 24 hodin! Pokud máte prémiovou roli, získáte navíc bonus!'),
 
     execute: withErrorHandling(async (interaction, config, client) => {
         const deferred = await InteractionHelper.safeDefer(interaction);
@@ -30,9 +30,9 @@ export default {
             
             if (!userData) {
                 throw createError(
-                    "Failed to load economy data for daily",
+                    "Selhání při načítání ekonomických dat",
                     ErrorTypes.DATABASE,
-                    "Failed to load your economy data. Please try again later.",
+                    "Selhání při načítání ekonomických dat. Prosím zkuste to později.",
                     { userId, guildId }
                 );
             }
@@ -42,9 +42,9 @@ export default {
             if (now < lastDaily + DAILY_COOLDOWN) {
                 const timeRemaining = lastDaily + DAILY_COOLDOWN - now;
                 throw createError(
-                    "Daily cooldown active",
+                    "Denní cooldown aktivní",
                     ErrorTypes.RATE_LIMIT,
-                    `You need to wait before claiming daily again. Try again in **${formatDuration(timeRemaining)}**.`,
+                    `Musíte počkat před dalším vyzvednutím denního příjmu. Zkuste to znovu za **${formatDuration(timeRemaining)}**.`,
                     { timeRemaining, cooldownType: 'daily' }
                 );
             }
@@ -84,24 +84,23 @@ export default {
             });
 
             const embed = successEmbed(
-                "✅ Daily Claimed!",
-                `You have claimed your daily **$${earned.toLocaleString()}**!${bonusMessage}`
+                "✅ Denní vyzvednutí!",
+                `Vyzvedli jste svůj denní **$${earned.toLocaleString()}**!${bonusMessage}`
             )
                 .addFields({
-                    name: "New Cash Balance",
+                    name: "Nový zůstatek",
                     value: `$${userData.wallet.toLocaleString()}`,
                     inline: true,
                 })
                 .setFooter({
                     text: hasPremiumRole
-                        ? `Next claim in 24 hours. (Premium Active)`
-                        : `Next claim in 24 hours.`,
+                        ? `Další vyzvednutí za 24 hodin. (Premium aktivní)`
+                        : `Další vyzvednutí za 24 hodin.`,
                 });
 
-            await InteractionHelper.safeEditReply(interaction, { embeds: [embed] });
+                await InteractionHelper.safeEditReply(interaction, {
+    embeds: [embed]
+});
+
     }, { command: 'daily' })
-};
-
-
-
-
+}

@@ -8,11 +8,11 @@ import { InteractionHelper } from '../../utils/interactionHelper.js';
 export default {
     data: new SlashCommandBuilder()
         .setName('balance')
-        .setDescription("Check your or someone else's balance")
+        .setDescription("Zkontrolujte svůj zůstatek v peněžence a bance. Přidejte uživatele jako argument pro zobrazení jeho zůstatku.")
         .addUserOption(option =>
             option
                 .setName('user')
-                .setDescription('User to check balance for')
+                .setDescription('Uživatel, jehož zůstatek chcete zobrazit')
                 .setRequired(false)
         ),
 
