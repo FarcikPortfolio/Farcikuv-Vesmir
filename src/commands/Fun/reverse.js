@@ -8,11 +8,11 @@ import { InteractionHelper } from '../../utils/interactionHelper.js';
 export default {
     data: new SlashCommandBuilder()
     .setName("reverse")
-    .setDescription("Writes your text backwards.")
+    .setDescription("Píše zadaný text pozpátku.")
     .addStringOption((option) =>
       option
         .setName("text")
-        .setDescription("The text to reverse.")
+        .setDescription("Text, který chcete obrátit.")
         .setRequired(true)
         .setMaxLength(1000),
     ),
@@ -25,9 +25,9 @@ export default {
       
       if (!originalText || originalText.trim().length === 0) {
         throw new TitanBotError(
-          'Empty text provided to reverse command',
+          'Prázdný text poskytnut pro reverse command',
           ErrorTypes.USER_INPUT,
-          'Please provide some text to reverse!'
+          'prosím zadejte nějaký text k obrácení!'
         );
       }
 
@@ -36,8 +36,8 @@ export default {
       const reversedText = sanitizedText.split("").reverse().join("");
 
       const embed = successEmbed(
-        "Backwards Text",
-        `Original: **${sanitizedText}**\nReversed: **${reversedText}**`,
+        "Pozpátku",
+        `Původní: **${sanitizedText}**\nObrácený: **${reversedText}**`,
       );
 
       await InteractionHelper.safeReply(interaction, { embeds: [embed] });

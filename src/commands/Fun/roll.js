@@ -7,11 +7,11 @@ import { InteractionHelper } from '../../utils/interactionHelper.js';
 export default {
     data: new SlashCommandBuilder()
     .setName("roll")
-    .setDescription("Rolls dice using standard notation (e.g., 2d20, 1d6 + 5).")
+    .setDescription("Hodí kostkou podle zadané notace (např. 2d6, 1d20 + 4).")
     .addStringOption((option) =>
       option
         .setName("notation")
-        .setDescription("The dice notation (e.g., 2d6, 1d20 + 4)")
+        .setDescription("Notace kostky (např. 2d6, 1d20 + 4)")
         .setRequired(true)
         .setMaxLength(50),
     ),
@@ -30,9 +30,9 @@ export default {
 
       if (!match) {
         throw new TitanBotError(
-          `Invalid dice notation: ${notation}`,
+          `neplatná notace kostky: ${notation}`,
           ErrorTypes.USER_INPUT,
-          'Invalid notation. Use format like `1d20` or `3d6+5`.'
+          'neplatná notace kostky! Použijte formát jako "2d6" nebo "1d20 + 4".'
         );
       }
 
@@ -43,17 +43,17 @@ export default {
       
       if (numDice < 1 || numDice > 20) {
         throw new TitanBotError(
-          `Too many dice requested: ${numDice}`,
+          `Příliš mnoho kostek požadováno: ${numDice}`,
           ErrorTypes.VALIDATION,
-          'Please keep the number of dice between 1 and 20.'
+          'Prosím, držte počet kostek mezi 1 a 20.'
         );
       }
 
       if (numSides < 1 || numSides > 1000) {
         throw new TitanBotError(
-          `Invalid number of sides: ${numSides}`,
+          `Neplatný počet stran: ${numSides}`,
           ErrorTypes.VALIDATION,
-          'Please keep the number of sides between 1 and 1000.'
+          'Prosím, držte počet stran mezi 1 a 1000.'
         );
       }
 
@@ -73,8 +73,8 @@ export default {
       const modifierText = modifier !== 0 ? ` + (${modifier})` : "";
 
       const embed = successEmbed(
-        `🎲 Rolling ${numDice}d${numSides}${modifier !== 0 ? match[3] : ""}`,
-        `${resultsDetail}**Total Roll:** ${totalRoll}${modifierText} = **${finalTotal}**`,
+        `🎲 Hodí ${numDice}d${numSides}${modifier !== 0 ? match[3] : ""}`,
+        `${resultsDetail}**Celkový hod:** ${totalRoll}${modifierText} = **${finalTotal}**`,
       );
 
       await InteractionHelper.safeEditReply(interaction, { embeds: [embed] });

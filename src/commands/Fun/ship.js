@@ -18,18 +18,18 @@ function stringToHash(str) {
 export default {
     data: new SlashCommandBuilder()
     .setName("ship")
-    .setDescription("Calculate the compatibility score between two people.")
+    .setDescription("Vypočítá kompatibilitu mezi dvěma jmény nebo uživateli.")
     .addStringOption((option) =>
       option
         .setName("name1")
-        .setDescription("The first name or user.")
+        .setDescription("První jméno nebo uživatel.")
         .setRequired(true)
         .setMaxLength(100),
     )
     .addStringOption((option) =>
       option
         .setName("name2")
-        .setDescription("The second name or user.")
+        .setDescription("Druhé jméno nebo uživatel.")
         .setRequired(true)
         .setMaxLength(100),
     ),
@@ -47,7 +47,7 @@ export default {
         throw new TitanBotError(
           'Empty names provided to ship command',
           ErrorTypes.USER_INPUT,
-          'Please provide valid names for both people!'
+          'Prosím, zadejte platná jména pro oba lidi!'
         );
       }
 
@@ -58,8 +58,8 @@ export default {
       
       if (name1.toLowerCase() === name2.toLowerCase()) {
         const embed = warningEmbed(
-          "💖 Ship Score",
-          `**${name1}** can't be shipped with themselves! Please choose two different people.`
+          "💖 Skóre Lodi",
+          `**${name1}** nelze být spojen sám se sebou! Zadejte dvě různá jména pro výpočet kompatibility.`,
         );
         return await InteractionHelper.safeEditReply(interaction, { embeds: [embed] });
       }
@@ -68,19 +68,20 @@ export default {
       const combination = sortedNames.join("-").toLowerCase();
       const score = stringToHash(combination) % 101;
 
-      let description;
+     let description;
+
       if (score === 100) {
-        description = "Soulmates! It's destiny, they belong together!";
+       description = "💍 Spřízněné duše! Svatba kdy?";
       } else if (score >= 80) {
-        description = "A perfect match! Get the wedding bells ready!";
+       description = "❤️ Perfektní pár! Tohle vypadá hodně nadějně.";
       } else if (score >= 60) {
-        description = "Solid chemistry. Definitely worth exploring!";
+       description = "😊 Dobrá shoda! Mohlo by z toho něco být.";
       } else if (score >= 40) {
-        description = "Just friends status. Maybe with time?";
+        description = "🤝 Zatím spíš kamarádi. Uvidíme, co přinese čas.";
       } else if (score >= 20) {
-        description = "It's a struggle. They might need space.";
+       description = "😬 Nic moc. Bude to chtít hodně snahy.";
       } else {
-        description = "Zero compatibility. Run for the hills!";
+       description = "💀 Katastrofa. Tohle asi nebude fungovat.";
       }
 
       const progressBar =
@@ -88,8 +89,8 @@ export default {
         "░".repeat(10 - Math.floor(score / 10));
 
       const embed = successEmbed(
-        `💖 Ship Score: ${name1} vs ${name2}`,
-        `Compatibility: **${score}%**\n\n\`${progressBar}\`\n\n*${description}*`,
+        `💖 Skóre Lodi: ${name1} vs ${name2}`,
+        `Kompatibilita: **${score}%**\n\n\`${progressBar}\`\n\n*${description}*`,
       );
 
       await InteractionHelper.safeEditReply(interaction, { embeds: [embed] });

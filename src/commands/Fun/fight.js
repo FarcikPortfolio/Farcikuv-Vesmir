@@ -10,11 +10,11 @@ const EMBED_DESCRIPTION_LIMIT = 4096;
 export default {
     data: new SlashCommandBuilder()
     .setName("fight")
-    .setDescription("Starts a simulated 1v1 text-based battle.")
+    .setDescription("Začni boj s jiným uživatelem! Kdo vyhraje? To záleží na štěstí a náhodě.")
     .addUserOption((option) =>
       option
         .setName("opponent")
-        .setDescription("The user to fight.")
+        .setDescription("Uživatel, se kterým chcete bojovat")
         .setRequired(true),
     ),
   category: 'Fun',
@@ -29,8 +29,8 @@ export default {
       
       if (challenger.id === opponent.id) {
         const embed = warningEmbed(
-          `**${challenger.username}**, you can't fight yourself! That's a draw before it even starts.`,
-          "⚔️ Invalid Challenge"
+          `**${challenger.username}**, nemůžeš bojovat sám se sebou! To je remíza, než to vůbec začne.`,
+          "⚔️ Neplatná výzva"
         );
         return await InteractionHelper.safeEditReply(interaction, { embeds: [embed] });
       }
@@ -38,8 +38,8 @@ export default {
       
       if (opponent.bot) {
         const embed = warningEmbed(
-          "You can't fight bots! Challenge a real person instead.",
-          "⚔️ Invalid Opponent"
+          "Nemůžeš bojovat s boty! Vyzvi místo toho člena Discord Serveru.",
+          "⚔️ Neplatný protihráč"
         );
         return await InteractionHelper.safeEditReply(interaction, { embeds: [embed] });
       }
@@ -51,25 +51,25 @@ export default {
 
       const log = [];
       log.push(
-        `💥 **${challenger.username}** challenges **${opponent.username}** to a duel! (Best of ${rounds} rounds)`,
+        `💥 **${challenger.username}** vyzvy **${opponent.username}** na souboj! (Best of ${rounds} rounds)`,
       );
 
       for (let i = 1; i <= rounds; i++) {
         const attacker = rand(0, 1) === 0 ? challenger : opponent;
         const target = attacker.id === challenger.id ? opponent : challenger;
         const action = [
-          "throws a wild punch",
-          "lands a critical hit",
-          "uses a weak spell",
-          "parries and counterattacks",
+        "zasadí divoký úder",
+        "udělí kritický zásah",
+        "použije slabé kouzlo",
+        "vykryje útok a vrátí úder",
         ][rand(0, 3)];
         log.push(
-          `\n**Round ${i}:** ${attacker.username} ${action} on ${target.username} for ${rand(1, damage)} damage!`,
+          `\n**Kolo ${i}:** ${attacker.username} ${action} na ${target.username} pro ${rand(1, damage)} poškození!`,
         );
       }
 
       const outcomeText = log.join("\n");
-      const winnerText = `👑 **${winner.username}** has defeated ${loser.username} and claims the victory!`;
+      const winnerText = `👑 **${winner.username}** porazil ${loser.username} a prohlašuje se za vítěze!`;
       const fullDescription = `${outcomeText}\n\n${winnerText}`;
 
       const description = fullDescription.length <= EMBED_DESCRIPTION_LIMIT
@@ -78,7 +78,7 @@ export default {
 
       const embed = successEmbed(
         description,
-        "🏆 Duel Complete!"
+        "🏆 Souboj dokončen!"
       );
 
       await InteractionHelper.safeEditReply(interaction, { embeds: [embed] });

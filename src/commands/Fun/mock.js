@@ -8,11 +8,11 @@ import { InteractionHelper } from '../../utils/interactionHelper.js';
 export default {
     data: new SlashCommandBuilder()
     .setName("mock")
-    .setDescription("cOnVeRtS yOuR tExT tO sPoNgEbOb CaSe.")
+    .setDescription("Převede zadaný text do sPoNgEbOb cAsE formátu.")
     .addStringOption((option) =>
       option
         .setName("text")
-        .setDescription("The text to mock.")
+        .setDescription("Text, který chcete převést do sPoNgEbOb cAsE formátu.")
         .setRequired(true)
         .setMaxLength(1000),
     ),
