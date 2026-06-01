@@ -294,7 +294,7 @@ export async function createAllCommandsMenu(page = 1, client) {
     }
 
     const totalPages = Math.ceil(allCommands.length / commandsPerPage);
-    const startIndex = (strana - 1) * commandsPerPage;
+    const startIndex = (page - 1) * commandsPerPage;
     const endIndex = startIndex + commandsPerPage;
     const pageCommands = allCommands.slice(startIndex, endIndex);
 
