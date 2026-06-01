@@ -13,8 +13,8 @@ const PREMIUM_BONUS_PERCENTAGE = 0.1;
 
 export default {
     data: new SlashCommandBuilder()
-        .setName('daily')
-        .setDescription('Vyzvedněte si svůj denní příjem. Získáte peníze každých 24 hodin! Pokud máte prémiovou roli, získáte navíc bonus!'),
+    .setName('daily')
+    .setDescription('Vyzvedněte si denní odměnu.'),
 
     execute: withErrorHandling(async (interaction, config, client) => {
         const deferred = await InteractionHelper.safeDefer(interaction);

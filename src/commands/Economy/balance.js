@@ -8,7 +8,7 @@ import { InteractionHelper } from '../../utils/interactionHelper.js';
 export default {
     data: new SlashCommandBuilder()
         .setName('balance')
-        .setDescription("Zkontrolujte svůj zůstatek v peněžence a bance. Přidejte uživatele jako argument pro zobrazení jeho zůstatku.")
+        .setDescription("Zobrazí zůstatek peněženky a banky.")
         .addUserOption(option =>
             option
                 .setName('user')
