@@ -10,17 +10,17 @@ import EconomyService from '../../services/economyService.js';
 export default {
     data: new SlashCommandBuilder()
         .setName('pay')
-        .setDescription('Pay another user some of your cash')
+        .setDescription('Zaplť někomu jinému peníze z tvé peněženky.')
         .addUserOption(option =>
             option
                 .setName('user')
-                .setDescription('User to pay')
+                .setDescription('Uživatel, kterému chcete zaplatit')
                 .setRequired(true)
         )
         .addIntegerOption(option =>
             option
                 .setName('amount')
-                .setDescription('Amount to pay')
+                .setDescription('Částka k zaplacení')
                 .setRequired(true)
                 .setMinValue(1)
         ),
@@ -34,7 +34,7 @@ export default {
             const amount = interaction.options.getInteger("amount");
             const guildId = interaction.guildId;
 
-            logger.debug(`[ECONOMY] Pay command initiated`, { 
+            logger.debug(`[ECONOMY] Platební příkaz zahájen`, { 
                 senderId, 
                 receiverId: receiver.id,
                 amount,
@@ -43,27 +43,27 @@ export default {
 
             if (receiver.bot) {
                 throw createError(
-                    "Cannot pay bot",
+                    "Nemůžete platit botovi!",
                     ErrorTypes.VALIDATION,
-                    "You cannot pay a bot.",
+                    "Nemlžete platit botovi. Vyberte člena na Discord serveru, kterému chcete zaplatit.",
                     { receiverId: receiver.id, isBot: true }
                 );
             }
             
             if (receiver.id === senderId) {
                 throw createError(
-                    "Cannot pay self",
+                    "Nemůžete platit sám sobě!",
                     ErrorTypes.VALIDATION,
-                    "You cannot pay yourself.",
+                    "Nemůžete platit sám sobě.",
                     { senderId, receiverId: receiver.id }
                 );
             }
             
             if (amount <= 0) {
                 throw createError(
-                    "Invalid payment amount",
+                    "Neplatná částka",
                     ErrorTypes.VALIDATION,
-                    "Amount must be greater than zero.",
+                    "Částka musí být větší než nula.",
                     { amount, senderId }
                 );
             }
@@ -75,18 +75,18 @@ export default {
 
             if (!senderData) {
                 throw createError(
-                    "Failed to load sender economy data",
+                    "Selhání při načítání ekonomických dat odesílatele",
                     ErrorTypes.DATABASE,
-                    "Failed to load your economy data. Please try again later.",
+                    "Selhání při načítání ekonomických dat odesílatele. Prosím zkuste to později.",
                     { userId: senderId, guildId }
                 );
             }
             
             if (!receiverData) {
                 throw createError(
-                    "Failed to load receiver economy data",
+                    "Selhání při načítání ekonomických dat příjemce",
                     ErrorTypes.DATABASE,
-                    "Failed to load the receiver's economy data. Please try again later.",
+                    "Selhání při načítání ekonomických dat příjemce. Prosím zkuste to později.",
                     { userId: receiver.id, guildId }
                 );
             }
@@ -107,16 +107,16 @@ export default {
 
             const embed = MessageTemplates.SUCCESS.DATA_UPDATED(
                 "payment",
-                `You successfully paid **${receiver.username}** the amount of **$${amount.toLocaleString()}**!`
+                `Úspěšně jste zaplatil **${receiver.username}** částku **$${amount.toLocaleString()}**!`
             )
                 .addFields(
                     {
-                        name: "💳 Payment Amount",
+                        name: "💳 Částka platby",
                         value: `$${amount.toLocaleString()}`,
                         inline: true,
                     },
                     {
-                        name: "💵 Your New Balance",
+                        name: "💵 Váš nový zůstatek",
                         value: `$${updatedSenderData.wallet.toLocaleString()}`,
                         inline: true,
                     },
@@ -138,16 +138,16 @@ export default {
 
             try {
                 const receiverEmbed = createEmbed({ 
-                    title: "💰 Incoming Payment!", 
-                    description: `${interaction.user.username} paid you **$${amount.toLocaleString()}**.` 
+                    title: "💰 Příchozí platba!", 
+                    description: `${interaction.user.username} vám zaplatil **$${amount.toLocaleString()}**.` 
                 }).addFields({
-                    name: "Your New Cash",
+                    name: "Váš nový zůstatek",
                     value: `$${updatedReceiverData.wallet.toLocaleString()}`,
                     inline: true,
                 });
                 await receiver.send({ embeds: [receiverEmbed] });
             } catch (e) {
-                    logger.warn(`Could not DM user ${receiver.id}: ${e.message}`);
+                    logger.warn(`Nepodařilo se odeslat DM uživateli ${receiver.id}: ${e.message}`);
             }
     }, { command: 'pay' })
 };

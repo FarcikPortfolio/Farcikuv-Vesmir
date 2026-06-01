@@ -22,7 +22,7 @@ const MINE_LOCATIONS = [
 export default {
     data: new SlashCommandBuilder()
         .setName('mine')
-        .setDescription('Go mining to earn money'),
+        .setDescription('Jděte těžit a získejte peníze! Můžete najít různé minerály a získat bonusy, pokud máte v inventáři krumpáč.'),
 
     execute: withErrorHandling(async (interaction, config, client) => {
         const deferred = await InteractionHelper.safeDefer(interaction);
@@ -47,7 +47,7 @@ export default {
                 throw createError(
                     "Mining cooldown active",
                     ErrorTypes.RATE_LIMIT,
-                    `Your pickaxe is cooling down. Wait for **${hours}h ${minutes}m** before mining again.`,
+                    `Váš krumpáč se právě zahřál. Počkejte **${hours}h ${minutes}m** před dalším těžením.`,
                     { remaining, cooldownType: 'mine' }
                 );
             }
@@ -62,10 +62,10 @@ export default {
 
             if (hasDiamondPickaxe > 0) {
                 finalEarned = Math.floor(baseEarned * DIAMOND_PICKAXE_MULTIPLIER);
-                multiplierMessage = `\n💎 **Diamond Pickaxe Bonus: +100%**`;
+                multiplierMessage = `\n💎 **Diamantový krumpáč bonus: +100%**`;
             } else if (hasPickaxe > 0) {
                 finalEarned = Math.floor(baseEarned * PICKAXE_MULTIPLIER);
-                multiplierMessage = `\n⛏️ **Pickaxe Bonus: +20%**`;
+                multiplierMessage = `\n⛏️ **Krumpáč bonus: +20%**`;
             }
 
             const location =
@@ -79,15 +79,15 @@ userData.lastMine = now;
             await setEconomyData(client, guildId, userId, userData);
 
             const embed = successEmbed(
-                "💰 Mining Expedition Successful!",
-                `You explored a **${location}** and managed to find minerals worth **$${finalEarned.toLocaleString()}**!${multiplierMessage}`,
+                "💰 Těžební výprava úspěšná!",
+                `Prozkoumali jste **${location}** a podařilo se vám najít minerály **$${finalEarned.toLocaleString()}**!${multiplierMessage}`,
             )
                 .addFields({
-                    name: "💵 New Cash Balance",
+                    name: "💵 Nový zůstatek",
                     value: `$${userData.wallet.toLocaleString()}`,
                     inline: true,
                 })
-                .setFooter({ text: `Next mine available in 1 hour.` });
+                .setFooter({ text: `Další těžba bude k dispozici za 1 hodinu.` });
 
             await InteractionHelper.safeEditReply(interaction, { embeds: [embed] });
     }, { command: 'mine' })

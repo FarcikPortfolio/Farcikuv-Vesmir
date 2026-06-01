@@ -14,11 +14,11 @@ const GAMBLE_COOLDOWN = 5 * 60 * 1000;
 export default {
     data: new SlashCommandBuilder()
         .setName('gamble')
-        .setDescription('Gamble your money for a chance to win more')
+        .setDescription('Hazardujte o peníze! Zadejte částku, kterou chcete vsadit, a zkuste své štěstí. Můžete také použít své šťastné předměty pro zvýšení šance na výhru. Můžete také prohrát svou sázku!')
         .addIntegerOption(option =>
             option
                 .setName('amount')
-                .setDescription('Amount of cash to gamble')
+                .setDescription('Částka k vsazení')
                 .setRequired(true)
                 .setMinValue(1)
         ),
@@ -45,16 +45,16 @@ export default {
                 throw createError(
                     "Gamble cooldown active",
                     ErrorTypes.RATE_LIMIT,
-                    `You need to cool down before gambling again. Wait **${minutes}m ${seconds}s**.`,
+                    `Musíte počkat, než budete moci znovu hazardovat. Počkejte **${minutes}m ${seconds}s**.`,
                     { remaining, cooldownType: 'gamble' }
                 );
             }
 
             if (userData.wallet < betAmount) {
                 throw createError(
-                    "Insufficient cash for gamble",
+                    "Nedostatek peněz",
                     ErrorTypes.VALIDATION,
-                    `You only have $${userData.wallet.toLocaleString()} cash, but you are trying to bet $${betAmount.toLocaleString()}.`,
+                    `Máte jen $${userData.wallet.toLocaleString()} peněz, ale chcete vsadit $${betAmount.toLocaleString()}.`,
                     { required: betAmount, current: userData.wallet }
                 );
             }
@@ -68,14 +68,14 @@ export default {
             if (cloverCount > 0) {
                 winChance += CLOVER_WIN_BONUS;
                 userData.inventory["lucky_clover"] -= 1;
-                cloverMessage = `\n🍀 **Lucky Clover Consumed:** Your win chance was boosted!`;
+                cloverMessage = `\n🍀 **Šťastný lístek použit:** Vaše šance na výhru byla zvýšena!`;
                 usedClover = true;
             }
             
             else if (charmCount > 0) {
                 winChance += CHARM_WIN_BONUS;
                 userData.inventory["lucky_charm"] -= 1;
-                cloverMessage = `\n🍀 **Lucky Charm Used (${charmCount - 1} uses remaining):** Your win chance was boosted!`;
+                cloverMessage = `\n🍀 **Talisman štěstí použit (${charmCount - 1} zbylá použití):** Vaše šance na výhru byla zvýšena!`;
                 usedCharm = true;
             }
 
@@ -88,15 +88,15 @@ export default {
 cashChange = amountWon;
 
                 resultEmbed = successEmbed(
-                    "🎉 You Won!",
-                    `You successfully gambled and turned your **$${betAmount.toLocaleString()}** bet into **$${amountWon.toLocaleString()}**!${cloverMessage}`,
+                    "🎉 Vyhrál jsi!",
+                    `Úspěšně jsi hazardoval a proměnil jsi svou **$${betAmount.toLocaleString()}** sázku na **$${amountWon.toLocaleString()}**!${cloverMessage}`,
                 );
             } else {
 cashChange = -betAmount;
 
                 resultEmbed = errorEmbed(
-                    "💔 You Lost...",
-                    `The dice rolled against you. You lost your **$${betAmount.toLocaleString()}** bet.`,
+                    "💔 Prohrál jsi...",
+                    `Kostky padly proti tobě. Ztratil jsi svou **$${betAmount.toLocaleString()}** sázku.`,
                 );
             }
 
@@ -108,22 +108,22 @@ userData.lastGamble = now;
             const newCash = userData.wallet;
 
             resultEmbed.addFields({
-                name: "💵 New Cash Balance",
+                name: "💵 Nový zůstatek",
                 value: `$${newCash.toLocaleString()}`,
                 inline: true,
             });
 
             if (usedClover) {
                 resultEmbed.setFooter({
-                    text: `You have ${userData.inventory["lucky_clover"]} Lucky Clovers left. Win chance was ${Math.round(winChance * 100)}%.`,
+                    text: `Už ti zbává jen ${userData.inventory["lucky_clover"]} Šťastnách lístků. Šance na výhru byla: ${Math.round(winChance * 100)}%.`,
                 });
             } else if (usedCharm) {
                 resultEmbed.setFooter({
-                    text: `You have ${userData.inventory["lucky_charm"]} Lucky Charm uses left. Win chance was ${Math.round(winChance * 100)}%.`,
+                    text: `Už ti zbává jen ${userData.inventory["lucky_charm"]} Šťastných talismanů. Šance na výhru byla: ${Math.round(winChance * 100)}%.`,
                 });
             } else {
                 resultEmbed.setFooter({
-                    text: `Next gamble available in 5 minutes. Base win chance: ${Math.round(BASE_WIN_CHANCE * 100)}%.`,
+                    text: `Další hazard možná za 5 minut, šance na výhru: ${Math.round(BASE_WIN_CHANCE * 100)}%.`,
                 });
             }
 

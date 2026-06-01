@@ -8,11 +8,11 @@ import { InteractionHelper } from '../../utils/interactionHelper.js';
 export default {
     data: new SlashCommandBuilder()
         .setName('withdraw')
-        .setDescription('Withdraw money from your bank to your wallet')
+        .setDescription('Vyberte peníze z banky a vložte je do peněženky.')
         .addIntegerOption(option =>
             option
                 .setName('amount')
-                .setDescription('Amount to withdraw')
+                .setDescription('Částka k výběru')
                 .setRequired(true)
                 .setMinValue(1)
         ),
@@ -28,9 +28,9 @@ export default {
             
             if (!userData) {
                 throw createError(
-                    "Failed to load economy data",
+                    "Selhání při načítání ekonomických dat",
                     ErrorTypes.DATABASE,
-                    "Failed to load your economy data. Please try again later.",
+                    "Selhání při načítání ekonomických dat. Prosím zkuste to později.",
                     { userId, guildId }
                 );
             }
@@ -39,9 +39,9 @@ export default {
 
             if (withdrawAmount <= 0) {
                 throw createError(
-                    "Invalid withdrawal amount",
+                    "Neplatná částka k výběru",
                     ErrorTypes.VALIDATION,
-                    "You must withdraw a positive amount.",
+                    "Musíte vybrat platnou částku.",
                     { amount: withdrawAmount, userId }
                 );
             }
@@ -52,9 +52,9 @@ export default {
 
             if (withdrawAmount === 0) {
                 throw createError(
-                    "Empty bank account",
+                    "Prázdný účet v bance",
                     ErrorTypes.VALIDATION,
-                    "Your bank account is empty.",
+                    "Váš účet v bance je prázdný.",
                     { userId, bankBalance: userData.bank }
                 );
             }
@@ -66,16 +66,16 @@ export default {
 
             const embed = MessageTemplates.SUCCESS.DATA_UPDATED(
                 "withdrawal",
-                `You successfully withdrew **$${withdrawAmount.toLocaleString()}** from your bank.`
+                `Úspěšně jste vybrali **$${withdrawAmount.toLocaleString()}** z vaší banky.`
             )
                 .addFields(
                     {
-                        name: "💵 New Cash Balance",
+                        name: "💵 Nový zůstatek v peněžence",
                         value: `$${userData.wallet.toLocaleString()}`,
                         inline: true,
                     },
                     {
-                        name: "🏦 New Bank Balance",
+                        name: "🏦 Nový zůstatek v bance",
                         value: `$${userData.bank.toLocaleString()}`,
                         inline: true,
                     },

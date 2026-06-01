@@ -9,24 +9,24 @@ import shopConfigSetrole from './modules/shop_config_setrole.js';
 export default {
     data: new SlashCommandBuilder()
         .setName('shop')
-        .setDescription('Economy shop commands.')
+        .setDescription('Ekonomické příkazy obchodu.')
         .addSubcommand(subcommand =>
             subcommand
                 .setName('browse')
-                .setDescription('Browse the economy shop.'),
+                .setDescription('Prohlédněte si položky dostupné v obchodě.'),
         )
         .addSubcommandGroup(group =>
             group
                 .setName('config')
-                .setDescription('Configure shop settings. (Manage Server required)')
+                .setDescription('Konfigurace nastavení obchodu. (Požadováno oprávnění Manage Server)')
                 .addSubcommand(subcommand =>
                     subcommand
                         .setName('setrole')
-                        .setDescription('Set the Discord role granted when the Premium Role shop item is purchased.')
+                        .setDescription('Nastavte Discord roli udělenou při nákupu položky Premium Role.')
                         .addRoleOption(option =>
                             option
                                 .setName('role')
-                                .setDescription('The role to grant for Premium Role purchases.')
+                                .setDescription('Role, která bude udělena za nákup Premium Role.')
                                 .setRequired(true),
                         ),
                 ),
@@ -46,13 +46,13 @@ export default {
             }
 
             return InteractionHelper.safeReply(interaction, {
-                embeds: [errorEmbed('Error', 'Unknown subcommand.')],
+                embeds: [errorEmbed('Error', 'Neznámý podpříkaz.')],
                 flags: MessageFlags.Ephemeral,
             });
         } catch (error) {
             logger.error('shop command error:', error);
             await InteractionHelper.safeReply(interaction, {
-                content: '❌ An error occurred while running the shop command.',
+                content: '❌ Chyba při zpracování příkazu. Zkuste to prosím znovu později.',
                 flags: MessageFlags.Ephemeral,
             }).catch(() => {});
         }

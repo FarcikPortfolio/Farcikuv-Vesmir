@@ -43,7 +43,7 @@ function buildHelpEntries(command, category) {
     }
 
     const baseName = commandData.name;
-    const baseDescription = commandData.description || "No description";
+    const baseDescription = commandData.description || "Žádný popis není k dispozici.";
     const options = commandData.options || [];
 
     const entries = [];
@@ -163,7 +163,7 @@ async function createCategoryCommandsMenu(category, client) {
         title: `${icon} ${categoryName} Příkazy`,
         description: categoryCommands.length > 0
             ? `Klikni na libovolný uvedený příkaz níže pro jeho použití:`
-            : `No commands found in the **${categoryName}** category.`
+            : `Žádné příkazy nenalezeny v kategorii **${categoryName}**.`
     });
 
     if (categoryCommands.length > 0) {
@@ -294,7 +294,7 @@ export async function createAllCommandsMenu(page = 1, client) {
     }
 
     const totalPages = Math.ceil(allCommands.length / commandsPerPage);
-    const startIndex = (page - 1) * commandsPerPage;
+    const startIndex = (strana - 1) * commandsPerPage;
     const endIndex = startIndex + commandsPerPage;
     const pageCommands = allCommands.slice(startIndex, endIndex);
 

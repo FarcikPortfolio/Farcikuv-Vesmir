@@ -11,7 +11,7 @@ const SHOP_ITEMS = shopItems;
 export default {
     data: new SlashCommandBuilder()
         .setName('inventory')
-        .setDescription('View your economy inventory'),
+        .setDescription('Zobrazí položky ve tvém inventáři.'),
 
     execute: withErrorHandling(async (interaction, config, client) => {
         const deferred = await InteractionHelper.safeDefer(interaction);
@@ -20,22 +20,22 @@ export default {
             const userId = interaction.user.id;
             const guildId = interaction.guildId;
 
-            logger.debug(`[ECONOMY] Inventory requested for ${userId}`, { userId, guildId });
+            logger.debug(`[ECONOMY] Požadavek na inventář uživatele ${userId}`, { userId, guildId });
 
             const userData = await getEconomyData(client, guildId, userId);
 
             if (!userData) {
                 throw createError(
-                    "Failed to load economy data for inventory",
+                    "Selhání při načítání ekonomických dat",
                     ErrorTypes.DATABASE,
-                    "Failed to load your economy data. Please try again later.",
+                    "Selhání při načítání ekonomických dat. Prosím zkuste to později.",
                     { userId, guildId }
                 );
             }
 
             const inventory = userData.inventory || {};
 
-            let inventoryDescription = "Your inventory is currently empty.";
+            let inventoryDescription = "Tvůj inventář je momentálně prázdný.";
 
             if (Object.keys(inventory).length > 0) {
                 inventoryDescription = Object.entries(inventory)
@@ -54,14 +54,14 @@ export default {
                     .join("\n");
             }
 
-            logger.info(`[ECONOMY] Inventory retrieved`, { 
+            logger.info(`[ECONOMY] inventář načtený`, { 
                 userId, 
                 guildId,
                 itemCount: Object.keys(inventory).length
             });
 
             const embed = createEmbed({ 
-                title: `📦 ${interaction.user.username}'s Inventory`, 
+                title: `📦 ${interaction.user.username} Inventář`, 
                 description: inventoryDescription, 
             }).setThumbnail(interaction.user.displayAvatarURL());
 

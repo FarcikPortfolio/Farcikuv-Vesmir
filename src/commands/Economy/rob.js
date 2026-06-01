@@ -13,11 +13,11 @@ const FINE_PERCENTAGE = 0.1;
 export default {
     data: new SlashCommandBuilder()
         .setName('rob')
-        .setDescription('Attempt to rob another user (very risky)')
+        .setDescription('Pokus o okradení jiného uživatele. Máte šanci získat nějaké peníze, ale buďte opatrní, můžete také být chyceni! Oběť musí mít alespoň $500 v hotovosti.')
         .addUserOption(option =>
             option
                 .setName('user')
-                .setDescription('User to rob')
+                .setDescription('Uživatel, kterého chcete okrást')
                 .setRequired(true)
         ),
 
@@ -32,18 +32,18 @@ export default {
 
             if (robberId === victimUser.id) {
                 throw createError(
-                    "Cannot rob self",
+                    "Nelze okrást sám sebe",
                     ErrorTypes.VALIDATION,
-                    "You cannot rob yourself.",
+                    "Nemůžete okrást sám sebe.",
                     { robberId, victimId: victimUser.id }
                 );
             }
             
             if (victimUser.bot) {
                 throw createError(
-                    "Cannot rob bot",
+                    "Nelze okrást bota",
                     ErrorTypes.VALIDATION,
-                    "You cannot rob a bot.",
+                    "Nemůžete okrást bota.",
                     { victimId: victimUser.id, isBot: true }
                 );
             }
@@ -53,9 +53,9 @@ export default {
             
             if (!robberData || !victimData) {
                 throw createError(
-                    "Failed to load economy data",
+                    "Selhání při načítání ekonomických dat",
                     ErrorTypes.DATABASE,
-                    "Failed to load economy data. Please try again later.",
+                    "Selhání při načítání ekonomických dat. Prosím zkuste to později.",
                     { robberId: !!robberData, victimId: !!victimData, guildId }
                 );
             }
@@ -68,18 +68,18 @@ export default {
                 const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
 
                 throw createError(
-                    "Robbery cooldown active",
+                    "Doba pro loupež je aktivní",
                     ErrorTypes.RATE_LIMIT,
-                    `You need to lay low. Wait **${hours}h ${minutes}m** before attempting another robbery.`,
+                    `Musíte počkat. Počkejte **${hours}h ${minutes}m** před dalším pokusem o loupež.`,
                     { remaining, hours, minutes, cooldownType: 'rob' }
                 );
             }
 
             if (victimData.wallet < 500) {
                 throw createError(
-                    "Victim too poor",
+                    "Oběť je příliš chudá",
                     ErrorTypes.VALIDATION,
-                    `${victimUser.username} is too poor. They need at least $500 cash to be worth robbing.`,
+                    `${victimUser.username} je příliš chudý. Potřebuje alespoň $500 v hotovosti, aby byl možný okrást.`,
                     { victimWallet: victimData.wallet, required: 500 }
                 );
             }
@@ -93,8 +93,8 @@ export default {
                 return await InteractionHelper.safeEditReply(interaction, {
                     embeds: [
                         MessageTemplates.ERRORS.CONFIGURATION_REQUIRED(
-                            "robbery protection",
-                            `${victimUser.username} was prepared! Your attempt failed because they own a **Personal Safe**. You got away clean but didn't gain anything.`
+                            "Ochrana proti loupeži aktivní",
+                            `${victimUser.username} Byl připraven! Váš pokus o loupež selhal, protože měl v inventáři osobní trezor. Počkejte 4 hodiny před dalším pokusem o loupež tohoto uživatele.`
                         )
                     ],
                 });
@@ -111,7 +111,7 @@ export default {
 
                 resultEmbed = MessageTemplates.SUCCESS.DATA_UPDATED(
                     "robbery",
-                    `You successfully stole **$${amountStolen.toLocaleString()}** from ${victimUser.username}!`
+                    `Úspěšně jste ukradl **$${amountStolen.toLocaleString()}** od ${victimUser.username}!`
                 );
             } else {
                 const fineAmount = Math.floor((robberData.wallet || 0) * FINE_PERCENTAGE);
@@ -124,7 +124,7 @@ export default {
 
                 resultEmbed = MessageTemplates.ERRORS.INSUFFICIENT_PERMISSIONS(
                     "robbery failed",
-                    `You failed the robbery and were caught! You were fined **$${fineAmount.toLocaleString()}** of your own cash.`
+                    `Váš pokus o loupež selhal a byl jsi chycen! Byl jste potrestán **$${fineAmount.toLocaleString()}** z vašeho vlastního hotovosti.`
                 );
             }
 
@@ -136,17 +136,17 @@ export default {
             resultEmbed
                 .addFields(
                     {
-                        name: `Your New Cash (${interaction.user.username})`,
+                        name: `Váš nový zůstatek (${interaction.user.username})`,
                         value: `$${robberData.wallet.toLocaleString()}`,
                         inline: true,
                     },
                     {
-                        name: `Victim's New Cash (${victimUser.username})`,
+                        name: `Nový zůstatek oběti (${victimUser.username})`,
                         value: `$${victimData.wallet.toLocaleString()}`,
                         inline: true,
                     },
                 )
-                .setFooter({ text: `Next robbery available in 4 hours.` });
+                .setFooter({ text: `Nová loupež dostupná za 4 hodiny.` });
 
             await InteractionHelper.safeEditReply(interaction, { embeds: [resultEmbed] });
     }, { command: 'rob' })

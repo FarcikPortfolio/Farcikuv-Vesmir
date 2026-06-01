@@ -23,17 +23,17 @@ const FISH_TYPES = [
 ];
 
 const CATCH_MESSAGES = [
-    "You cast your line into the crystal clear waters...",
-    "You wait patiently as your bobber floats...",
-    "After a few minutes of waiting, you feel a tug...",
-    "The water ripples as something takes your bait...",
-    "You reel in your catch with expert precision...",
+    "Vrhnete svou návnici do křišťálově čisté vody...",
+    "Vyčkáváte trpělivě, zatímco se váš plavec pohybuje...",
+    "Po několika minutách čekání cítíte tah...",
+    "Voda se chvěje, když něco vezme vaše návnici...",
+    "Zavádíte svůj úlovek s odbornou přesností...",
 ];
 
 export default {
     data: new SlashCommandBuilder()
         .setName('fish')
-        .setDescription('Go fishing to catch fish and earn money'),
+        .setDescription('Jděte rybařit a získejte peníze!'),
 
     execute: withErrorHandling(async (interaction, config, client) => {
         const deferred = await InteractionHelper.safeDefer(interaction);
@@ -55,9 +55,9 @@ export default {
                 );
 
                 throw createError(
-                    "Fishing cooldown active",
+                    "Rybářský cooldown aktivní",
                     ErrorTypes.RATE_LIMIT,
-                    `You're too tired to fish right now. Rest for **${hours}h ${minutes}m** before fishing again.`,
+                    `Jste příliš unavení na rybaření teď. Odpočiňte si **${hours}h ${minutes}m** před dalším rybařením.`,
                     { remaining, cooldownType: 'fish' }
                 );
             }
@@ -112,23 +112,23 @@ export default {
             };
 
             const embed = createEmbed({
-                title: '🎣 Fishing Success!',
-                description: `${catchMessage}\n\nYou caught a **${fishCaught.emoji} ${fishCaught.name}**! You sold it for **$${finalEarned.toLocaleString()}**!${multiplierMessage}`,
+                title: '🎣 Úspěšné rybaření!',
+                description: `${catchMessage}\n\nChytili jste **${fishCaught.emoji} ${fishCaught.name}**! Prodejte ho za **$${finalEarned.toLocaleString()}**!${multiplierMessage}`,
                 color: rarityColors[fishCaught.rarity]
             })
                 .addFields(
                     {
-                        name: "💵 New Cash Balance",
+                        name: "💵 Nový zůstatek v peněžence",
                         value: `$${userData.wallet.toLocaleString()}`,
                         inline: true,
                     },
                     {
-                        name: "🐟 Rarity",
+                        name: "🐟 Vzácnost",
                         value: fishCaught.rarity.charAt(0).toUpperCase() + fishCaught.rarity.slice(1),
                         inline: true,
                     }
                 )
-                .setFooter({ text: `Next fishing trip available in 45 minutes.` });
+                .setFooter({ text: `Další rybaření bude dostupné za 45 minut.` });
 
             await InteractionHelper.safeEditReply(interaction, { embeds: [embed] });
     }, { command: 'fish' })

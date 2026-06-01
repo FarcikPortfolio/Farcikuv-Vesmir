@@ -7,7 +7,7 @@ import { InteractionHelper } from '../../utils/interactionHelper.js';
 export default {
     data: new SlashCommandBuilder()
         .setName("eleaderboard")
-        .setDescription("View the server's top 10 richest users.")
+        .setDescription("Zobrazí žebříček nejbohatších uživatelů na serveru.")
         .setDMPermission(false),
     
     
@@ -17,7 +17,7 @@ export default {
 
             const guildId = interaction.guildId;
 
-            logger.debug(`[ECONOMY] Leaderboard requested`, { guildId });
+            logger.debug(`[ECONOMY] Žebříček vyžádán`, { guildId });
 
             const prefix = `economy:${guildId}:`;
 
@@ -29,9 +29,9 @@ export default {
 
             if (allKeys.length === 0) {
                 throw createError(
-                    "No economy data found",
+                    "Žádná ekonomická data nenalezena",
                     ErrorTypes.VALIDATION,
-                    "No economy data found for this server."
+                    "Žádná ekonomická data nejsou pro tento server dostupná."
                 );
             }
 
@@ -68,7 +68,7 @@ export default {
                 );
             }
 
-            logger.info(`[ECONOMY] Leaderboard generated`, { 
+            logger.info(`[ECONOMY] Žebříček vygenerován`, { 
                 guildId, 
                 userCount: allUserData.length,
                 userRank 
@@ -76,12 +76,12 @@ export default {
 
             const description = leaderboardEntries.length > 0
                 ? leaderboardEntries.join("\n")
-                : "No economy data is available for this server yet.";
+                : "Žádná ekonomická data nejsou pro tento server dostupná.";
 
             const embed = createEmbed({
-                title: `Economy Leaderboard`,
+                title: `Ekonomický žebříček`,
                 description,
-                footer: `Your Rank: ${userRank > 0 ? `#${userRank}` : "No ranking data available"}`,
+                footer: `Váš pořadí: ${userRank > 0 ? `#${userRank}` : "Žádná data k hodnocení dostupná"}`,
             });
 
             await InteractionHelper.safeEditReply(interaction, { embeds: [embed] });

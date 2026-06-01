@@ -9,35 +9,35 @@ const SLUT_COOLDOWN = 45 * 60 * 1000;
 
 const SLUT_ACTIVITIES = [
     { name: "Cam Stream", min: 120, max: 450, risk: 0.2 },
-    { name: "Private Dance Session", min: 220, max: 700, risk: 0.25 },
-    { name: "After-Hours Club Host", min: 320, max: 900, risk: 0.3 },
-    { name: "VIP Companion Booking", min: 550, max: 1400, risk: 0.35 },
-    { name: "Exclusive Livestream", min: 850, max: 2200, risk: 0.4 },
+    { name: "Soukromá taneční lekce", min: 220, max: 700, risk: 0.25 },
+    { name: "Afterparty", min: 320, max: 900, risk: 0.3 },
+    { name: "VIP společnice", min: 550, max: 1400, risk: 0.35 },
+    { name: "Exkluzivní livestream", min: 850, max: 2200, risk: 0.4 },
 ];
 
 const POSITIVE_OUTCOMES = [
-    "Your stream blew up and tips poured in.",
-    "A VIP booking paid far above average.",
-    "Your after-hours shift was packed and profitable.",
-    "Premium requests came through and your payout jumped.",
+    "Tvůj stream se rozjel a diváci posílali spoustu donatů.",
+    "VIP rezervace zaplatila výrazně nad průměr.",
+    "Tvoje směna po zavíračce byla plná a velmi výdělečná.",
+    "Přišlo několik prémiových zakázek a tvoje výplata výrazně vzrostla.",
 ];
 
 const FINE_OUTCOMES = [
-    "Venue security issued a compliance fine.",
-    "A moderation strike triggered a platform fee.",
-    "You were flagged and had to pay a penalty.",
+    "Ochranka podniku ti udělila pokutu za porušení pravidel.",
+    "Moderátor platformy ti udělil poplatek za porušení podmínek.",
+    "Byl jsi nahlášen a musel jsi zaplatit pokutu.",
 ];
 
 const ROBBED_OUTCOMES = [
-    "A fake buyer chargeback wiped part of your earnings.",
-    "A scam booking cleaned out a chunk of your cash.",
-    "You got baited by a fraud account and lost money.",
+    "Falešný zákazník tě okradl o část výdělku.",
+    "Podvodná rezervace ti vysála část peněz.",
+    "Nalákal tě podvodný účet a přišel jsi o peníze.",
 ];
 
 const LOSS_OUTCOMES = [
-    "The set flopped and you had to cover operating costs.",
-    "You burned budget on prep and made no return.",
-    "The shift went sideways and left you in the red.",
+    "Akce propadla a musel jsi zaplatit provozní náklady.",
+    "Utratil jsi příliš mnoho za přípravu a nic se nevrátilo.",
+    "Směna se nepovedla a skončil jsi ve ztrátě.",
 ];
 
 function randomInt(min, max) {
@@ -60,7 +60,7 @@ function resolveOutcome(activity, wallet) {
             type: 'payout',
             delta: amount,
             message: randomChoice(POSITIVE_OUTCOMES),
-            title: `💰 ${activity.name} - Payout`
+            title: `💰 ${activity.name} - Výplata`
         };
     }
 
@@ -74,7 +74,7 @@ function resolveOutcome(activity, wallet) {
             type: 'fine',
             delta: -amount,
             message: randomChoice(FINE_OUTCOMES),
-            title: `🚨 ${activity.name} - Fined`
+            title: `🚨 ${activity.name} - Pokutován`
         };
     }
 
@@ -86,7 +86,7 @@ function resolveOutcome(activity, wallet) {
             type: 'robbed',
             delta: -amount,
             message: randomChoice(ROBBED_OUTCOMES),
-            title: `🕵️ ${activity.name} - Robbed`
+            title: `🕵️ ${activity.name} - Okraden`
         };
     }
 
@@ -97,14 +97,14 @@ function resolveOutcome(activity, wallet) {
         type: 'loss',
         delta: -amount,
         message: randomChoice(LOSS_OUTCOMES),
-        title: `❌ ${activity.name} - Loss`
+        title: `❌ ${activity.name} - Ztráta`
     };
 }
 
 export default {
     data: new SlashCommandBuilder()
         .setName('slut')
-        .setDescription('Take a risky provocative job for random payout or loss'),
+        .setDescription('Přijměte riskantní provokativní práci za náhodnou výplatu nebo ztrátu'),
 
     execute: withErrorHandling(async (interaction, config, client) => {
         const deferred = await InteractionHelper.safeDefer(interaction);
@@ -120,9 +120,9 @@ export default {
 
             if (!userData) {
                 throw createError(
-                    "Failed to load economy data for slut command",
+                    "Selhání při načítání ekonomických dat",
                     ErrorTypes.DATABASE,
-                    "Failed to load your economy data. Please try again later.",
+                    "selhání při načítání ekonomických dat. Prosím zkuste to později.",
                     { userId, guildId }
                 );
             }
@@ -134,7 +134,7 @@ export default {
                 throw createError(
                     "Slut cooldown active",
                     ErrorTypes.RATE_LIMIT,
-                    `You need to wait before you can work again! Try again in **${Math.ceil(remainingTime / 60000)}** minutes.`,
+                    `Musíte počkat, než budete moci znovu pracovat! Zkuste to znovu za **${Math.ceil(remainingTime / 60000)}** minut.`,
                     { timeRemaining: remainingTime, cooldownType: 'slut' }
                 );
             }
@@ -169,11 +169,11 @@ export default {
             const amountLabel = `${outcome.delta >= 0 ? '+' : '-'}$${Math.abs(outcome.delta).toLocaleString()}`;
             const summaryLines = [
                 `${outcome.message}`,
-                `💸 **Net Result:** ${amountLabel}`,
-                `💳 **Current Balance:** $${userData.wallet.toLocaleString()}`,
-                `📊 **Total Sessions:** ${userData.totalSluts}`,
-                `💵 **Total Earned:** $${(userData.totalSlutEarnings || 0).toLocaleString()}`,
-                `🧾 **Total Lost:** $${(userData.totalSlutLosses || 0).toLocaleString()}`
+                `💸 **Čistý výsledek:** ${amountLabel}`,
+                `💳 **Aktuální zůstatek:** $${userData.wallet.toLocaleString()}`,
+                `📊 **Celkem relací:** ${userData.totalSluts}`,
+                `💵 **Celkem vydělán:** $${(userData.totalSlutEarnings || 0).toLocaleString()}`,
+                `🧾 **Celkem ztraceno:** $${(userData.totalSlutLosses || 0).toLocaleString()}`
             ];
 
             const embed = createEmbed({

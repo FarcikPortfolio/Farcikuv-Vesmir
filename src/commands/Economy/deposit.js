@@ -6,15 +6,15 @@ import { MessageTemplates } from '../../utils/messageTemplates.js';
 import { InteractionHelper } from '../../utils/interactionHelper.js';
 
 export default {
-    data: new SlashCommandBuilder()
-        .setName('deposit')
-        .setDescription('Deposit money from your wallet into your bank')
-        .addStringOption(option =>
-            option
-                .setName('amount')
-                .setDescription('Amount to deposit (number or "all")')
-                .setRequired(true)
-        ),
+   data: new SlashCommandBuilder()
+    .setName('deposit')
+    .setDescription('Vložte peníze do banky. Použijte "all" pro vložení všeho.')
+    .addStringOption(option =>
+        option
+            .setName('amount')
+            .setDescription('Částka k vložení nebo "all"')
+            .setRequired(true)
+    ),
 
     execute: withErrorHandling(async (interaction, config, client) => {
         const deferred = await InteractionHelper.safeDefer(interaction);
@@ -45,9 +45,9 @@ export default {
 
                 if (isNaN(depositAmount) || depositAmount <= 0) {
                     throw createError(
-                        "Invalid deposit amount",
+                        "Neplatná částka k vložení",
                         ErrorTypes.VALIDATION,
-                        `Please enter a valid number or 'all'. You entered: \`${amountInput}\``,
+                        `Prosím zadejte platné číslo nebo 'all'. Zadali jste: \`${amountInput}\``,
                         { amountInput, userId }
                     );
                 }
@@ -55,9 +55,9 @@ export default {
 
             if (depositAmount === 0) {
                 throw createError(
-                    "Zero deposit amount",
+                    "Nulová částka k vložení",
                     ErrorTypes.VALIDATION,
-                    "You have no cash to deposit.",
+                    "Nemáte žádné peníze k vložení.",
                     { userId, walletBalance: userData.wallet }
                 );
             }
@@ -67,8 +67,8 @@ export default {
                 await interaction.followUp({
                     embeds: [
                         MessageTemplates.ERRORS.INVALID_INPUT(
-                            "deposit amount",
-                            `You tried to deposit more than you have. Depositing your remaining cash: **$${depositAmount.toLocaleString()}**`
+                            "částka k vložení",
+                            `Pokusili jste se vložit více peněz, než máte. Vkládání zbývajícího zůstatku: **$${depositAmount.toLocaleString()}**`
                         )
                     ],
                     flags: ["Ephemeral"],
@@ -79,9 +79,9 @@ export default {
 
             if (availableSpace <= 0) {
                 throw createError(
-                    "Bank is full",
+                    "Banka je plná",
                     ErrorTypes.VALIDATION,
-                    `Your bank is currently full (Max Capacity: $${maxBank.toLocaleString()}). Purchase a **Bank Upgrade** to increase your limit.`,
+                    `Vaše banka je aktuálně plná (Maximální kapacita: $${maxBank.toLocaleString()}). Koupě **Vylepšení banky** zvýší váš limit.`,
                     { maxBank, currentBank: userData.bank, userId }
                 );
             }
@@ -94,8 +94,8 @@ export default {
                     await interaction.followUp({
                         embeds: [
                             MessageTemplates.ERRORS.INVALID_INPUT(
-                                "deposit amount",
-                                `You only had space for **$${depositAmount.toLocaleString()}** in your bank account (Max: $${maxBank.toLocaleString()}). The rest remains in your cash.`
+                                "částka k vložení",
+                                `Pokusili jste se vložit více peněz, než máte. Vkládání zbývajícího zůstatku: **$${depositAmount.toLocaleString()}**`
                             )
                         ],
                         flags: ["Ephemeral"],
@@ -105,9 +105,9 @@ export default {
 
             if (depositAmount === 0) {
                 throw createError(
-                    "No space or cash for deposit",
+                    "Žádné peníze k vložení",
                     ErrorTypes.VALIDATION,
-                    "The amount you tried to deposit was either 0 or exceeded your bank capacity after checking your cash balance.",
+                    "Množství, které se pokoušíte vložit, je 0 nebo překračuje kapacitu vaší banky. Prosím zadejte platnou částku k vložení.",
                     { depositAmount, availableSpace, walletBalance: userData.wallet }
                 );
             }
@@ -119,16 +119,16 @@ export default {
 
             const embed = MessageTemplates.SUCCESS.DATA_UPDATED(
                 "deposit",
-                `You successfully deposited **$${depositAmount.toLocaleString()}** into your bank.`
+                `Úspěšně jste vložili **$${depositAmount.toLocaleString()}** do své banky.`
             )
                 .addFields(
                     {
-                        name: "💵 New Cash Balance",
+                        name: "💵 Nový zůstatek v peněžence",
                         value: `$${userData.wallet.toLocaleString()}`,
                         inline: true,
                     },
                     {
-                        name: "🏦 New Bank Balance",
+                        name: "🏦 Nový zůstatek v bance",
                         value: `$${userData.bank.toLocaleString()} / $${maxBank.toLocaleString()}`,
                         inline: true,
                     },

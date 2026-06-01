@@ -25,7 +25,7 @@ const WORK_JOBS = [
 export default {
     data: new SlashCommandBuilder()
         .setName('work')
-        .setDescription('Work to earn some money'),
+        .setDescription('Pracuj a vydělávej peníze! Můžete pracovat každých 30 minut. Pokud máte položku "extra work", můžete ji použít pro další směnu během cooldownu.'),
 
     execute: withErrorHandling(async (interaction, config, client) => {
         const deferred = await InteractionHelper.safeDefer(interaction);
@@ -39,9 +39,9 @@ export default {
 
             if (!userData) {
                 throw createError(
-                    "Failed to load economy data for work",
+                    "Selhání při načítání ekonomických dat",
                     ErrorTypes.DATABASE,
-                    "Failed to load your economy data. Please try again later.",
+                    "Selhání při načítání ekonomických dat. Prosím zkuste to později.",
                     { userId, guildId }
                 );
             }
@@ -65,7 +65,7 @@ export default {
                     throw createError(
                         "Work cooldown active",
                         ErrorTypes.RATE_LIMIT,
-                        `You're working too fast! Wait **${Math.floor(remaining / 3600000)}h ${Math.floor((remaining % 3600000) / 60000)}m** before working again.`,
+                        `Pracuješ moc rychle! Počkej **${Math.floor(remaining / 3600000)}h ${Math.floor((remaining % 3600000) / 60000)}m** před dalším pracovním pokusem.`,
                         { timeRemaining: remaining, cooldownType: 'work' }
                     );
                 }
@@ -78,7 +78,7 @@ export default {
             let multiplierMessage = "";
             if (hasLaptop > 0) {
                 earned = Math.floor(earned * LAPTOP_MULTIPLIER);
-                multiplierMessage = "\n💻 **Laptop Bonus:** +50% earnings!";
+                multiplierMessage = "\n💻 **Bonus za notebook:** +50% earnings!";
             }
 
             userData.wallet = (userData.wallet || 0) + earned;
@@ -86,7 +86,7 @@ export default {
 
             await setEconomyData(client, guildId, userId, userData);
 
-            logger.info(`[ECONOMY_TRANSACTION] Work completed`, {
+            logger.info(`[ECONOMY_TRANSACTION] Práce dokončena`, {
                 userId,
                 guildId,
                 amount: earned,
@@ -98,23 +98,23 @@ export default {
             });
 
             const embed = successEmbed(
-                "💼 Work Complete!",
-                `You worked as a **${job}** and earned **$${earned.toLocaleString()}**!${multiplierMessage}`
+                "💼 Práce dokončena!",
+                `Pracoval jsi jako **${job}** a vydělal **$${earned.toLocaleString()}**!${multiplierMessage}`
             )
                 .addFields(
                     {
-                        name: "💰 New Balance",
+                        name: "💰 Nový zůstatek",
                         value: `$${userData.wallet.toLocaleString()}`,
                         inline: true,
                     },
                     {
-                        name: "⏰ Next Work",
+                        name: "⏰ Další práce",
                         value: `<t:${Math.floor((now + WORK_COOLDOWN) / 1000)}:R>`,
                         inline: true,
                     }
                 )
                 .setFooter({
-                    text: `Requested by ${interaction.user.tag}`,
+                    text: `Vyžádáno uživatelem ${interaction.user.tag}`,
                     iconURL: interaction.user.displayAvatarURL(),
                 });
 
