@@ -51,9 +51,9 @@ export default {
             if (isJailed) {
                 const timeLeft = Math.ceil((userData.jailedUntil - now) / (1000 * 60));
                 throw createError(
-                    "User is in jail",
+                    "Uživatel je ve vězení",
                     ErrorTypes.RATE_LIMIT,
-                    `You're in jail for ${timeLeft} more minutes!`,
+                    `Jsi ve vězení ještě ${timeLeft} minut!`,
                     { jailTimeRemaining: userData.jailedUntil - now }
                 );
             }
@@ -61,9 +61,9 @@ export default {
             if (now < lastCrime + CRIME_COOLDOWN) {
                 const timeLeft = Math.ceil((lastCrime + CRIME_COOLDOWN - now) / (1000 * 60));
                 throw createError(
-                    "Crime cooldown active",
+                    "CCooldown aktivní",
                     ErrorTypes.RATE_LIMIT,
-                    `You need to wait ${timeLeft} more minutes before committing another crime.`,
+                    `Musíš počkat ${timeLeft} minut před dalším zločinem.`,
                     { remaining: lastCrime + CRIME_COOLDOWN - now, cooldownType: 'crime' }
                 );
             }
@@ -75,9 +75,9 @@ export default {
 
             if (!crime) {
                 throw createError(
-                    "Invalid crime type",
+                    "Neplatný typ zločinu",
                     ErrorTypes.VALIDATION,
-                    "Please select a valid crime type.",
+                    "Prosím, vyberte platný typ zločinu.",
                     { crimeType }
                 );
             }
@@ -96,8 +96,8 @@ export default {
                 await setEconomyData(client, guildId, userId, userData);
                 
                 const embed = successEmbed(
-                    "Crime Successful!",
-                    `You successfully committed ${crime.name} and earned **${amountEarned}** coins!`
+                    "Úspěšný zločin!",
+                    `Úspěšně jsi provedl ${crime.name} a vydělal **${amountEarned}** mincí!`
                 );
                 
                 await InteractionHelper.safeEditReply(interaction, { embeds: [embed] });
@@ -109,9 +109,9 @@ export default {
                 await setEconomyData(client, guildId, userId, userData);
                 
                 const embed = errorEmbed(
-                    "Crime Failed!",
-                    `You were caught while attempting ${crime.name} and have been sent to jail! ` +
-                    `You were fined ${fine} coins and will be in jail for 2 hours.`
+                    "Zločin selhal!",
+                    `Byl jsi chycen při pokusu o ${crime.name} a byl jsi odeslán do vězení! ` +
+                    `Byl jsi potrestán ${fine} mincemi a budeš ve vězení 2 hodiny.`
                 );
                 
                 await InteractionHelper.safeEditReply(interaction, { embeds: [embed] });

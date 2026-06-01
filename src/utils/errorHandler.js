@@ -322,15 +322,15 @@ export async function handleInteractionError(interaction, error, context = {}) {
 
 function getErrorTitle(errorType) {
     const titles = {
-        [ErrorTypes.VALIDATION]: "❌ Invalid Input",
-        [ErrorTypes.PERMISSION]: "🚫 Permission Denied",
-        [ErrorTypes.CONFIGURATION]: "⚙️ Configuration Error",
-        [ErrorTypes.DATABASE]: "🗄️ Database Error",
-        [ErrorTypes.NETWORK]: "🌐 Network Error",
-        [ErrorTypes.DISCORD_API]: "🔌 API Error",
-        [ErrorTypes.USER_INPUT]: "💬 Input Error",
-        [ErrorTypes.RATE_LIMIT]: "⏱️ Slow Down!",
-        [ErrorTypes.UNKNOWN]: "❓ Unexpected Error"
+        [ErrorTypes.VALIDATION]: "❌ Neplatný vstup",
+        [ErrorTypes.PERMISSION]: "🚫 Přístup odepřen",
+        [ErrorTypes.CONFIGURATION]: "⚙️ Chyba konfigurace",
+        [ErrorTypes.DATABASE]: "🗄️ Chyba databáze",
+        [ErrorTypes.NETWORK]: "🌐 Síťová chyba",
+        [ErrorTypes.DISCORD_API]: "🔌 API chyba",
+        [ErrorTypes.USER_INPUT]: "💬 Chyba vstupu",
+        [ErrorTypes.RATE_LIMIT]: "⏱️ Zpomal!",
+        [ErrorTypes.UNKNOWN]: "❓ Neočekávaná chyba"
     };
     
     return titles[errorType] || titles[ErrorTypes.UNKNOWN];
