@@ -54,7 +54,7 @@ export default {
                 .addStringOption((option) =>
                     option
                         .setName("id")
-                        .setDescription("ID žádosti k zobrazení (nepovinné)"),
+                        .setDescription("ID žádosti k zobrazení (nepovinné)")
                         .setRequired(false),
                 ),
         )
