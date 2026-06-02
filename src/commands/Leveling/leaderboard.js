@@ -12,7 +12,7 @@ import { InteractionHelper } from '../../utils/interactionHelper.js';
 export default {
   data: new SlashCommandBuilder()
     .setName('leaderboard')
-    .setDescription("Shows the server's level leaderboard")
+    .setDescription("Ukazuje žebříček nejaktivnějších členů na serveru.")
     .setDMPermission(false),
   category: 'Leveling',
 
@@ -33,7 +33,7 @@ export default {
           embeds: [
             new EmbedBuilder()
               .setColor('#f1c40f')
-              .setDescription('The leveling system is currently disabled on this server.')
+              .setDescription('Leveling system je momentálně zakázán na tomto serveru.')
           ],
           flags: MessageFlags.Ephemeral
         });
@@ -46,14 +46,14 @@ export default {
         throw new TitanBotError(
           'No leaderboard data found',
           ErrorTypes.DATABASE,
-          'No level data found yet. Start chatting to gain XP!'
+          'Žádná data v žebříčku nebyla nalezena!'
         );
       }
 
       const embed = new EmbedBuilder()
-        .setTitle('🏆 Level Leaderboard')
+        .setTitle('🏆 Level žebříček')
         .setColor('#2ecc71')
-        .setDescription("Top 10 most active members in this server:")
+        .setDescription("Top 10 nejvíc aktivních členů na serveru:")
         .setTimestamp();
 
       const leaderboardText = await Promise.all(
@@ -77,7 +77,7 @@ export default {
       );
 
       embed.addFields({
-        name: 'Rankings',
+        name: 'Žebříčky',
         value: leaderboardText.join('\n')
       });
 
