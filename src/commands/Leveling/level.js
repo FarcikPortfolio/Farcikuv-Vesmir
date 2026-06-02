@@ -11,13 +11,13 @@ import levelDashboard from './modules/level_dashboard.js';
 export default {
     data: new SlashCommandBuilder()
         .setName('level')
-        .setDescription('Manage the leveling system')
+        .setDescription('Spravovat level systém')
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
         .setDMPermission(false)
         .addSubcommand((subcommand) =>
             subcommand
                 .setName('setup')
-                .setDescription('Set up the leveling system — this also enables it')
+                .setDescription('Nastavte základní konfiguraci level systému pro tento server')
                 .addChannelOption((option) =>
                     option
                         .setName('channel')
@@ -62,7 +62,7 @@ export default {
         .addSubcommand((subcommand) =>
             subcommand
                 .setName('dashboard')
-                .setDescription('Open the interactive leveling configuration dashboard'),
+                .setDescription('Otevře panel pro správu nastavení levelovacího systému'),
         ),
     category: 'Leveling',
 
@@ -155,14 +155,14 @@ export default {
                 return await InteractionHelper.safeEditReply(interaction, {
                     embeds: [
                         createEmbed({
-                            title: '✅ Leveling System Set Up',
+                            title: '✅ Leveling system nastaven!',
                             description:
-                                `The leveling system is now **enabled** and ready to go.\n\n` +
-                                `**Level-up Channel:** ${channel}\n` +
-                                `**XP per Message:** ${xpMin} – ${xpMax}\n` +
-                                `**XP Cooldown:** ${xpCooldown}s\n` +
-                                `**Level-up Message:** \`${message}\`\n\n` +
-                                `Use \`/level dashboard\` to adjust any of these settings at any time.`,
+                                `Leveling system je nyní **povolen** a připraven k použití.\n\n` +
+                                `**Level-up kanál:** ${channel}\n` +
+                                `**XP za zprávu:** ${xpMin} – ${xpMax}\n` +
+                                `**XP cooldown:** ${xpCooldown}s\n` +
+                                `**Level-up zpráva:** \`${message}\`\n\n` +
+                                `Použijte \`/level dashboard\` k úpravě jakýchkoli těchto nastavení kdykoli.`,
                             color: 'success',
                         }),
                     ],

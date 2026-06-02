@@ -14,17 +14,17 @@ import { InteractionHelper } from '../../utils/interactionHelper.js';
 export default {
   data: new SlashCommandBuilder()
     .setName('leveladd')
-    .setDescription('Add levels to a user')
+    .setDescription('Přidat úrovně uživateli v level systému')
     .addUserOption((option) =>
       option
         .setName('user')
-        .setDescription('The user to add levels to')
+        .setDescription('Uživatel, kterému se mají přidat úrovně')
         .setRequired(true)
     )
     .addIntegerOption((option) =>
       option
         .setName('levels')
-        .setDescription('Number of levels to add')
+        .setDescription('Počet úrovní k přidání')
         .setRequired(true)
         .setMinValue(1)
     )

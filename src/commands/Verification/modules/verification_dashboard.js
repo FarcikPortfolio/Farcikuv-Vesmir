@@ -355,7 +355,7 @@ export default {
                 await btnInteraction.followUp({
                     embeds: [
                         successEmbed(
-                            '✅ System Updated',
+                            '✅ Systém aktualizován',
                             `The verification system is now **${cfg.enabled ? 'enabled' : 'disabled'}**.`,
                         ),
                     ],

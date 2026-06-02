@@ -14,17 +14,17 @@ import { InteractionHelper } from '../../utils/interactionHelper.js';
 export default {
   data: new SlashCommandBuilder()
     .setName('levelremove')
-    .setDescription('Remove levels from a user')
+    .setDescription('Odebrat úrovně uživateli v level systému')
     .addUserOption((option) =>
       option
         .setName('user')
-        .setDescription('The user to remove levels from')
+        .setDescription('Uživatel, od kterého se mají odebrat úrovně')
         .setRequired(true)
     )
     .addIntegerOption((option) =>
       option
         .setName('levels')
-        .setDescription('Number of levels to remove')
+        .setDescription('Počet úrovní k odebrání')
         .setRequired(true)
         .setMinValue(1)
     )

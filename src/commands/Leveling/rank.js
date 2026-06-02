@@ -12,11 +12,11 @@ import { InteractionHelper } from '../../utils/interactionHelper.js';
 export default {
   data: new SlashCommandBuilder()
     .setName('rank')
-    .setDescription("Check your or another user's rank and level")
+    .setDescription("Zobrazit úroveň a XP uživatele v level systému")
     .addUserOption((option) =>
       option
         .setName('user')
-        .setDescription('The user to check the rank of')
+        .setDescription('Uživatel, jehož úroveň a XP se mají zobrazit')
         .setRequired(false)
     )
     .setDMPermission(false),

@@ -45,68 +45,68 @@ function buildDashboardEmbed(cfg, guild) {
     const ignoredRoValue = ignoredRoles.length > 0 ? ignoredRoles.map(id => `<@&${id}>`).join(', ') : '`None`';
 
     return new EmbedBuilder()
-        .setTitle('📊 Leveling System Dashboard')
+        .setTitle('📊 Leveling system panel')
         .setDescription(`Manage leveling settings for **${guild.name}**.\nSelect an option below to modify a setting.`)
         .setColor(getColor('info'))
         .addFields(
-            { name: '📢 Level-up Channel', value: channel, inline: true },
-            { name: '⚙️ System Status', value: cfg.enabled ? '✅ **Enabled**' : '❌ **Disabled**', inline: true },
-            { name: '📣 Announcements', value: cfg.announceLevelUp !== false ? '✅ **Enabled**' : '❌ **Disabled**', inline: true },
-            { name: '🎲 XP per Message', value: `\`${xpMin} – ${xpMax}\``, inline: true },
-            { name: '⏱️ XP Cooldown', value: `\`${cooldown}s\``, inline: true },
+            { name: '📢 Level-up kanál', value: channel, inline: true },
+            { name: '⚙️ Stav systému', value: cfg.enabled ? '✅ **Povolen**' : '❌ **Zakázán**', inline: true },
+            { name: '📣 Oznámení', value: cfg.announceLevelUp !== false ? '✅ **Povoleno**' : '❌ **Zakázáno**', inline: true },
+            { name: '🎲 XP za zprávu', value: `\`${xpMin} – ${xpMax}\``, inline: true },
+            { name: '⏱️ XP cooldown', value: `\`${cooldown}s\``, inline: true },
             { name: '\u200B', value: '\u200B', inline: true },
-            { name: '💬 Level-up Message', value: msgPreview, inline: false },
-            { name: '🏆 Role Rewards', value: rewardsValue, inline: false },
+            { name: '💬 Level-up zpráva', value: msgPreview, inline: false },
+            { name: '🏆 Role odměny', value: rewardsValue, inline: false },
             { name: '\ud83d\udeab Ignored Channels', value: ignoredChValue, inline: true },
             { name: '\ud83d\udeab Ignored Roles', value: ignoredRoValue, inline: true },
         )
-        .setFooter({ text: 'Dashboard closes after 10 minutes of inactivity' })
+        .setFooter({ text: 'Panel se zavře po 10 minutách neaktivity' })
         .setTimestamp();
 }
 
 function buildSelectMenu(guildId) {
     return new StringSelectMenuBuilder()
         .setCustomId(`level_cfg_${guildId}`)
-        .setPlaceholder('Select a setting to configure...')
+        .setPlaceholder('Vyberte nastavení, které chcete upravit...')
         .addOptions(
             new StringSelectMenuOptionBuilder()
-                .setLabel('Change Level-up Channel')
-                .setDescription('Set the channel where level-up notifications are sent')
+                .setLabel('Změnit kanál pro level-up')
+                .setDescription('Nastavte kanál, kam budou chodit zprávy o level-upu')
                 .setValue('channel')
                 .setEmoji('📢'),
             new StringSelectMenuOptionBuilder()
-                .setLabel('Edit Level-up Message')
-                .setDescription('Customise the message shown when a user levels up')
+                .setLabel('Upravit zprávu o level-up')
+                .setDescription('Přizpusobte zprávu, která se zobrazí, když uživatel získá nový level')
                 .setValue('message')
                 .setEmoji('💬'),
             new StringSelectMenuOptionBuilder()
-                .setLabel('Set XP Range')
-                .setDescription('Set the minimum and maximum XP rewarded per message')
+                .setLabel('Nastavit rozsah XP')
+                .setDescription('Nastavte minimální a maximální XP udělené za zprávu')
                 .setValue('xp_range')
                 .setEmoji('🎲'),
             new StringSelectMenuOptionBuilder()
-                .setLabel('Set XP Cooldown')
-                .setDescription('Seconds between XP grants for the same user')
+                .setLabel('Nastavit XP cooldown')
+                .setDescription('Nastavte časový interval mezi udělením XP tomu samému uživateli')
                 .setValue('xp_cooldown')
                 .setEmoji('⏱️'),
             new StringSelectMenuOptionBuilder()
-                .setLabel('Add Role Reward')
-                .setDescription('Award a role when a user reaches a specific level')
+                .setLabel('Přidat role odměnu')
+                .setDescription('Udělte roli, když uživatel dosáhne určitého levelu')
                 .setValue('role_reward_add')
                 .setEmoji('🏆'),
             new StringSelectMenuOptionBuilder()
-                .setLabel('Remove Role Reward')
-                .setDescription('Remove a role reward from a specific level')
+                .setLabel('Odstranit role odměnu')
+                .setDescription('Odstraňte roli odměny z určitého levelu')
                 .setValue('role_reward_remove')
                 .setEmoji('\ud83d\uddd1\ufe0f'),
             new StringSelectMenuOptionBuilder()
-                .setLabel('Ignored Channels')
-                .setDescription('Toggle channels where XP will not be awarded')
+                .setLabel('Ignorované kanály')
+                .setDescription('Přepněte kanály, kde nebude XP uděleno')
                 .setValue('ignore_channels')
                 .setEmoji('\ud83d\udeab'),
             new StringSelectMenuOptionBuilder()
-                .setLabel('Ignored Roles')
-                .setDescription('Toggle roles that will not receive XP')
+                .setLabel('Ignorované role')
+                .setDescription('Přepněte role, které nebudou dostávat XP')
                 .setValue('ignore_roles')
                 .setEmoji('\ud83d\udeab'),
         );
@@ -118,7 +118,7 @@ function buildButtonRow(cfg, guildId, disabled = false) {
     return new ActionRowBuilder().addComponents(
         new ButtonBuilder()
             .setCustomId(`level_cfg_toggle_announce_${guildId}`)
-            .setLabel('Announcements')
+            .setLabel('Oznámení')
             .setStyle(announceOn ? ButtonStyle.Success : ButtonStyle.Danger)
             .setEmoji('📣')
             .setDisabled(disabled),
@@ -254,8 +254,8 @@ export default {
                     await btnInteraction.followUp({
                         embeds: [
                             successEmbed(
-                                '✅ Announcements Updated',
-                                `Level-up announcements are now **${cfg.announceLevelUp ? 'enabled' : 'disabled'}**.`,
+                                '✅ Oznámení aktualizováno',
+                                `Oznámení o level-upu jsou nyní **${cfg.announceLevelUp ? 'povolena' : 'zakázána'}**.`,
                             ),
                         ],
                         flags: MessageFlags.Ephemeral,
@@ -267,8 +267,8 @@ export default {
                     await btnInteraction.followUp({
                         embeds: [
                             successEmbed(
-                                '✅ System Updated',
-                                `The leveling system is now **${cfg.enabled ? 'enabled' : 'disabled'}**.${!cfg.enabled ? '\nUsers will not earn XP until the system is re-enabled.' : ''}`,
+                                '✅ Systém aktualizován',
+                                `Leveling systém je nyní **${cfg.enabled ? 'povolen' : 'zakázán'}**.${!cfg.enabled ? '\nUživatelé nebudou získávat XP, dokud nebude systém znovu povolen.' : ''}`,
                             ),
                         ],
                         flags: MessageFlags.Ephemeral,
