@@ -46,7 +46,7 @@ function buildDashboardEmbed(cfg, guild) {
 
     return new EmbedBuilder()
         .setTitle('📊 Leveling system panel')
-        .setDescription(`Manage leveling settings for **${guild.name}**.\nSelect an option below to modify a setting.`)
+        .setDescription(`Spravovat nastavení levelovacího systému pro **${guild.name}**.\nVyberte možnost níže pro úpravu nastavení.`)
         .setColor(getColor('info'))
         .addFields(
             { name: '📢 Level-up kanál', value: channel, inline: true },
@@ -57,8 +57,8 @@ function buildDashboardEmbed(cfg, guild) {
             { name: '\u200B', value: '\u200B', inline: true },
             { name: '💬 Level-up zpráva', value: msgPreview, inline: false },
             { name: '🏆 Role odměny', value: rewardsValue, inline: false },
-            { name: '\ud83d\udeab Ignored Channels', value: ignoredChValue, inline: true },
-            { name: '\ud83d\udeab Ignored Roles', value: ignoredRoValue, inline: true },
+            { name: '\ud83d\udeab Ignorovaný kanál', value: ignoredChValue, inline: true },
+            { name: '\ud83d\udeab Ignorované role', value: ignoredRoValue, inline: true },
         )
         .setFooter({ text: 'Panel se zavře po 10 minutách neaktivity' })
         .setTimestamp();
