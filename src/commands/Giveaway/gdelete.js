@@ -10,12 +10,12 @@ export default {
     data: new SlashCommandBuilder()
         .setName("gdelete")
         .setDescription(
-            "Deletes a giveaway message and removes it from the database.",
+            "Smaže existující giveaway pomocí ID zprávy. Ujistěte se, že zadáváte správné ID zprávy pro giveaway.",
         )
         .addStringOption((option) =>
             option
                 .setName("messageid")
-                .setDescription("The message ID of the giveaway to delete.")
+                .setDescription("Message ID giveaway, kterou chcete smazat.")
                 .setRequired(true),
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
@@ -25,9 +25,9 @@ export default {
             
             if (!interaction.inGuild()) {
                 throw new TitanBotError(
-                    'Giveaway command used outside guild',
+                    'Giveaway příkaz použit mimo server',
                     ErrorTypes.VALIDATION,
-                    'This command can only be used in a server.',
+                    'Tento příkaz lze použít pouze na serveru.',
                     { userId: interaction.user.id }
                 );
             }
@@ -35,9 +35,9 @@ export default {
             
             if (!interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) {
                 throw new TitanBotError(
-                    'User lacks ManageGuild permission',
+                    'Člen bez oprávnění Manage Guild se pokusil smazat giveaway',
                     ErrorTypes.PERMISSION,
-                    "You need the 'Manage Server' permission to delete a giveaway.",
+                    "Potřebuješ oprávnění 'Spravovat server' pro smazání giveaway.",
                     { userId: interaction.user.id, guildId: interaction.guildId }
                 );
             }
@@ -49,9 +49,9 @@ export default {
             
             if (!messageId || !/^\d+$/.test(messageId)) {
                 throw new TitanBotError(
-                    'Invalid message ID format',
+                    'Neplatné ID zprávy pro giveaway.',
                     ErrorTypes.VALIDATION,
-                    'Please provide a valid message ID.',
+                    'Prosím zadejte platné ID zprávy pro giveaway, kterou chcete smazat.',
                     { providedId: messageId }
                 );
             }
@@ -61,15 +61,15 @@ export default {
 
             if (!giveaway) {
                 throw new TitanBotError(
-                    `Giveaway not found: ${messageId}`,
+                    `Giveaway nebyla nalezena: ${messageId}`,
                     ErrorTypes.VALIDATION,
-                    "No giveaway was found with that message ID.",
+                    "Žádná giveaway s tímto ID zprávy nebyla nalezena.",
                     { messageId, guildId: interaction.guildId }
                 );
             }
 
             let deletedMessage = false;
-            let channelName = "Unknown Channel";
+            let channelName = "Neznámý kanál";
 
             const tryDeleteFromChannel = async (channel) => {
                 if (!channel || !channel.isTextBased() || !channel.messages?.fetch) {
@@ -82,7 +82,7 @@ export default {
                 }
 
                 await message.delete();
-                channelName = channel.name || 'unknown-channel';
+                channelName = channel.name || 'Neznámý kanál';
                 deletedMessage = true;
                 return true;
             };
@@ -120,9 +120,9 @@ export default {
 
             if (!removedFromDatabase) {
                 throw new TitanBotError(
-                    `Failed to delete giveaway from database: ${messageId}`,
+                    `Selhalo smazání giveaway z databáze: ${messageId}`,
                     ErrorTypes.UNKNOWN,
-                    'The giveaway could not be removed from the database. Please try again.',
+                    'Giveaway nebyla nalezena v databázi nebo došlo k chybě při mazání. Prosím zkuste to znovu.',
                     { messageId, guildId: interaction.guildId }
                 );
             }
@@ -132,26 +132,26 @@ export default {
 
             if (stillExistsInDatabase) {
                 throw new TitanBotError(
-                    `Giveaway still exists after deletion: ${messageId}`,
+                    `Giveaway stále existuje po smazání: ${messageId}`,
                     ErrorTypes.UNKNOWN,
-                    'Deletion did not persist in the database. Please try again.',
+                    'Smazání se neuložilo do databáze. Prosím zkuste to znovu.',
                     { messageId, guildId: interaction.guildId }
                 );
             }
 
             const statusMsg = deletedMessage
-                ? `and the message was deleted from #${channelName}`
-                : `but the message was already deleted or the channel was inaccessible.`;
+                ? `a zpráva byla smazána z #${channelName}`
+                : `ale zpráva se již nenacházela v původním kanálu. Možná byla smazána ručně nebo přes jiný nástroj.`;
 
             const winnerIds = Array.isArray(giveaway.winnerIds) ? giveaway.winnerIds : [];
             const hasWinners = winnerIds.length > 0;
             const wasEnded = giveaway.ended === true || giveaway.isEnded === true || hasWinners;
 
             const winnerStatusMsg = hasWinners
-                ? `This giveaway already had ${winnerIds.length} winner(s) selected.`
+                ? `Tato giveaway měla ${winnerIds.length} vybraného výherce.`
                 : wasEnded
-                    ? 'This giveaway was ended with no valid winners.'
-                    : 'No winner was picked before deletion.';
+                    ? 'Tato giveaway byla ukončena bez platných výherců.'
+                    : 'Žádný výherce nebyl vybrán před smazáním.';
 
             logger.info(`Giveaway deleted: ${messageId} in ${channelName}`);
 
@@ -167,12 +167,12 @@ export default {
                         userId: interaction.user.id,
                         fields: [
                             {
-                                name: '🎁 Prize',
+                                name: '🎁 Cena',
                                 value: giveaway.prize || 'Unknown',
                                 inline: true
                             },
                             {
-                                name: '📊 Entries',
+                                name: '📊 Přihlášky',
                                 value: (giveaway.participants?.length || 0).toString(),
                                 inline: true
                             }
@@ -186,8 +186,8 @@ export default {
             return InteractionHelper.safeReply(interaction, {
                 embeds: [
                     successEmbed(
-                        "Giveaway Deleted",
-                        `Successfully deleted the giveaway for **${giveaway.prize}** ${statusMsg}. ${winnerStatusMsg}`,
+                        "Giveaway Smazána",
+                        `Úspěšně smazána giveaway pro **${giveaway.prize}** ${statusMsg}. ${winnerStatusMsg}`,
                     ),
                 ],
                 flags: MessageFlags.Ephemeral,

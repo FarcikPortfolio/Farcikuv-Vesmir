@@ -16,19 +16,19 @@ import { InteractionHelper } from '../../utils/interactionHelper.js';
 export default {
     data: new SlashCommandBuilder()
         .setName("gcreate")
-        .setDescription("Starts a new giveaway in a specified channel.")
+        .setDescription("Začne novou giveaway s danou délkou, počtem výherců a cenou.")
         .addStringOption((option) =>
             option
                 .setName("duration")
                 .setDescription(
-                    "How long the giveaway should last (e.g., 1h, 30m, 5d).",
+                    "Jak dlouho má giveaway trvat (např. 1h, 30m, 5d).",
                 )
                 .setRequired(true),
         )
         .addIntegerOption((option) =>
             option
                 .setName("winners")
-                .setDescription("The number of winners to pick.")
+                .setDescription("Číslo výherců pro tuto giveaway.")
                 .setMinValue(1)
                 .setMaxValue(10)
                 .setRequired(true),
@@ -36,13 +36,13 @@ export default {
         .addStringOption((option) =>
             option
                 .setName("prize")
-                .setDescription("The prize being given away.")
+                .setDescription("Cena, která bude vyhrána v giveaway.")
                 .setRequired(true),
         )
         .addChannelOption((option) =>
             option
                 .setName("channel")
-                .setDescription("The channel to send the giveaway to (defaults to current channel).")
+                .setDescription("Kanál, do kterého se giveaway odešle.")
                 .addChannelTypes(ChannelType.GuildText)
                 .setRequired(false),
         )
@@ -53,9 +53,9 @@ export default {
             
             if (!interaction.inGuild()) {
                 throw new TitanBotError(
-                    'Giveaway command used outside guild',
+                    'Giveway příkaz použit mimo server',
                     ErrorTypes.VALIDATION,
-                    'This command can only be used in a server.',
+                    'Tento příkaz lze použít pouze na serveru.',
                     { userId: interaction.user.id }
                 );
             }
@@ -63,9 +63,9 @@ export default {
             
             if (!interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) {
                 throw new TitanBotError(
-                    'User lacks ManageGuild permission',
+                    'Člen bez oprávnění Manage Guild se pokusil vytvořit giveaway',
                     ErrorTypes.PERMISSION,
-                    "You need the 'Manage Server' permission to start a giveaway.",
+                    "Potřebuješ oprávnění 'Spravovat server' pro zahájení giveaway.",
                     { userId: interaction.user.id, guildId: interaction.guildId }
                 );
             }
@@ -86,9 +86,9 @@ export default {
             
             if (!targetChannel.isTextBased()) {
                 throw new TitanBotError(
-                    'Target channel is not text-based',
+                    'Kanál pro giveaway není textový',
                     ErrorTypes.VALIDATION,
-                    'The channel must be a text channel.',
+                    'Kanál musí být textový.',
                     { channelId: targetChannel.id, channelType: targetChannel.type }
                 );
             }
@@ -178,8 +178,8 @@ export default {
             await InteractionHelper.safeReply(interaction, {
                 embeds: [
                     successEmbed(
-                        `Giveaway Started! 🎉`,
-                        `A new giveaway for **${prizeName}** has been started in ${targetChannel} and will end in **${durationString}**.`,
+                        `Giveaway začala! 🎉`,
+                        `Nová giveaway **${prizeName}** byla zahájena v ${targetChannel} a skončí za **${durationString}**.`,
                     ),
                 ],
                 flags: MessageFlags.Ephemeral,

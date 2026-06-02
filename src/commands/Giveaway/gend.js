@@ -15,12 +15,12 @@ export default {
     data: new SlashCommandBuilder()
         .setName("gend")
         .setDescription(
-            "Ends an active giveaway immediately and picks the winner(s).",
+            "Ukončí existující giveaway pomocí ID zprávy. Ujistěte se, že zadáváte správné ID zprávy pro giveaway.",
         )
         .addStringOption((option) =>
             option
                 .setName("messageid")
-                .setDescription("The message ID of the giveaway to end.")
+                .setDescription("ID zprávy giveaway, kterou chcete ukončit.")
                 .setRequired(true),
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
@@ -30,9 +30,9 @@ export default {
             
             if (!interaction.inGuild()) {
                 throw new TitanBotError(
-                    'Giveaway command used outside guild',
+                    'Giveaway příkaz použit mimo server',
                     ErrorTypes.VALIDATION,
-                    'This command can only be used in a server.',
+                    'Tento příkaz lze použít pouze na serveru.',
                     { userId: interaction.user.id }
                 );
             }
@@ -40,9 +40,9 @@ export default {
             
             if (!interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) {
                 throw new TitanBotError(
-                    'User lacks ManageGuild permission',
+                    'Člen bez oprávnění Manage Guild se pokusil ukončit giveaway',
                     ErrorTypes.PERMISSION,
-                    "You need the 'Manage Server' permission to end a giveaway.",
+                    "Potřebujete oprávnění 'Spravovat server' pro ukončení giveaway.",
                     { userId: interaction.user.id, guildId: interaction.guildId }
                 );
             }
@@ -54,7 +54,7 @@ export default {
             
             if (!messageId || !/^\d+$/.test(messageId)) {
                 throw new TitanBotError(
-                    'Invalid message ID format',
+                    'Neplatný formát ID zprávy',
                     ErrorTypes.VALIDATION,
                     'Please provide a valid message ID.',
                     { providedId: messageId }
@@ -66,9 +66,9 @@ export default {
 
             if (!giveaway) {
                 throw new TitanBotError(
-                    `Giveaway not found: ${messageId}`,
+                    `Giveaway nebyla nalezena: ${messageId}`,
                     ErrorTypes.VALIDATION,
-                    "No giveaway was found with that message ID in the database.",
+                    "Žádná giveaway s tímto ID zprávy nebyla nalezena.",
                     { messageId, guildId: interaction.guildId }
                 );
             }
@@ -94,9 +94,9 @@ export default {
 
             if (!channel || !channel.isTextBased()) {
                 throw new TitanBotError(
-                    `Channel not found: ${updatedGiveaway.channelId}`,
+                    `Kanál nebyl nalezen: ${updatedGiveaway.channelId}`,
                     ErrorTypes.VALIDATION,
-                    "Could not find the channel where the giveaway was hosted. The giveaway state has been updated.",
+                    "Nepodařilo se najít kanál, kde byla giveaway hostována. Stav giveaway byl aktualizován.",
                     { channelId: updatedGiveaway.channelId, messageId }
                 );
             }
@@ -110,9 +110,9 @@ export default {
 
             if (!message) {
                 throw new TitanBotError(
-                    `Message not found: ${messageId}`,
+                    `Zpráva nebyla nalezena: ${messageId}`,
                     ErrorTypes.VALIDATION,
-                    "Could not find the giveaway message. The giveaway state has been updated.",
+                    "Nepodařilo se najít zprávu giveaway. Stav giveaway byl aktualizován.",
                     { messageId, channelId: updatedGiveaway.channelId }
                 );
             }
@@ -129,7 +129,7 @@ export default {
             const newRow = createGiveawayButtons(true);
 
             await message.edit({
-                content: "🎉 **GIVEAWAY ENDED** 🎉",
+                content: "🎉 **GIVEAWAY UKONČENA** 🎉",
                 embeds: [newEmbed],
                 components: [newRow],
             });
@@ -140,7 +140,7 @@ export default {
                     .map((id) => `<@${id}>`)
                     .join(", ");
                 const winnerPingMsg = await channel.send({
-                    content: `🎉 CONGRATULATIONS ${winnerMentions}! You won the **${updatedGiveaway.prize}** giveaway! Please contact the host <@${updatedGiveaway.hostId}> to claim your prize.`,
+                    content: `🎉 GRATULUJEME ${winnerMentions}! Vyhráli jste **${updatedGiveaway.prize}** giveaway! Prosím, kontaktujte hostitele <@${updatedGiveaway.hostId}> pro nárokování vašeho cen.`,
                 });
                 updatedGiveaway.winnerPingMessageId = winnerPingMsg.id;
                 await saveGiveaway(interaction.client, interaction.guildId, updatedGiveaway);
@@ -159,7 +159,7 @@ export default {
                             userId: interaction.user.id,
                             fields: [
                                 {
-                                    name: '🎁 Prize',
+                                    name: '🎁 Cena',
                                     value: updatedGiveaway.prize || 'Mystery Prize!',
                                     inline: true
                                 },
@@ -181,9 +181,9 @@ export default {
                 }
             } else {
                 await channel.send({
-                    content: `The giveaway for **${updatedGiveaway.prize}** has ended with no valid entries.`,
+                    content: `Giveway pro **${updatedGiveaway.prize}** byla ukončena, ale nebyl vybrán žádný výherce.`,
                 });
-                logger.info(`Giveaway ended with no winners: ${messageId}`);
+                logger.info(`Giveaway ukončena bez výherců: ${messageId}`);
             }
 
             logger.info(`Giveaway successfully ended by ${interaction.user.tag}: ${messageId}`);
@@ -191,8 +191,8 @@ export default {
             return InteractionHelper.safeReply(interaction, {
                 embeds: [
                     successEmbed(
-                        "Giveaway Ended ✅",
-                        `Successfully ended the giveaway for **${updatedGiveaway.prize}** in ${channel}. Selected ${winners.length} winner(s) from ${endResult.participantCount} entries.`,
+                        "Giveaway ukončena ✅",
+                        `Úspěšně ukončena giveaway pro **${updatedGiveaway.prize}** v ${channel}. Vybráno ${winners.length} výherce z ${endResult.participantCount} přihlášek.`,
                     ),
                 ],
                 flags: MessageFlags.Ephemeral,

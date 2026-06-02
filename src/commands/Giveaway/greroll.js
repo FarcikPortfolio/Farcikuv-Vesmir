@@ -14,11 +14,11 @@ import { InteractionHelper } from '../../utils/interactionHelper.js';
 export default {
     data: new SlashCommandBuilder()
         .setName("greroll")
-        .setDescription("Rerolls the winner(s) for an ended giveaway.")
+        .setDescription("Znovu vylosuje výherce pro ukončenou giveaway pomocí ID zprávy.")
         .addStringOption((option) =>
             option
                 .setName("messageid")
-                .setDescription("The message ID of the ended giveaway.")
+                .setDescription("ID zprávy giveaway, kterou chcete znovu vylosovat.")
                 .setRequired(true),
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
@@ -28,9 +28,9 @@ export default {
             
             if (!interaction.inGuild()) {
                 throw new TitanBotError(
-                    'Giveaway command used outside guild',
+                    'Giveaway příkaz použit mimo server',
                     ErrorTypes.VALIDATION,
-                    'This command can only be used in a server.',
+                    'Tento příkaz lze použít pouze v serveru.',
                     { userId: interaction.user.id }
                 );
             }
@@ -38,9 +38,9 @@ export default {
             
             if (!interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) {
                 throw new TitanBotError(
-                    'User lacks ManageGuild permission',
+                    'Člen bez oprávnění Manage Guild se pokusil znovu vylosovat giveaway',
                     ErrorTypes.PERMISSION,
-                    "You need the 'Manage Server' permission to reroll a giveaway.",
+                    "Potřebujete oprávnění 'Spravovat server' pro znovu vylosování giveaway.",
                     { userId: interaction.user.id, guildId: interaction.guildId }
                 );
             }
@@ -52,9 +52,9 @@ export default {
             
             if (!messageId || !/^\d+$/.test(messageId)) {
                 throw new TitanBotError(
-                    'Invalid message ID format',
+                    'Selhání při znovu vylosování giveaway kvůli neplatnému ID zprávy',
                     ErrorTypes.VALIDATION,
-                    'Please provide a valid message ID.',
+                    'Prosím, zadejte platné ID zprávy.',
                     { providedId: messageId }
                 );
             }
@@ -69,9 +69,9 @@ export default {
 
             if (!giveaway) {
                 throw new TitanBotError(
-                    `Giveaway not found: ${messageId}`,
+                    `Giveaway nebyla nalezena: ${messageId}`,
                     ErrorTypes.VALIDATION,
-                    "No giveaway was found with that message ID in the database.",
+                    "Žádná giveaway s tímto ID zprávy nebyla nalezena.",
                     { messageId, guildId: interaction.guildId }
                 );
             }
@@ -79,9 +79,9 @@ export default {
             
             if (!giveaway.isEnded && !giveaway.ended) {
                 throw new TitanBotError(
-                    `Giveaway still active: ${messageId}`,
+                    `Giveaway stále aktivní: ${messageId}`,
                     ErrorTypes.VALIDATION,
-                    "This giveaway is still active. Please use `/gend` to end it first.",
+                    "Tato giveaway je stále aktivní. Prosím, použijte `/gend` pro její ukončení.",
                     { messageId, status: 'active' }
                 );
             }
@@ -90,9 +90,9 @@ export default {
             
             if (participants.length < giveaway.winnerCount) {
                 throw new TitanBotError(
-                    `Insufficient participants for reroll: ${participants.length} < ${giveaway.winnerCount}`,
+                    `Nedostatek účastníků: ${participants.length} < ${giveaway.winnerCount}`,
                     ErrorTypes.VALIDATION,
-                    "Not enough entries to pick the required number of winners.",
+                    "Není dostatek účastníků k výběru požadovaného počtu výherců.",
                     { participantsCount: participants.length, winnersNeeded: giveaway.winnerCount }
                 );
             }
@@ -115,7 +115,7 @@ export default {
             const channel = await interaction.client.channels.fetch(
                 giveaway.channelId,
             ).catch(err => {
-                logger.warn(`Could not fetch channel ${giveaway.channelId}:`, err.message);
+                logger.warn(`Nepodařilo se načíst kanál ${giveaway.channelId}:`, err.message);
                 return null;
             });
 
@@ -127,13 +127,13 @@ export default {
                     updatedGiveaway,
                 );
                 
-                logger.warn(`Could not find channel for giveaway ${messageId}, but saved new winners to database`);
+                logger.warn(`Nepodařilo se najít kanál pro oznámení znovu vylosovaných výherců: ${giveaway.channelId}`);
                 
                 return InteractionHelper.safeReply(interaction, {
                     embeds: [
                         successEmbed(
-                            "Reroll Complete",
-                            "The new winners have been selected and saved to the database. Could not find channel to announce.",
+                            "Opětovné losování dokončeno, ale kanál nenalezen ✅",
+                            "Nové výherce jsme vybrali, ale nemohli jsme najít původní kanál pro oznámení. Prosím, zkontrolujte nastavení giveaway a ujistěte se, že kanál stále existuje.",
                         ),
                     ],
                     flags: MessageFlags.Ephemeral,
@@ -144,7 +144,7 @@ export default {
             const message = await channel.messages
                 .fetch(messageId)
                 .catch(err => {
-                    logger.warn(`Could not fetch message ${messageId}:`, err.message);
+                    logger.warn(`Nepodařilo se načíst zprávu ${messageId}:`, err.message);
                     return null;
                 });
 
@@ -166,16 +166,16 @@ export default {
                     : null;
                 if (existingPingMsg) {
                     await existingPingMsg.edit({
-                        content: `🔄 **GIVEAWAY REROLL** 🔄 New winners for **${giveaway.prize}**: ${winnerMentions}!`,
+                        content: `🔄 **GIVEAWAY ZNOVU VYLOSOVÁNA** 🔄 Nové výherce pro **${giveaway.prize}**: ${winnerMentions}!`,
                     });
                 } else {
                     const newPingMsg = await channel.send({
-                        content: `🔄 **GIVEAWAY REROLL** 🔄 New winners for **${giveaway.prize}**: ${winnerMentions}!`,
+                        content: `🔄 **GIVEAWAY ZNOVU VYLOSOVÁNA** 🔄 Nové výherce pro **${giveaway.prize}**: ${winnerMentions}!`,
                     });
                     updatedGiveaway.winnerPingMessageId = newPingMsg.id;
                 }
 
-                logger.info(`Giveaway rerolled (message not found, but announced): ${messageId}`);
+                logger.info(`Giveaway znovu vylosována, ale zpráva nenalezena: ${messageId} v kanálu ${channel.id}`);
 
                 try {
                     await logEvent({
@@ -183,22 +183,22 @@ export default {
                         guildId: interaction.guildId,
                         eventType: EVENT_TYPES.GIVEAWAY_REROLL,
                         data: {
-                            description: `Giveaway rerolled: ${giveaway.prize}`,
+                            description: `Giveaway znovu vylosována: ${giveaway.prize}`,
                             channelId: giveaway.channelId,
                             userId: interaction.user.id,
                             fields: [
                                 {
-                                    name: '🎁 Prize',
+                                    name: '🎁 Cena',
                                     value: giveaway.prize || 'Mystery Prize!',
                                     inline: true
                                 },
                                 {
-                                    name: '🏆 New Winners',
+                                    name: '🏆 Nové výherce',
                                     value: winnerMentions,
                                     inline: false
                                 },
                                 {
-                                    name: '👥 Total Entries',
+                                    name: '👥 Celkový počet přihlášek',
                                     value: participants.length.toString(),
                                     inline: true
                                 }
@@ -212,8 +212,8 @@ export default {
                 return InteractionHelper.safeReply(interaction, {
                     embeds: [
                         successEmbed(
-                            "Reroll Complete",
-                            `The new winners have been announced in ${channel}. (Original message not found).`,
+                            "Opětovné losování dokončeno, ale kanál nenalezen ✅",
+                            `Nové výherce jsme vybrali, ale nemohli jsme najít původní kanál pro oznámení. Prosím, zkontrolujte nastavení giveaway a ujistěte se, že kanál stále existuje.`,
                         ),
                     ],
                     flags: MessageFlags.Ephemeral,
@@ -231,7 +231,7 @@ export default {
             const newRow = createGiveawayButtons(true);
 
             await message.edit({
-                content: "🔄 **GIVEAWAY REROLLED** 🔄",
+                content: "🔄 **GIVEAWAY ZNOVU VYLOSOVÁNA** 🔄",
                 embeds: [newEmbed],
                 components: [newRow],
             });
@@ -246,11 +246,11 @@ export default {
                 : null;
             if (existingPingMsg) {
                 await existingPingMsg.edit({
-                    content: `🔄 **REROLL WINNERS** 🔄 CONGRATULATIONS ${winnerMentions}! You are the new winner(s) for the **${giveaway.prize}** giveaway! Please contact the host <@${giveaway.hostId}> to claim your prize.`,
+                    content: `🔄 **ZNOVU VYLOSOVANÉ VÝHERCE** 🔄 GRATULUJEME ${winnerMentions}! Jsou novými výherci pro **${giveaway.prize}** giveaway! Prosím, kontaktujte hosta <@${giveaway.hostId}> a vyplňte svou cenu.`,
                 });
             } else {
                 const newPingMsg = await channel.send({
-                    content: `🔄 **REROLL WINNERS** 🔄 CONGRATULATIONS ${winnerMentions}! You are the new winner(s) for the **${giveaway.prize}** giveaway! Please contact the host <@${giveaway.hostId}> to claim your prize.`,
+                    content: `🔄 **ZNOVU VYLOSOVANÉ VÝHERCE** 🔄 GRATULUJEME ${winnerMentions}! Jsou novými výherci pro **${giveaway.prize}** giveaway! Prosím, kontaktujte hosta <@${giveaway.hostId}> a vyplňte svou cenu.`,
                 });
                 updatedGiveaway.winnerPingMessageId = newPingMsg.id;
             }
@@ -263,22 +263,22 @@ export default {
                     guildId: interaction.guildId,
                     eventType: EVENT_TYPES.GIVEAWAY_REROLL,
                     data: {
-                        description: `Giveaway rerolled: ${giveaway.prize}`,
+                        description: `Giveaway znovu vylosována: ${giveaway.prize}`,
                         channelId: giveaway.channelId,
                         userId: interaction.user.id,
                         fields: [
                             {
-                                name: '🎁 Prize',
+                                name: '🎁 Cena',
                                 value: giveaway.prize || 'Mystery Prize!',
                                 inline: true
                             },
                             {
-                                name: '🏆 New Winners',
+                                name: '🏆 Nové výherce',
                                 value: winnerMentions,
                                 inline: false
                             },
                             {
-                                name: '👥 Total Entries',
+                                name: '👥 Celkový počet přihlášek',
                                 value: participants.length.toString(),
                                 inline: true
                             }
@@ -286,14 +286,14 @@ export default {
                     }
                 });
             } catch (logError) {
-                logger.debug('Error logging giveaway reroll event:', logError);
+                logger.debug('Error logging giveaway znovu vylosována event:', logError);
             }
 
             return InteractionHelper.safeReply(interaction, {
                 embeds: [
                     successEmbed(
-                        "Reroll Successful ✅",
-                        `Successfully rerolled the giveaway for **${giveaway.prize}** in ${channel}. Selected ${newWinners.length} new winner(s).`,
+                        "Znovu vylosována ✅",
+                        `Úspěšně znovu vylosována giveaway pro **${giveaway.prize}** v ${channel}. Vybráno ${newWinners.length} nového(vých) výherce(s).`,
                     ),
                 ],
                 flags: MessageFlags.Ephemeral,
