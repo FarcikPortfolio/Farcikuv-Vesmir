@@ -57,7 +57,7 @@ function buildDashboardEmbed(cfg, guild) {
             { name: '\u200B', value: '\u200B', inline: true },
             { name: '💬 Level-up zpráva', value: msgPreview, inline: false },
             { name: '🏆 Role odměny', value: rewardsValue, inline: false },
-            { name: '\ud83d\udeab Ignorovaný kanál', value: ignoredChValue, inline: true },
+            { name: '\ud83d\udeab Ignorované kanály', value: ignoredChValue, inline: true },
             { name: '\ud83d\udeab Ignorované role', value: ignoredRoValue, inline: true },
         )
         .setFooter({ text: 'Panel se zavře po 10 minutách neaktivity' })
