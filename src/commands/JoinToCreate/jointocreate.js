@@ -24,28 +24,28 @@ export default {
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("setup")
-                .setDescription("Set up a new Join to Create voice channel.")
+                .setDescription("Nastaví nový Join to Create systém vytvořením spouštěcího kanálu a inicializací konfigurace.")
                 .addChannelOption((option) =>
                     option
                         .setName("category")
-                        .setDescription("Category to create the channel in.")
+                        .setDescription("Kategorie, pro vytvoření kanálu.")
                         .addChannelTypes(ChannelType.GuildCategory)
                 )
                 .addStringOption((option) =>
                     option
                         .setName("channel_name")
-                        .setDescription("Select a template for naming temporary voice channels.")
+                        .setDescription("Vyberte šablonu pro pojmenování dočasných hlasových kanálů.")
                         .addChoices(
-                            { name: "{username}'s Room (Default)", value: "{username}'s Room" },
-                            { name: "{username}'s Channel", value: "{username}'s Channel" },
-                            { name: "{username}'s Lounge", value: "{username}'s Lounge" },
-                            { name: "{username}'s Space", value: "{username}'s Space" },
+                            { name: "{username}'s Místnost (Default)", value: "{username}'s Místnost" },
+                            { name: "{username}'s Kanál", value: "{username}'s Kanál" },
+                            { name: "{username}'s Salónek", value: "{username}'s Salónek" },
+                            { name: "{username}'s Pokec", value: "{username}'s Pokec" },
                             { name: "{displayName}'s Room", value: "{displayName}'s Room" },
                             { name: "{username}'s VC", value: "{username}'s VC" },
-                            { name: "🎵 {username}'s Music Room", value: "🎵 {username}'s Music Room" },
-                            { name: "🎮 {username}'s Gaming Room", value: "🎮 {username}'s Gaming Room" },
-                            { name: "💬 {username}'s Chat Room", value: "💬 {username}'s Chat Room" },
-                            { name: "{username}'s Private Room", value: "{username}'s Private Room" }
+                            { name: "🎵 {username}'s Hudební místnost", value: "🎵 {username}'s Hudební místnost" },
+                            { name: "🎮 {username}'s Hrací místnost", value: "🎮 {username}'s Hrací místnost" },
+                            { name: "💬 {username}'s Chat místnost", value: "💬 {username}'s Chat místnost" },
+                            { name: "{username}'s Private", value: "{username}'s Private" }
                         )
                 )
                 .addIntegerOption((option) =>
@@ -62,11 +62,11 @@ export default {
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("dashboard")
-                .setDescription("Configure an existing Join to Create system.")
+                .setDescription("Nakonfigurovat nastavení existujícího Join to Create kanálu.")
                 .addChannelOption((option) =>
                     option
                         .setName("trigger_channel")
-                        .setDescription("The Join to Create trigger channel to configure.")
+                        .setDescription("Spouštěcí kanál pro systém Join to Create.")
                         .setRequired(true)
                         .addChannelTypes(ChannelType.GuildVoice)
                 )
@@ -78,9 +78,9 @@ export default {
             
             if (!hasManageGuildPermission(interaction.member)) {
                 throw new TitanBotError(
-                    'User lacks ManageGuild permission',
+                    'Uživatel bez oprávnění Manage Guild se pokusil použít Join to Create příkaz',
                     ErrorTypes.PERMISSION,
-                    'You need **Manage Server** permission to use this command.'
+                    'Potřebuješ oprávnění "Spravovat server" pro použití tohoto příkazu.',
                 );
             }
 
@@ -99,14 +99,14 @@ export default {
 
         } catch (error) {
             try {
-                let errorMessage = 'An error occurred while executing this command.';
+                let errorMessage = 'Chyba při provádění příkazu.';
                 
                 if (error instanceof TitanBotError) {
-                    errorMessage = error.userMessage || 'An error occurred. Please try again.';
+                    errorMessage = error.userMessage || 'Chyba při provádění příkazu. Zkuste to prosím znovu.';
                     logger.debug(`TitanBotError [${error.type}]: ${error.message}`, error.context || {});
                 } else {
                     logger.error('Unexpected error in jointocreate command:', error);
-                    errorMessage = 'An unexpected error occurred. Please try again or contact support.';
+                    errorMessage = 'Neočekávaná chyba při provádění příkazu. Zkuste to prosím znovu.';
                 }
 
                 const errorEmbedObj = errorEmbed("⚠️ Error", errorMessage);
@@ -117,7 +117,7 @@ export default {
                     return await InteractionHelper.safeReply(interaction, { embeds: [errorEmbedObj], flags: MessageFlags.Ephemeral });
                 }
             } catch (replyError) {
-                logger.error('Failed to send error message:', replyError);
+                logger.error('Selhání při odesílání chybové zprávy:', replyError);
             }
         }
     }
@@ -158,10 +158,10 @@ async function handleSetupSubcommand(interaction, client) {
 
             if (activeTriggerChannels.length > 0) {
                 const primaryTrigger = activeTriggerChannels[0];
-                const errorMessage = `This server already has a Join to Create channel set up: ${primaryTrigger}\n\nUse \`/jointocreate dashboard\` to modify it, or remove it first before creating a new one.`;
+                const errorMessage = `Tento server již má nastavený kanál Join to Create: ${primaryTrigger}\n\nPoužijte \`/jointocreate dashboard\` pro jeho úpravu, nebo ho nejprve odstraňte před vytvořením nového.`;
 
                 throw new TitanBotError(
-                    'Guild already has a Join to Create channel',
+                    'Server již má nastavený kanál Join to Create',
                     ErrorTypes.VALIDATION,
                     errorMessage,
                     {
@@ -210,7 +210,7 @@ async function handleSetupSubcommand(interaction, client) {
         logger.info(`Successfully created Join to Create system in guild ${guildId}`);
 
         const responseEmbed = successEmbed(
-            '✅ Setup Complete',
+            '✅ Nastavení Join to Create dokončeno',
             `Created Join to Create channel: ${triggerChannel}\n\n` +
             `**Settings:**\n` +
             `• Template: \`${nameTemplate}\`\n` +
@@ -229,7 +229,7 @@ async function handleSetupSubcommand(interaction, client) {
         throw new TitanBotError(
             `Setup failed: ${error.message}`,
             ErrorTypes.DISCORD_API,
-            'Failed to set up Join to Create system. Please check bot permissions.'
+            'Selhání při vytváření kanálu. Ujistěte se, že máte oprávnění pro správu kanálů a zkuste to znovu.',
         );
     }
 }
@@ -245,18 +245,18 @@ async function handleConfigSubcommand(interaction, client) {
 
         
         const configEmbed = new EmbedBuilder()
-            .setTitle('⚙️ Join to Create Configuration')
-            .setDescription(`Configuration for ${triggerChannel}`)
+            .setTitle('⚙️ Join to Create Konfigurace')
+            .setDescription(`Konfigurace pro ${triggerChannel}`)
             .setColor(getColor('info'))
             .addFields(
                 {
-                    name: '📝 Channel Name Template',
+                    name: '📝 Šablona názvu kanálu',
                     value: `\`${channelConfig.nameTemplate || currentConfig.channelNameTemplate || "{username}'s Room"}\``,
                     inline: false
                 },
                 {
-                    name: '👥 User Limit',
-                    value: `${(channelConfig.userLimit ?? currentConfig.userLimit ?? 0) === 0 ? 'Unlimited' : (channelConfig.userLimit ?? currentConfig.userLimit ?? 0) + ' users'}`,
+                    name: '👥 Uživatelský limit',
+                    value: `${(channelConfig.userLimit ?? currentConfig.userLimit ?? 0) === 0 ? 'Neomezeno' : (channelConfig.userLimit ?? currentConfig.userLimit ?? 0) + ' uživatelů'}`,
                     inline: true
                 },
                 {
@@ -265,18 +265,18 @@ async function handleConfigSubcommand(interaction, client) {
                     inline: true
                 }
             )
-            .setFooter({ text: 'Use the buttons below to modify settings • Only one trigger channel is supported per guild' })
+            .setFooter({ text: 'Použijte tlačítka níže pro úpravu nastavení • Podporován je pouze jeden trigger kanál na serveru' })
             .setTimestamp();
 
         
         const nameButton = new ButtonBuilder()
             .setCustomId(`jtc_config_name_${triggerChannel.id}`)
-            .setLabel('📝 Name Template')
+            .setLabel('📝 Šablona názvu kanálu')
             .setStyle(ButtonStyle.Primary);
 
         const limitButton = new ButtonBuilder()
             .setCustomId(`jtc_config_limit_${triggerChannel.id}`)
-            .setLabel('👥 User Limit')
+            .setLabel('👥 Uživatelský limit')
             .setStyle(ButtonStyle.Primary);
 
         const bitrateButton = new ButtonBuilder()
@@ -286,7 +286,7 @@ async function handleConfigSubcommand(interaction, client) {
 
         const deleteButton = new ButtonBuilder()
             .setCustomId(`jtc_config_delete_${triggerChannel.id}`)
-            .setLabel('🗑️ Remove Channel')
+            .setLabel('🗑️ Smazat kanál')
             .setStyle(ButtonStyle.Danger);
 
         const row = new ActionRowBuilder().addComponents(nameButton, limitButton, bitrateButton, deleteButton);
@@ -300,9 +300,9 @@ async function handleConfigSubcommand(interaction, client) {
 
         if (!message || typeof message.createMessageComponentCollector !== 'function') {
             throw new TitanBotError(
-                'Failed to fetch interaction reply for collector setup',
+                'Selhání při načítání zprávy pro konfiguraci Join to Create',
                 ErrorTypes.DISCORD_API,
-                'Failed to open configuration controls. Please run `/jointocreate dashboard` again.'
+                'Selhání při otevírání konfiguračních ovládacích prvků. Prosím, spusťte `/jointocreate dashboard` znovu.'
             );
         }
 
@@ -317,7 +317,7 @@ async function handleConfigSubcommand(interaction, client) {
                 
                 if (!hasManageGuildPermission(buttonInteraction.member)) {
                     await buttonInteraction.reply({
-                        content: '❌ You need **Manage Server** permission to use these controls.',
+                        content: '❌ Potřebujete oprávnění **Spravovat server** pro použití těchto ovládacích prvků.',
                         flags: MessageFlags.Ephemeral
                     });
                     return;
@@ -362,7 +362,7 @@ async function handleConfigSubcommand(interaction, client) {
 
             message.edit({
                 components: [disabledRow],
-                embeds: [configEmbed.setFooter({ text: 'Configuration session expired. Run the command again to make changes.' })]
+                embeds: [configEmbed.setFooter({ text: 'Konfigurační relace vypršela. Spusťte příkaz znovu pro provedení změn.' })]
             }).catch(() => {});
         });
 
@@ -427,7 +427,7 @@ async function handleNameTemplateModal(interaction, triggerChannel, currentConfi
         // Recheck permissions
         if (!hasManageGuildPermission(modalSubmission.member)) {
             await modalSubmission.reply({
-                content: '❌ You need **Manage Server** permission to modify these settings.',
+                content: '❌ Potřebujete oprávnění **Spravovat server** pro úpravu těchto nastavení.',
                 flags: MessageFlags.Ephemeral
             });
             return;
@@ -496,7 +496,7 @@ async function handleUserLimitModal(interaction, triggerChannel, currentConfig, 
         // Recheck permissions
         if (!hasManageGuildPermission(modalSubmission.member)) {
             await modalSubmission.reply({
-                content: '❌ You need **Manage Server** permission to modify these settings.',
+                content: '❌ Potřebujete oprávnění **Spravovat server** pro úpravu těchto nastavení.',
                 flags: MessageFlags.Ephemeral
             });
             return;
@@ -565,7 +565,7 @@ async function handleBitrateModal(interaction, triggerChannel, currentConfig, cl
         // Recheck permissions
         if (!hasManageGuildPermission(modalSubmission.member)) {
             await modalSubmission.reply({
-                content: '❌ You need **Manage Server** permission to modify these settings.',
+                content: '❌ Potřebujete oprávnění **Spravovat server** pro úpravu těchto nastavení.',
                 flags: MessageFlags.Ephemeral
             });
             return;
@@ -638,7 +638,7 @@ async function handleChannelDeletion(interaction, triggerChannel, currentConfig,
                 // Recheck permissions
                 if (!hasManageGuildPermission(buttonInteraction.member)) {
                     await buttonInteraction.reply({
-                        content: '❌ You need **Manage Server** permission to remove channels.',
+                        content: '❌ Potřebujete oprávnění **Spravovat server** pro odstranění kanálů.',
                         flags: MessageFlags.Ephemeral
                     });
                     return;
