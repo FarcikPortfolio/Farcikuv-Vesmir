@@ -15,7 +15,7 @@ export default {
     data: new SlashCommandBuilder()
         .setName("gend")
         .setDescription(
-            "Ukončí existující giveaway pomocí ID zprávy. Ujistěte se, že zadáváte správné ID zprávy pro giveaway.",
+            "Ukončí existující giveaway pomocí ID zprávy.",
         )
         .addStringOption((option) =>
             option
