@@ -8,15 +8,15 @@ import { TitanBotError, ErrorTypes } from '../../utils/errorHandler.js';
 export default {
     data: new SlashCommandBuilder()
     .setName("kick")
-    .setDescription("Kick a user from the server")
+    .setDescription("Kickne člena ze serveru.")
     .addUserOption((option) =>
       option
         .setName("target")
-        .setDescription("The user to kick")
+        .setDescription("Uživatel, kterého chcete kicknout")
         .setRequired(true),
     )
     .addStringOption((option) =>
-      option.setName("reason").setDescription("Reason for the kick"),
+      option.setName("reason").setDescription("Důvod kicknutí"),
     )
 .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers),
   category: "moderation",
@@ -28,29 +28,29 @@ export default {
         throw new TitanBotError(
           "User lacks permission",
           ErrorTypes.PERMISSION,
-          "You do not have permission to kick members."
+          "Nemáte dostatečné oprávnění ke kicknutí členů."
         );
       }
 
       const targetUser = interaction.options.getUser("target");
       const member = interaction.options.getMember("target");
-      const reason = interaction.options.getString("reason") || "No reason provided";
+      const reason = interaction.options.getString("reason") || "Žádný důvod nebyl poskytnut";
 
       
       if (targetUser.id === interaction.user.id) {
         throw new TitanBotError(
-          "Cannot kick self",
+          "Nemůžete kicknout sami sebe",
           ErrorTypes.VALIDATION,
-          "You cannot kick yourself."
+          "Nemůžete kicknout sám sebe."
         );
       }
 
       
       if (targetUser.id === client.user.id) {
         throw new TitanBotError(
-          "Cannot kick bot",
+          "Nemůžete kicknout bota",
           ErrorTypes.VALIDATION,
-          "You cannot kick the bot."
+          "Nemůžete kicknout bota."
         );
       }
 
@@ -59,7 +59,7 @@ export default {
         throw new TitanBotError(
           "Target not found",
           ErrorTypes.USER_INPUT,
-          "The target user is not currently in this server.",
+          "Uživatel nebyl nalezen.",
           { subtype: 'user_not_found' }
         );
       }
@@ -69,7 +69,7 @@ export default {
         throw new TitanBotError(
           "Cannot kick user",
           ErrorTypes.PERMISSION,
-          "You cannot kick a user with an equal or higher role than you."
+          "Nemůžete kicknout uživatele se stejnou nebo vyšší rolí než máte vy."
         );
       }
 
@@ -78,7 +78,7 @@ export default {
         throw new TitanBotError(
           "Bot cannot kick",
           ErrorTypes.PERMISSION,
-          "I cannot kick this user. Please check my role position relative to the target user."
+          "Nemůžete kicknout tohoto uživatele. Prosím, zkontrolujte pozici své role vzhledem k cílovému uživateli."
         );
       }
 
@@ -90,7 +90,7 @@ export default {
         client,
         guild: interaction.guild,
         event: {
-          action: "Member Kicked",
+          action: "Uživatel kicknut",
           target: `${targetUser.tag} (${targetUser.id})`,
           executor: `${interaction.user.tag} (${interaction.user.id})`,
           reason,
@@ -105,8 +105,8 @@ export default {
       await InteractionHelper.universalReply(interaction, {
         embeds: [
           successEmbed(
-            `👢 **Kicked** ${targetUser.tag}`,
-            `**Reason:** ${reason}\n**Case ID:** #${caseId}`,
+            `👢 **Kicknut** ${targetUser.tag}`,
+            `**Důvod:** ${reason}\n**ID případu:** #${caseId}`,
           ),
         ],
       });
@@ -114,7 +114,7 @@ export default {
       logger.error('Kick command error:', error);
       const errorEmbed_default = errorEmbed(
         "An unexpected error occurred while trying to kick the user.",
-        error.message || "Could not kick the user"
+        error.message || "Nepodařilo se kicknout uživatele z důvodu neočekávané chyby."
       );
       await InteractionHelper.universalReply(interaction, { embeds: [errorEmbed_default] });
     }

@@ -8,22 +8,22 @@ import { InteractionHelper } from '../../utils/interactionHelper.js';
 export default {
     data: new SlashCommandBuilder()
         .setName("massban")
-        .setDescription("Ban multiple users from the server at once")
+        .setDescription("Zabanovat více uživatelů najednou. (Max 20 uživatelů)")
         .addStringOption(option =>
             option
                 .setName("users")
-                .setDescription("User IDs or mentions to ban (separated by spaces or commas)")
+                .setDescription("Uživatelé k zabanování (ID nebo zmínky, oddělené mezerou nebo čárkou, max 20)")
                 .setRequired(true)
         )
         .addStringOption(option =>
             option.setName("reason")
-                .setDescription("Reason for the mass ban")
+                .setDescription("Důvod pro hromadné zabanování")
                 .setRequired(false)
         )
         .addIntegerOption(option =>
             option
                 .setName("delete_days")
-                .setDescription("Number of days of messages to delete (0-7)")
+                .setDescription("Počet dní zpráv k odstranění (0-7)")
                 .setMinValue(0)
                 .setMaxValue(7)
                 .setRequired(false)
@@ -47,14 +47,14 @@ export default {
                 embeds: [
                     errorEmbed(
                         "Permission Denied",
-                        "You do not have permission to ban members."
+                        "Nemáte oprávnění zabanovat uživatele."
                     ),
                 ],
             });
         }
 
         const usersInput = interaction.options.getString("users");
-        const reason = interaction.options.getString("reason") || "Mass ban - No reason provided";
+        const reason = interaction.options.getString("reason") || "Mass Ban - Žádný důvod nebyl poskytnut";
         const deleteDays = interaction.options.getInteger("delete_days") || 0;
 
         try {
@@ -65,8 +65,8 @@ export default {
                 return await InteractionHelper.safeEditReply(interaction, {
                     embeds: [
                         warningEmbed(
-                            "You're performing mass bans too fast. Please wait a minute before trying again.",
-                            "⏳ Rate Limited"
+                            "Provádíte hromadná zabanování příliš rychle. Počkejte prosím minutu před dalším pokusem.",
+                            "⏳ Omezení rychlosti"
                         ),
                     ],
                     flags: MessageFlags.Ephemeral,
@@ -83,8 +83,8 @@ export default {
                 return await InteractionHelper.safeEditReply(interaction, {
                     embeds: [
                         errorEmbed(
-                            "Invalid Users",
-                            "Please provide valid user IDs or mentions. Maximum 20 users at once."
+                            "Neplatný uživatel",
+                            "Prosím zadejte platné ID uživatele nebo zmínky (max 20)."
                         ),
                     ],
                 });
@@ -94,8 +94,8 @@ export default {
                 return await InteractionHelper.safeEditReply(interaction, {
                     embeds: [
                         errorEmbed(
-                            "Cannot Ban Self",
-                            "You cannot include yourself in a mass ban."
+                            "Nemůžete zabanovat sám sebe",
+                            "Nemůžete zahrnout sám sebe do hromadného zabanování."
                         ),
                     ],
                 });
@@ -105,8 +105,8 @@ export default {
                 return await InteractionHelper.safeEditReply(interaction, {
                     embeds: [
                         errorEmbed(
-                            "Cannot Ban Bot",
-                            "You cannot include the bot in a mass ban."
+                            "Nemůžete zabanovat bota",
+                            "Nemůžete zahrnout bota do hromadného zabanování."
                         ),
                     ],
                 });

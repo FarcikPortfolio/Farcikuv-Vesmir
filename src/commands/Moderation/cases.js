@@ -6,27 +6,27 @@ import { InteractionHelper } from '../../utils/interactionHelper.js';
 export default {
     data: new SlashCommandBuilder()
         .setName('cases')
-        .setDescription('View moderation cases and audit logs')
+        .setDescription('Zobrazit seznam moderátorských logů pro tento server.')
         .setDefaultMemberPermissions(PermissionFlagsBits.ViewAuditLog)
         .setDMPermission(false)
         .addStringOption(option =>
             option.setName('filter')
-                .setDescription('Filter cases by type or user')
+                .setDescription('Filtrovat případy podle typu akce')
                 .addChoices(
-                    { name: 'All Cases', value: 'all' },
-                    { name: 'Bans', value: 'Member Banned' },
-                    { name: 'Kicks', value: 'Member Kicked' },
-                    { name: 'Timeouts', value: 'Member Timed Out' },
-                    { name: 'Warnings', value: 'User Warned' }
+                    { name: 'Všechny případy', value: 'all' },
+                    { name: 'Bany', value: 'Member Banned' },
+                    { name: 'Kicknutí', value: 'Member Kicked' },
+                    { name: 'TimeOuty', value: 'Member Timed Out' },
+                    { name: 'Varování', value: 'User Warned' }
                 )
         )
         .addUserOption(option =>
             option.setName('user')
-                .setDescription('Filter cases by specific user')
+                .setDescription('Filtrovat případy podle konkrétního uživatele')
         )
         .addIntegerOption(option =>
             option.setName('limit')
-                .setDescription('Number of cases to show (default: 10)')
+                .setDescription('Počet případů k zobrazení (výchozí: 10)')
                 .setMinValue(1)
                 .setMaxValue(50)
         ),
@@ -73,7 +73,7 @@ export default {
 
                 const embed = createEmbed({
                     title: '📋 Moderation Cases',
-                    description: `Showing moderation cases for **${interaction.guild.name}**\n\n**Page ${page} of ${totalPages}**`
+                    description: `Zobrazují se moderátorské případy pro **${interaction.guild.name}**\n\n**Strana ${page} z ${totalPages}**`
                 });
 
                 pageCases.forEach(case_ => {
@@ -81,14 +81,14 @@ export default {
                     const time = new Date(case_.createdAt).toLocaleTimeString();
                     
                     embed.addFields({
-                        name: `Case #${case_.caseId} - ${case_.action}`,
-                        value: `**Target:** ${case_.target}\n**Moderator:** ${case_.executor}\n**Date:** ${date} at ${time}\n**Reason:** ${case_.reason || 'No reason provided'}`,
+                        name: `Případ #${case_.caseId} - ${case_.action}`,
+                        value: `**Cíl:** ${case_.target}\n**Moderátor:** ${case_.executor}\n**Datum:** ${date} v ${time}\n**Důvod:** ${case_.reason || 'Žádný důvod nebyl poskytnut.'}`,
                         inline: false
                     });
                 });
 
                 embed.setFooter({
-                    text: `Total cases: ${cases.length} | Filter: ${filterType}${targetUser ? ` | User: ${targetUser.tag}` : ''}`
+                    text: `Celkem případů: ${cases.length} | Filtr: ${filterType}${targetUser ? ` | Uživatel: ${targetUser.tag}` : ''}`
                 });
 
                 return embed;
@@ -99,19 +99,19 @@ export default {
                 
                 const prevButton = new ButtonBuilder()
                     .setCustomId('prev_page')
-                    .setLabel('⬅️ Previous')
+                    .setLabel('⬅️ Předchozí')
                     .setStyle(ButtonStyle.Secondary)
                     .setDisabled(page === 1);
 
                 const pageInfoButton = new ButtonBuilder()
                     .setCustomId('page_info')
-                    .setLabel(`Page ${page}/${totalPages}`)
+                    .setLabel(`Strana ${page}/${totalPages}`)
                     .setStyle(ButtonStyle.Primary)
                     .setDisabled(true);
 
                 const nextButton = new ButtonBuilder()
                     .setCustomId('next_page')
-                    .setLabel('Next ➡️')
+                    .setLabel('Další ➡️')
                     .setStyle(ButtonStyle.Secondary)
                     .setDisabled(page === totalPages);
 
@@ -134,7 +134,7 @@ time: 120000
 
                 if (buttonInteraction.user.id !== interaction.user.id) {
                     await buttonInteraction.followUp({
-                        content: 'You cannot use these buttons. Run `/cases` to get your own case view.',
+                        content: 'Nemůžete ovládat tuto navigaci. Použijte příkaz `/cases` pro zobrazení vlastních případů.',
                         flags: MessageFlags.Ephemeral
                     });
                     return;

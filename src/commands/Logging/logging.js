@@ -10,44 +10,44 @@ import filter from './modules/logging_filter.js';
 export default {
     data: new SlashCommandBuilder()
         .setName('logging')
-        .setDescription('Manage audit logging for this server.')
+        .setDescription('Spravovat nastavení protokolování pro tento server.')
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
         .setDMPermission(false)
         .addSubcommand((subcommand) =>
             subcommand
                 .setName('dashboard')
-                .setDescription('Open the interactive logging dashboard — view status and toggle event categories.'),
+                .setDescription('Otevřít interaktivní nástěnku pro správu protokolování.'),
         )
         .addSubcommand((subcommand) =>
             subcommand
                 .setName('setchannel')
-                .setDescription('Set the audit log channel for this server.')
+                .setDescription('Nastavit textový kanál pro auditní protokolování, nebo jej zakázat.')
                 .addChannelOption((option) =>
                     option
                         .setName('channel')
-                        .setDescription('The text channel for audit logs.')
+                        .setDescription('Kanál, který chcete nastavit pro auditní protokolování.')
                         .addChannelTypes(ChannelType.GuildText)
                         .setRequired(false),
                 )
                 .addBooleanOption((option) =>
                     option
                         .setName('disable')
-                        .setDescription('Set to True to disable audit logging entirely.')
+                        .setDescription('Nastavit auditní protokolování na žádný kanál.')
                         .setRequired(false),
                 ),
         )
         .addSubcommandGroup((group) =>
             group
                 .setName('filter')
-                .setDescription('Manage the log ignore list (users and channels to skip).')
+                .setDescription('Spravovat seznam ignorovaných protokolů.')
                 .addSubcommand((subcommand) =>
                     subcommand
                         .setName('add')
-                        .setDescription('Add a user or channel to the log ignore list.')
+                        .setDescription('Přidat uživatele nebo kanál do seznamu ignorovaných protokolů.')
                         .addStringOption((option) =>
                             option
                                 .setName('type')
-                                .setDescription('Whether to ignore a user or channel.')
+                                .setDescription('Zda ignorovat uživatele nebo kanál.')
                                 .setRequired(true)
                                 .addChoices(
                                     { name: 'User', value: 'user' },
@@ -57,18 +57,18 @@ export default {
                         .addStringOption((option) =>
                             option
                                 .setName('id')
-                                .setDescription('The ID of the user or channel to ignore.')
+                                .setDescription('ID uživatele, který chcete přidat do seznamu ignorovaných protokolů.')
                                 .setRequired(true),
                         ),
                 )
                 .addSubcommand((subcommand) =>
                     subcommand
                         .setName('remove')
-                        .setDescription('Remove a user or channel from the log ignore list.')
+                        .setDescription('Odstranit uživatele nebo kanál ze seznamu ignorovaných protokolů.')
                         .addStringOption((option) =>
                             option
                                 .setName('type')
-                                .setDescription('Whether this is a user or channel.')
+                                .setDescription('Zda odstranit uživatele nebo kanál.')
                                 .setRequired(true)
                                 .addChoices(
                                     { name: 'User', value: 'user' },
@@ -78,7 +78,7 @@ export default {
                         .addStringOption((option) =>
                             option
                                 .setName('id')
-                                .setDescription('The ID of the user or channel to remove from the ignore list.')
+                                .setDescription('ID uživatele, který chcete odstranit ze seznamu ignorovaných protokolů.')
                                 .setRequired(true),
                         ),
                 ),

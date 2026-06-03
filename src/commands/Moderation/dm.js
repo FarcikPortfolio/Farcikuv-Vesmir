@@ -8,23 +8,23 @@ import { InteractionHelper } from '../../utils/interactionHelper.js';
 export default {
     data: new SlashCommandBuilder()
         .setName("dm")
-        .setDescription("Send a direct message to a user (Staff only)")
+        .setDescription("Pošle soukromou zprávu uživateli. (Staff only)")
         .addUserOption(option =>
             option
                 .setName("user")
-                .setDescription("The user to send a DM to")
+                .setDescription("Uživatel, kterému chcete poslat zprávu.")
                 .setRequired(true)
         )
         .addStringOption(option =>
             option
                 .setName("message")
-                .setDescription("The message to send")
+                .setDescription("Zpráva, kterou chcete odeslat")
                 .setRequired(true)
         )
         .addBooleanOption(option =>
             option
                 .setName("anonymous")
-                .setDescription("Send the message anonymously (default: false)")
+                .setDescription("Odeslat zprávu anonymně (výchozí: false)")
                 .setRequired(false)
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
@@ -52,8 +52,8 @@ export default {
                 return await InteractionHelper.safeEditReply(interaction, {
                     embeds: [
                         errorEmbed(
-                            "Message Too Long",
-                            "Messages must be under 2000 characters."
+                            "Zpráva je příliš dlouhá",
+                            "Zopráva nesmí být delší než 2000 znaků."
                         ),
                     ],
                     flags: MessageFlags.Ephemeral,
@@ -65,8 +65,8 @@ export default {
                 return await InteractionHelper.safeEditReply(interaction, {
                     embeds: [
                         errorEmbed(
-                            "Cannot DM Bot",
-                            "You cannot send DMs to bot accounts."
+                            "Nemůžete poslat DM botům",
+                            "Nemůžete poslat soukromé zprávy botům."
                         ),
                     ],
                     flags: MessageFlags.Ephemeral,
@@ -81,10 +81,10 @@ export default {
             await dmChannel.send({
                 embeds: [
                     successEmbed(
-                        anonymous ? "Message from the Staff Team" : `Message from ${interaction.user.tag}`,
+                        anonymous ? "Zpráva od moderátora" : `Zpráva od ${interaction.user.tag}`,
                         sanitized
                     ).setFooter({
-                        text: `You cannot reply to this message. | Logger ID: ${interaction.id}`
+                        text: `Nemůžete odpovídat na tuto zprávu. | Logger ID: ${interaction.id}`
                     })
                 ]
             });

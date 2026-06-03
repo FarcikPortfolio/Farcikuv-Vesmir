@@ -9,7 +9,7 @@ export default {
     data: new SlashCommandBuilder()
     .setName("lock")
     .setDescription(
-      "Locks the current channel (prevents @everyone from sending messages).",
+      "Uzamkne aktuální kanál pro všechny kromě Moderátorů.",
     )
 .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels),
   category: "moderation",
@@ -30,7 +30,7 @@ export default {
         embeds: [
           errorEmbed(
             "Permission Denied",
-            "You need the `Manage Channels` permission to lock channels.",
+            "Potřebujete oprávnění `Manage Channels` pro uzamčení kanálů.",
           ),
         ],
       });
@@ -44,8 +44,8 @@ export default {
         return await InteractionHelper.safeEditReply(interaction, {
           embeds: [
             errorEmbed(
-              "Channel Already Locked",
-              `${channel} is already locked.`,
+              "Kanál je již uzamčen",
+              `${channel} je již uzamčen pro všechny kromě Moderátorů.`,
             ),
           ],
         });
@@ -54,11 +54,11 @@ export default {
       await channel.permissionOverwrites.edit(
         everyoneRole,
         { SendMessages: false },
-{ type: 0, reason: `Channel locked by ${interaction.user.tag}` },
+{ type: 0, reason: `Kanál uzamčen uživatelem ${interaction.user.tag}` },
       );
 
       const lockEmbed = createEmbed(
-        "🔒 Channel Locked (Action Log)",
+        "🔒 Kanál uzamčen (Log akcí)",
         `${channel} has been locked down by ${interaction.user}.`,
       )
 .setColor(getColor('moderation'))
@@ -75,7 +75,7 @@ export default {
         client,
         guild: interaction.guild,
         event: {
-          action: "Channel Locked",
+          action: "Kanál uzamčen",
           target: channel.toString(),
           executor: `${interaction.user.tag} (${interaction.user.id})`,
           metadata: {
@@ -89,8 +89,8 @@ export default {
       await InteractionHelper.safeEditReply(interaction, {
         embeds: [
           successEmbed(
-            `🔒 **Channel Locked**`,
-            `${channel} is now locked down. No one can speak here now.`,
+            `🔒 **Kanál uzamčen**`,
+            `${channel} je nyní uzamčen. Nikdo sem nemůže psát.`,
           ),
         ],
       });

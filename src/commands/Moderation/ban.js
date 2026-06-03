@@ -8,15 +8,15 @@ import { handleInteractionError } from '../../utils/errorHandler.js';
 export default {
     data: new SlashCommandBuilder()
         .setName("ban")
-        .setDescription("Ban a user from the server")
+        .setDescription("Zabanovat uživatele ze serveru.")
         .addUserOption((option) =>
             option
                 .setName("target")
-                .setDescription("The user to ban")
+                .setDescription("Uživatel k zabanování")
                 .setRequired(true),
         )
         .addStringOption((option) =>
-            option.setName("reason").setDescription("Reason for the ban"),
+            option.setName("reason").setDescription("Důvod banu"),
         )
 .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers),
     category: "moderation",
@@ -27,10 +27,10 @@ export default {
             const reason = interaction.options.getString("reason") || "No reason provided";
 
             if (user.id === interaction.user.id) {
-                throw new Error("You cannot ban yourself.");
+                throw new Error("Nemůžete zabanovat sami sebe.");
             }
             if (user.id === client.user.id) {
-                throw new Error("You cannot ban the bot.");
+                throw new Error("Nemůžete zabanovat bota.");
             }
 
             
@@ -44,8 +44,8 @@ export default {
             await InteractionHelper.universalReply(interaction, {
                 embeds: [
                     successEmbed(
-                        `🚫 **Banned** ${user.tag}`,
-                        `**Reason:** ${reason}\n**Case ID:** #${result.caseId}`,
+                        `🚫 **Zabanován** ${user.tag}`,
+                        `**Důvod:** ${reason}\n**ID banu:** #${result.caseId}`,
                     ),
                 ],
             });

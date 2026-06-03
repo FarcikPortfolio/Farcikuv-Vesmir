@@ -8,16 +8,16 @@ import { InteractionHelper } from '../../utils/interactionHelper.js';
 export default {
     data: new SlashCommandBuilder()
         .setName("unban")
-        .setDescription("Unban a user from the server")
+        .setDescription("Odbanovat uživatele ze serveru.")
         .addUserOption(option =>
             option
                 .setName("target")
-                .setDescription("The user to unban (can be ID or mention)")
+                .setDescription("Uživatel k odbanování.")
                 .setRequired(true)
         )
         .addStringOption(option =>
             option.setName("reason")
-                .setDescription("Reason for the unban")
+                .setDescription("Důvod odbanování.")
                 .setRequired(false)
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers),
@@ -49,8 +49,8 @@ export default {
                 await InteractionHelper.safeEditReply(interaction, {
                     embeds: [
                         successEmbed(
-                            "✅ User Unbanned",
-                            `Successfully unbanned **${targetUser.tag}** from the server.\n\n**Reason:** ${reason}\n**Case ID:** #${result.caseId}`
+                            "✅ Uživatel odbanován",
+                            `Úspěšně odbanován **${targetUser.tag}** ze serveru.\n\n**Důvod:** ${reason}\n**ID banu:** #${result.caseId}`
                         )
                     ]
                 });
