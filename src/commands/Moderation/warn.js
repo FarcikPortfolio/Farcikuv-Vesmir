@@ -8,18 +8,18 @@ import { InteractionHelper } from '../../utils/interactionHelper.js';
 export default {
     data: new SlashCommandBuilder()
         .setName("warn")
-        .setDescription("Warn a user")
+        .setDescription("Upozornit uživatele a zaznamenat varování do databáze")
         .addUserOption((o) =>
             o
                 .setName("target")
                 .setRequired(true)
-                .setDescription("User to warn"),
+                .setDescription("Uživatel, kterého chcete upozornit"),
         )
         .addStringOption((o) =>
             o
                 .setName("reason")
                 .setRequired(true)
-                .setDescription("Reason for the warning"),
+                .setDescription("Důvod upozornění"),
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers),
     category: "moderation",
@@ -37,7 +37,7 @@ export default {
 
         try {
                 if (!interaction.member.permissions.has(PermissionFlagsBits.ModerateMembers)) {
-                    throw new Error("You need the `Moderate Members` permission to issue warnings.");
+                    throw new Error("Nemáte oprávnění k vydávání upozornění.");
                 }
 
                 const target = interaction.options.getUser("target");
@@ -47,7 +47,7 @@ export default {
                 const guildId = interaction.guildId;
 
                 if (!member) {
-                    throw new Error("The target user is not currently in this server.");
+                    throw new Error("Uživatel není aktuálně v tomto serveru.");
                 }
 
                 
@@ -60,7 +60,7 @@ export default {
                 });
 
                 if (!result.success) {
-                    throw new Error("Failed to store warning in database");
+                    throw new Error("Nepodařilo se přidat varování do databáze.");
                 }
 
                 const totalWarns = result.totalCount;
@@ -69,7 +69,7 @@ export default {
                     client,
                     guild: interaction.guild,
                     event: {
-                        action: "User Warned",
+                        action: "Uživatel upozorněn",
                         target: `${target.tag} (${target.id})`,
                         executor: `${moderator.tag} (${moderator.id})`,
                         reason,
@@ -86,8 +86,8 @@ export default {
                 await InteractionHelper.safeEditReply(interaction, {
                     embeds: [
                         successEmbed(
-                            `⚠️ **Warned** ${target.tag}`,
-                            `**Reason:** ${reason}\n**Total Warns:** ${totalWarns}`,
+                            `⚠️ **Upozorněn** ${target.tag}`,
+                            `**Důvod:** ${reason}\n**Celkem upozornění:** ${totalWarns}`,
                         ),
                     ],
                 });

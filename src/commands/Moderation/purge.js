@@ -9,11 +9,11 @@ import { InteractionHelper } from '../../utils/interactionHelper.js';
 export default {
     data: new SlashCommandBuilder()
     .setName("purge")
-    .setDescription("Delete a specific amount of messages")
+    .setDescription("Smazat více zpráv najednou (1-100)")
     .addIntegerOption((option) =>
       option
         .setName("amount")
-        .setDescription("Number of messages (1-100)")
+        .setDescription("Počet zpráv (1-100)")
         .setRequired(true),
     )
 .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages),
@@ -34,8 +34,8 @@ export default {
       return await InteractionHelper.safeEditReply(interaction, {
         embeds: [
           errorEmbed(
-            "Permission Denied",
-            "You need the `Manage Messages` permission to purge messages.",
+            "Oprávnění zamítnuto",
+            "Potřebujete oprávnění `Spravovat zprávy` pro smazání zpráv.",
           ),
         ],
       });
@@ -47,8 +47,8 @@ export default {
       return await InteractionHelper.safeEditReply(interaction, {
         embeds: [
           errorEmbed(
-            "Invalid Amount",
-            "Please specify a number between 1 and 100.",
+            "Neplatný počet",
+            "Prosím zadejte číslo mezi 1 a 100 pro počet zpráv ke smazání.",
           ),
         ],
       });
@@ -61,8 +61,8 @@ export default {
         return await InteractionHelper.safeEditReply(interaction, {
           embeds: [
             warningEmbed(
-              "You're purging messages too fast. Please wait a minute before trying again.",
-              "⏳ Rate Limited"
+              "Příliš rychlé mazání zpráv. Počkejte prosím minutu před dalším pokusem.",
+              "⏳ Omezeno"
             ),
           ],
           flags: MessageFlags.Ephemeral,
@@ -74,7 +74,7 @@ export default {
       const deletedCount = deleted.size;
 
       const purgeEmbed = createEmbed(
-        "🗑️ Messages Purged (Action Log)",
+        "🗑️ Smazané zprávy",
         `${deletedCount} messages were deleted by ${interaction.user}.`,
       )
 .setColor(getColor('moderation'))
@@ -107,7 +107,7 @@ export default {
 
       await InteractionHelper.safeEditReply(interaction, {
         embeds: [
-          successEmbed(`🗑️ Deleted ${deletedCount} messages in ${channel}.`),
+          successEmbed(`🗑️ Smazané ${deletedCount} zprávy v ${channel}.`),
         ],
 flags: MessageFlags.Ephemeral,
       });

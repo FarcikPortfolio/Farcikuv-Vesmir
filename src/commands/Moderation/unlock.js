@@ -9,7 +9,7 @@ export default {
     data: new SlashCommandBuilder()
         .setName("unlock")
         .setDescription(
-            "Unlocks the current channel (allows @everyone to send messages again).",
+            "Odemkne aktuální kanál (povolí @everyone posílat zprávy znovu).",
         )
 .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels),
     category: "moderation",
@@ -33,8 +33,8 @@ export default {
             return await InteractionHelper.safeEditReply(interaction, {
                 embeds: [
                     errorEmbed(
-                        "Permission Denied",
-                        "You need the `Manage Channels` permission to unlock channels.",
+                        "Oprávnění zamítnuto",
+                        "Potřebujete oprávnění `Spravovat kanály` pro odemknutí kanálů.",
                     ),
                 ],
             });
@@ -53,8 +53,8 @@ export default {
                 return await InteractionHelper.safeEditReply(interaction, {
                     embeds: [
                         errorEmbed(
-                            "Channel Already Unlocked",
-                            `${channel} is not explicitly locked (everyone can already send messages).`,
+                            "Kanál již je odemčen",
+                            `${channel} není explicitně uzamčen (všichni již mohou posílat zprávy).`,
                         ),
                     ],
                 });
@@ -70,7 +70,7 @@ export default {
             );
 
             const unlockEmbed = createEmbed(
-                "🔓 Channel Unlocked (Action Log)",
+                "🔓 Kanál odemčen (Action Log)",
                 `${channel} has been unlocked by ${interaction.user}.`,
             )
 .setColor(getColor('success'))
@@ -104,8 +104,8 @@ export default {
             await InteractionHelper.safeEditReply(interaction, {
                 embeds: [
                     successEmbed(
-                        `🔓 **Channel Unlocked**`,
-                        `${channel} is now unlocked. You may speak now.`,
+                        `🔓 **Kanál odemčen**`,
+                        `${channel} je nyní odemčen. Můžete psát zprávy.`,
                     ),
                 ],
             });

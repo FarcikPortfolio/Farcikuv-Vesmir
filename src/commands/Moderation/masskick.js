@@ -8,16 +8,16 @@ import { InteractionHelper } from '../../utils/interactionHelper.js';
 export default {
     data: new SlashCommandBuilder()
         .setName("masskick")
-        .setDescription("Kick multiple users from the server at once")
+        .setDescription("Kicknet více uživatelů najednou. (Max 20 uživatelů)")
         .addStringOption(option =>
             option
                 .setName("users")
-                .setDescription("User IDs or mentions to kick (separated by spaces or commas)")
+                .setDescription("Uživatelé ke kicknutí (ID nebo zmínky, oddělené mezerou nebo čárkou, max 20)")
                 .setRequired(true)
         )
         .addStringOption(option =>
             option.setName("reason")
-                .setDescription("Reason for the mass kick")
+                .setDescription("Důvod pro hromadné vyhození")
                 .setRequired(false)
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers),
@@ -38,8 +38,8 @@ export default {
             return await InteractionHelper.safeEditReply(interaction, {
                 embeds: [
                     errorEmbed(
-                        "Permission Denied",
-                        "You do not have permission to kick members."
+                        "Oprávnění zamítnuto",
+                        "Nemáte oprávnění k vyhození uživatelů."
                     ),
                 ],
             });
@@ -56,8 +56,8 @@ export default {
                 return await InteractionHelper.safeEditReply(interaction, {
                     embeds: [
                         warningEmbed(
-                            "You're performing mass kicks too fast. Please wait a minute before trying again.",
-                            "⏳ Rate Limited"
+                            "Příliš rychlé hromadné vyhození. Počkejte prosím minutu před dalším pokusem.",
+                            "⏳ Omezeno"
                         ),
                     ],
                     flags: MessageFlags.Ephemeral,
@@ -85,8 +85,8 @@ export default {
                 return await InteractionHelper.safeEditReply(interaction, {
                     embeds: [
                         errorEmbed(
-                            "Cannot Kick Self",
-                            "You cannot include yourself in a mass kick."
+                            "Nemůžete zahrnout sebe do hromadného vyhození.",
+                            "Nemůžete vyhodit sám sebe."
                         ),
                     ],
                 });
@@ -96,8 +96,8 @@ export default {
                 return await InteractionHelper.safeEditReply(interaction, {
                     embeds: [
                         errorEmbed(
-                            "Cannot Kick Bot",
-                            "You cannot include the bot in a mass kick."
+                            "Nemůžete vyhodit bota",
+                            "Nemůžete zahrnout bota do hromadného vyhození."
                         ),
                     ],
                 });

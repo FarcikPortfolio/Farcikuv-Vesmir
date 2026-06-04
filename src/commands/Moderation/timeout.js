@@ -7,34 +7,34 @@ import { TitanBotError, ErrorTypes } from '../../utils/errorHandler.js';
 
 import { InteractionHelper } from '../../utils/interactionHelper.js';
 const durationChoices = [
-    { name: "5 minutes", value: 5 },
-    { name: "10 minutes", value: 10 },
-    { name: "30 minutes", value: 30 },
-    { name: "1 hour", value: 60 },
-    { name: "6 hours", value: 360 },
-    { name: "1 day", value: 1440 },
-    { name: "1 week", value: 10080 },
+    { name: "5 minut", value: 5 },
+    { name: "10 minut", value: 10 },
+    { name: "30 minut", value: 30 },
+    { name: "1 hodina", value: 60 },
+    { name: "6 hodin", value: 360 },
+    { name: "1 den", value: 1440 },
+    { name: "1 týden", value: 10080 },
 ];
 export default {
     data: new SlashCommandBuilder()
         .setName("timeout")
-        .setDescription("Timeout a user for a specific duration.")
+        .setDescription("Umlčet uživatele na určitou dobu")
         .addUserOption((option) =>
             option
                 .setName("target")
-                .setDescription("User to timeout")
+                .setDescription("Uživatel k umlčení")
                 .setRequired(true),
         )
         .addIntegerOption(
             (option) =>
                 option
                     .setName("duration")
-                    .setDescription("Duration of the timeout")
+                    .setDescription("Délka umlčení")
                     .setRequired(true)
 .addChoices(...durationChoices),
         )
         .addStringOption((option) =>
-            option.setName("reason").setDescription("Reason for the timeout"),
+            option.setName("reason").setDescription("Důvod umlčení"),
         )
 .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers),
     category: "moderation",
@@ -53,9 +53,9 @@ export default {
         try {
             if (!interaction.member.permissions.has(PermissionFlagsBits.ModerateMembers)) {
                 throw new TitanBotError(
-                    "User lacks permission",
+                    "Uživatel nemá oprávnění",
                     ErrorTypes.PERMISSION,
-                    "You need the `Moderate Members` permission to set a timeout."
+                    "Potřebujete oprávnění `Umlčet členy` pro použití tohoto příkazu."
                 );
             }
 
@@ -66,31 +66,31 @@ export default {
 
             if (targetUser.id === interaction.user.id) {
                 throw new TitanBotError(
-                    "Cannot timeout self",
+                    "Nemůžete umlčet sám sebe",
                     ErrorTypes.VALIDATION,
-                    "You cannot timeout yourself."
+                    "Nemůžete umlčet sám sebe."
                 );
             }
             if (targetUser.id === client.user.id) {
                 throw new TitanBotError(
-                    "Cannot timeout bot",
+                    "Nemůžete umlčet bota",
                     ErrorTypes.VALIDATION,
-                    "You cannot timeout the bot."
+                    "Nemůžete umlčet bota."
                 );
             }
             if (!member) {
                 throw new TitanBotError(
-                    "Target not found",
+                    "Člen nenalezen",
                     ErrorTypes.USER_INPUT,
-                    "The target user is not currently in this server."
+                    "Člen nenalezen. Ujistěte se, že jste zadali správného uživatele."
                 );
             }
 
             if (!member.moderatable) {
                 throw new TitanBotError(
-                    "Cannot timeout member",
+                    "Nelze umlčet člena",
                     ErrorTypes.PERMISSION,
-                    "I cannot timeout this user. They might have a higher role than me or you."
+                    "Nemohu umlčet tohoto uživatele. Může mít vyšší roli než vy."
                 );
             }
 
@@ -122,8 +122,8 @@ export default {
             await InteractionHelper.safeEditReply(interaction, {
                 embeds: [
                     successEmbed(
-                        `⏳ **Timed out** ${targetUser.tag} for ${durationDisplay}.`,
-                        `**Reason:** ${reason}\n**Case ID:** #${caseId}`,
+                        `⏳ **Umlčen** ${targetUser.tag} na ${durationDisplay}.`,
+                        `**Důvod:** ${reason}\n**ID případu:** #${caseId}`,
                     ),
                 ],
             });

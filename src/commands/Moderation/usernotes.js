@@ -30,28 +30,28 @@ export default {
         .addSubcommand(subcommand =>
             subcommand
                 .setName("add")
-                .setDescription("Add a note to a user")
+                .setDescription("Přidat poznámku pro uživatele")
                 .addUserOption(option =>
                     option
                         .setName("target")
-                        .setDescription("The user to add a note for")
+                        .setDescription("Uživatel, kterému chcete přidat poznámku")
                         .setRequired(true)
                 )
                 .addStringOption(option =>
                     option
                         .setName("note")
-                        .setDescription("The note to add")
+                        .setDescription("Poznámka, kterou chcete přidat (max 1000 znaků)")
                         .setRequired(true)
                 )
                 .addStringOption(option =>
                     option
                         .setName("type")
-                        .setDescription("Type of note")
+                        .setDescription("Typ poznámky")
                         .addChoices(
-                            { name: "Warning", value: "warning" },
-                            { name: "Positive", value: "positive" },
-                            { name: "Neutral", value: "neutral" },
-                            { name: "Alert", value: "alert" }
+                            { name: "Varování", value: "warning" },
+                            { name: "Pozitivní", value: "positive" },
+                            { name: "Neutrální", value: "neutral" },
+                            { name: "Upozornění", value: "alert" }
                         )
                         .setRequired(false)
                 )
@@ -59,28 +59,28 @@ export default {
         .addSubcommand(subcommand =>
             subcommand
                 .setName("view")
-                .setDescription("View notes for a user")
+                .setDescription("Zobrazit poznámky o uživateli")
                 .addUserOption(option =>
                     option
                         .setName("target")
-                        .setDescription("The user to view notes for")
+                        .setDescription("Uživatel, jehož poznámky chcete zobrazit")
                         .setRequired(true)
                 )
         )
         .addSubcommand(subcommand =>
             subcommand
                 .setName("remove")
-                .setDescription("Remove a specific note from a user")
+                .setDescription("Odebrat konkrétní poznámku o uživateli")
                 .addUserOption(option =>
                     option
                         .setName("target")
-                        .setDescription("The user to remove a note from")
+                        .setDescription("Uživatel, od kterého chcete odebrat poznámku")
                         .setRequired(true)
                 )
                 .addIntegerOption(option =>
                     option
                         .setName("index")
-                        .setDescription("The index of the note to remove")
+                        .setDescription("Index poznámky, kterou chcete odebrat")
                         .setRequired(true)
                         .setMinValue(1)
                 )
@@ -88,11 +88,11 @@ export default {
         .addSubcommand(subcommand =>
             subcommand
                 .setName("clear")
-                .setDescription("Clear all notes for a user")
+                .setDescription("Smazat všechny poznámky o uživateli")
                 .addUserOption(option =>
                     option
                         .setName("target")
-                        .setDescription("The user to clear notes for")
+                        .setDescription("Uživatel, jehož poznámky chcete smazat")
                         .setRequired(true)
                 )
         )
@@ -104,8 +104,8 @@ export default {
             return InteractionHelper.safeReply(interaction, {
                 embeds: [
                     errorEmbed(
-                        "Permission Denied",
-                        "You do not have permission to manage user notes."
+                        "Oprávnění zamítnuto",
+                        "Nemáte oprávnění k správě zpráv pro použití tohoto příkazu."
                     ),
                 ],
             });
@@ -119,8 +119,8 @@ export default {
             return InteractionHelper.safeReply(interaction, {
                 embeds: [
                     errorEmbed(
-                        "Invalid Subcommand",
-                        "Please select a valid subcommand."
+                        "Neplatný podpříkaz",
+                        "Prosím vyberte platný podpříkaz."
                     ),
                 ],
             });
@@ -146,8 +146,8 @@ export default {
                     return InteractionHelper.safeReply(interaction, {
                         embeds: [
                             errorEmbed(
-                                "Invalid Subcommand",
-                                "Please select a valid subcommand."
+                                "Neplatný podpříkaz",
+                                "Prosím vyberte platný podpříkaz."
                             ),
                         ],
                     });
