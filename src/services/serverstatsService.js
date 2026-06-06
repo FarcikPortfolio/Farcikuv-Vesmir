@@ -4,17 +4,17 @@ import { logEvent, EVENT_TYPES } from './loggingService.js';
 export const COUNTER_TYPE_CONFIG = {
   members: {
     label: 'Members + Bots',
-    baseName: 'Členi & Boti',
+    baseName: '🌐 Členi & Boti',
     emoji: '🌐'
   },
   members_only: {
     label: 'Members Only',
-    baseName: 'Členi',
+    baseName: '👥 Členi',
     emoji: '👥'
   },
   bots: {
     label: 'Bots Only',
-    baseName: 'Boti',
+    baseName: '🤖 Boti',
     emoji: '🤖'
   }
 };
