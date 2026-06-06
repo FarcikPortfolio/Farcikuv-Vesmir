@@ -8,10 +8,10 @@ import { InteractionHelper } from '../../utils/interactionHelper.js';
 export default {
     data: new SlashCommandBuilder()
         .setName('google')
-        .setDescription('Search Google')
+        .setDescription('Vyhledat něco na Googlu a získat odkaz na výsledky')
         .addStringOption(option => 
             option.setName('query')
-                .setDescription('What would you like to search for?')
+                .setDescription('Co byste chtěl vyhledat?')
                 .setRequired(true)),
     async execute(interaction) {
         try {
@@ -19,11 +19,11 @@ export default {
             const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
             
             const embed = createEmbed({
-                title: 'Google Search',
-                description: `[Search for "${query}"](${searchUrl})`,
+                title: 'Vyhledávání na Googlu',
+                description: `[Hledat "${query}"](${searchUrl})`,
                 color: 'info'
             })
-            .setFooter({ text: 'Google Search Results' });
+            .setFooter({ text: 'Výsledky vyhledávání na Googlu | Farcikův Vesmír' });
 
             await InteractionHelper.safeReply(interaction, { embeds: [embed] });
             

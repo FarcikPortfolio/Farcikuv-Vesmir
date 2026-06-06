@@ -15,20 +15,20 @@ const MAX_RESULTS = 5;
 export default {
     data: new SlashCommandBuilder()
         .setName("movie")
-        .setDescription("Search for a movie or TV show")
+        .setDescription("Vyhledat informace o filmu nebo TV show pomocí TMDB API")
         .addStringOption((option) =>
             option
                 .setName("title")
-                .setDescription("The title of the movie or TV show")
+                .setDescription("Název filmu nebo TV show")
                 .setRequired(true)
                 .setMaxLength(100),
         )
         .addStringOption((option) =>
             option
                 .setName("type")
-                .setDescription("Type of content to search for")
+                .setDescription("Typ obsahu, který chcete vyhledat")
                 .addChoices(
-                    { name: "Movie", value: "movie" },
+                    { name: "Film", value: "movie" },
                     { name: "TV Show", value: "tv" },
                 )
                 .setRequired(false),

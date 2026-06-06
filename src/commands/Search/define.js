@@ -9,10 +9,10 @@ import { getColor } from '../../config/bot.js';
 export default {
     data: new SlashCommandBuilder()
         .setName('define')
-        .setDescription('Look up a word definition')
+        .setDescription('Vyhledat definici slova pomocí Free Dictionary API')
         .addStringOption(option => 
             option.setName('word')
-                .setDescription('The word to look up')
+                .setDescription('Slovo, které chcete vyhledat')
                 .setRequired(true)),
     async execute(interaction) {
         try {

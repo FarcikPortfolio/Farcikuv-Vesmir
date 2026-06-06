@@ -10,10 +10,10 @@ import { getColor } from '../../config/bot.js';
 export default {
     data: new SlashCommandBuilder()
         .setName('urban')
-        .setDescription('Search Urban Dictionary for definitions')
+        .setDescription('Vyhledat termín na Urban Dictionary a získat definici, příklad a statistiky')
         .addStringOption(option => 
             option.setName('term')
-                .setDescription('The term to look up on Urban Dictionary')
+                .setDescription('Termín, který chcete vyhledat na Urban Dictionary')
                 .setRequired(true)),
     
     async execute(interaction) {
@@ -27,7 +27,7 @@ export default {
                     guildId: interaction.guildId
                 });
                 return await InteractionHelper.safeReply(interaction, {
-                    embeds: [errorEmbed('Error', 'Please enter a term with at least 2 characters.')],
+                    embeds: [errorEmbed('Error', 'Prosím zadejte termín s alespoň 2 znaky.')],
                     flags: MessageFlags.Ephemeral
                 });
             }
