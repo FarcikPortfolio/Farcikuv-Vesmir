@@ -174,22 +174,24 @@ setupEmbed.addFields({
 });
 
             const ticketButton = new ActionRowBuilder().addComponents(
-                new ButtonBuilder()
-                    .setCustomId("Support & problémy")
-.setLabel(buttonLabel)
-                    .setStyle(ButtonStyle.Primary)
-                    .setEmoji("🎫"),
-            new ButtonBuilder()
-                    .setCustomId("Výhry & eventy")
-.setLabel(buttonLabel)
-                    .setStyle(ButtonStyle.Primary)
-                    .setEmoji("🎁"),
-            new ButtonBuilder()
-                    .setCustomId("Návrhy & feedback")
-.setLabel(buttonLabel)
-                    .setStyle(ButtonStyle.Primary)
-                    .setEmoji("💡"),
-            );
+    new ButtonBuilder()
+        .setCustomId("ticket_support")
+        .setLabel("Support & problémy")
+        .setStyle(ButtonStyle.Success)
+        .setEmoji("🎫"),
+
+    new ButtonBuilder()
+        .setCustomId("ticket_event")
+        .setLabel("Výhry & eventy")
+        .setStyle(ButtonStyle.Success)
+        .setEmoji("🎁"),
+
+    new ButtonBuilder()
+        .setCustomId("ticket_feedback")
+        .setLabel("Návrhy & feedback")
+        .setStyle(ButtonStyle.Success)
+        .setEmoji("💡"),
+);
 
             try {
                 await panelChannel.send({
@@ -221,28 +223,28 @@ setupEmbed.addFields({
                 });
             }
 
-                let successMessage = `The ticket creation panel has been sent to ${panelChannel}. `;
+                let successMessage = `Ticket byl nastaven v ${panelChannel}. `;
                 
                 if (categoryChannel) {
-                    successMessage += `New tickets will be created in the **${categoryChannel.name}** category. `;
+                    successMessage += `Nové tickety budou vytvořeny v kategorii **${categoryChannel.name}**. `;
                 } else {
-                    successMessage += 'New tickets will be created in a new "Tickets" category. ';
+                    successMessage += `Nové tickety budou vytvořeny v kategorii **${categoryChannel.name}**. `;
                 }
                 
                 if (closedCategoryChannel) {
-                    successMessage += `Closed tickets will be moved to **${closedCategoryChannel.name}**. `;
+                    successMessage += `Uzavřené tickety budou přesunuty do kategorie **${closedCategoryChannel.name}**. `;
                 }
                 
                 if (staffRole) {
-                    successMessage += `**${staffRole.name}** role will have access to tickets. `;
+                    successMessage += `Role **${staffRole.name}** bude mít přístup k ticketům. `;
                 }
                 
-                successMessage += `\n\n**Max Tickets Per User:** ${maxTicketsPerUser}\n**DM on Close:** ${dmOnClose ? 'Enabled' : 'Disabled'}`;
+                successMessage += `\n\n**Maximální počet ticketů na uživatele:** ${maxTicketsPerUser}\n**DM po uzavření:** ${dmOnClose ? 'Enabled' : 'Disabled'}`;
 
                 await InteractionHelper.safeEditReply(interaction, {
                     embeds: [
                         successEmbed(
-                            "Ticket Panel Set Up",
+                            "Ticket panel úspěšně nastaven!",
                             successMessage,
                         ),
                     ],
@@ -268,43 +270,43 @@ setupEmbed.addFields({
                 })
                     .addFields(
                         {
-                            name: "Panel Channel",
+                            name: "Panelový kanál",
                             value: panelChannel.toString(),
                             inline: true,
                         },
                         {
-                            name: "Ticket Category",
+                            name: "Kategorie ticketů",
                             value: categoryChannel
                                 ? categoryChannel.toString()
                                 : "None specified.",
                             inline: true,
                         },
                         {
-                            name: "Closed Category",
+                            name: "Uzavřená kategorie",
                             value: closedCategoryChannel
                                 ? closedCategoryChannel.toString()
                                 : "None specified.",
                             inline: true,
                         },
                         {
-                            name: "Staff Role",
+                            name: "Role pro staff",
                             value: staffRole
                                 ? staffRole.toString()
                                 : "None specified.",
                             inline: true,
                         },
                         {
-                            name: "Max Tickets Per User",
+                            name: "Maximální počet ticketů na uživatele",
                             value: maxTicketsPerUser.toString(),
                             inline: true,
                         },
                         {
-                            name: "DM on Close",
+                            name: "DM po uzavření",
                             value: dmOnClose ? 'Enabled' : 'Disabled',
                             inline: true,
                         },
                         {
-                            name: "Moderator",
+                            name: "Moderátor",
                             value: `${interaction.user.tag} (${interaction.user.id})`,
                             inline: false,
                         },

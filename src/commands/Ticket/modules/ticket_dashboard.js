@@ -71,47 +71,47 @@ function buildSelectMenu(guildId) {
         .setPlaceholder('Select a setting to configure...')
         .addOptions(
             new StringSelectMenuOptionBuilder()
-                .setLabel('Edit Panel Message')
+                .setLabel('Změnit zprávu na panelu')
                 .setDescription('Change the message displayed on the ticket creation panel')
                 .setValue('panel_message')
                 .setEmoji('📝'),
             new StringSelectMenuOptionBuilder()
-                .setLabel('Edit Button Label')
+                .setLabel('Změnit popisek tlačítka')
                 .setDescription('Change the label on the Create Ticket button')
                 .setValue('button_label')
                 .setEmoji('🏷️'),
             new StringSelectMenuOptionBuilder()
-                .setLabel('Edit Button Label')
+                .setLabel('Změnit popisek tlačítka')
                 .setDescription('Change the label on the Create Ticket button 2')
                 .setValue('button_label')
                 .setEmoji('🏷️'),
             new StringSelectMenuOptionBuilder()
-                .setLabel('Edit Button Label')
+                .setLabel('Změnit popisek tlačítka')
                 .setDescription('Change the label on the Create Ticket button 3')
                 .setValue('button_label')
                 .setEmoji('🏷️'),
             new StringSelectMenuOptionBuilder()
-                .setLabel('Change Open Tickets Category')
+                .setLabel('Změnit kategorii otevřených ticketů')
                 .setDescription('Category where new tickets are created')
                 .setValue('open_category')
                 .setEmoji('📁'),
             new StringSelectMenuOptionBuilder()
-                .setLabel('Change Closed Tickets Category')
+                .setLabel('Změnit kategorii uzavřených ticketů')
                 .setDescription('Category where closed tickets are moved')
                 .setValue('closed_category')
                 .setEmoji('📂'),
             new StringSelectMenuOptionBuilder()
-                .setLabel('Set Max Tickets per User')
+                .setLabel('Set Maximální počet otevřených ticketů na uživatele')
                 .setDescription('Limit how many open tickets one user can have at once')
                 .setValue('max_tickets')
                 .setEmoji('🔢'),
             new StringSelectMenuOptionBuilder()
-                .setLabel('Set Ticket Logs Channel')
+                .setLabel('Nastavit kanál pro ticket logy')
                 .setDescription('Channel to receive ticket feedback, lifecycle events, and logs')
                 .setValue('logs_channel')
                 .setEmoji('🎫'),
             new StringSelectMenuOptionBuilder()
-                .setLabel('Set Transcript Channel')
+                .setLabel('Nastavit kanál pro transkripty ticketů')
                 .setDescription('Channel to receive auto-generated transcripts on deletion')
                 .setValue('transcript_channel')
                 .setEmoji('📜'),
@@ -640,8 +640,8 @@ async function handleClosedCategory(
         await catInteraction.followUp({
             embeds: [
                 successEmbed(
-                    '✅ Closed Category Updated',
-                    `Closed tickets will now be moved to **${category.name}**.`,
+                    '✅ Uzavřená kategorie aktualizována',
+                    `Uzavřené tickety budou nyní přesunuty do **${category.name}**.`,
                 ),
             ],
             flags: MessageFlags.Ephemeral,
@@ -669,12 +669,12 @@ async function handleClosedCategory(
 async function handleMaxTickets(selectInteraction, rootInteraction, guildConfig, guildId, client) {
     const modal = new ModalBuilder()
         .setCustomId('ticket_cfg_max_tickets')
-        .setTitle('Set Max Tickets per User')
+        .setTitle('Nastavit maximální počet ticketů na uživatele')
         .addComponents(
             new ActionRowBuilder().addComponents(
                 new TextInputBuilder()
                     .setCustomId('max_tickets_input')
-                    .setLabel('Max Open Tickets (1–10)')
+                    .setLabel('Maximální počet otevřených ticketů (1–10)')
                     .setStyle(TextInputStyle.Short)
                     .setValue(String(guildConfig.maxTicketsPerUser || 3))
                     .setMaxLength(2)
@@ -759,8 +759,8 @@ async function handleLogsChannel(selectInteraction, rootInteraction, guildConfig
     await selectInteraction.followUp({
         embeds: [
             new EmbedBuilder()
-                .setTitle('🎫 Select Ticket Logs Channel')
-                .setDescription('Choose where ticket feedback, lifecycle events (open, close, claim, etc.), and other logs will be sent.')
+                .setTitle('🎫 Vybrat kanál pro logy ticketů')
+                .setDescription('Vyberte, kam budou odesílány zpětné vazby, události životního cyklu (otevření, uzavření, přidělení atd.) a jiné logy.')
                 .setColor(getColor('info'))
         ],
         components: [new ActionRowBuilder().addComponents(channelSelect)],
