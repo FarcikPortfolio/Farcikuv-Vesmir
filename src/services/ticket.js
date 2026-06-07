@@ -161,8 +161,8 @@ export async function createTicket(guild, member, categoryId, reason = 'No reaso
     const priorityInfo = PRIORITY_MAP[priority] || PRIORITY_MAP.none;
     
     const embed = createEmbed({
-      title: `Ticket #${ticketNumber}`,
-      description: `${member.toString()}, thanks for creating a ticket!\n\n**Reason:** ${reason}\n**Priority:** ${priorityInfo.emoji} ${priorityInfo.label}`,
+      title: `🎫 Support Ticket #${ticketNumber}`,
+      description: `${member.toString()}, thanks for creating a ticket!\n\n**Důvod:** ${reason}\n**Přednost:** ${priorityInfo.emoji} ${priorityInfo.label}`,
       color: priorityInfo.color,
       fields: [
         { name: 'Status', value: '🟢 Open', inline: true },
@@ -174,17 +174,17 @@ export async function createTicket(guild, member, categoryId, reason = 'No reaso
     const row = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
         .setCustomId('ticket_close')
-        .setLabel('Close Ticket')
+        .setLabel('Zavřít ticket')
         .setStyle(ButtonStyle.Danger)
         .setEmoji('🔒'),
       new ButtonBuilder()
         .setCustomId('ticket_claim')
-        .setLabel('Claim')
+        .setLabel('Převzít ticket')
         .setStyle(ButtonStyle.Primary)
         .setEmoji('🙋'),
       new ButtonBuilder()
         .setCustomId('ticket_pin')
-        .setLabel('Pin')
+        .setLabel('Připnout ticket')
         .setStyle(ButtonStyle.Secondary)
         .setEmoji('📌')
     );
@@ -193,12 +193,12 @@ export async function createTicket(guild, member, categoryId, reason = 'No reaso
       row.addComponents(
         new ButtonBuilder()
           .setCustomId('ticket_priority:low')
-          .setLabel('Low')
+          .setLabel('Nízká')
           .setStyle(ButtonStyle.Secondary)
           .setEmoji('🔵'),
         new ButtonBuilder()
           .setCustomId('ticket_priority:high')
-          .setLabel('High')
+          .setLabel('Vysoká')
           .setStyle(ButtonStyle.Danger)
           .setEmoji('🔴')
       );
@@ -239,8 +239,8 @@ export async function createTicket(guild, member, categoryId, reason = 'No reaso
     const typedError = ensureTypedServiceError(error, {
       service: 'ticketService',
       operation: 'createTicket',
-      message: 'Ticket operation failed: createTicket',
-      userMessage: 'Failed to create ticket. Please try again in a moment.',
+      message: 'Ticket operace selhala: createTicket',
+      userMessage: 'Selhalo vytvoření ticketu. Zkuste to prosím znovu později.',
       context: { guildId: guild?.id, userId: member?.id }
     });
     logger.error('Error creating ticket:', {
@@ -297,10 +297,10 @@ export async function closeTicket(channel, closer, reason = 'No reason provided'
         const ticketCreator = await channel.client.users.fetch(ticketData.userId).catch(() => null);
         if (ticketCreator) {
           const dmEmbed = createEmbed({
-            title: '🎫 Your Ticket Has Been Closed',
-            description: `Your ticket **${channel.name}** has been closed.\n\n**Reason:** ${reason}\n**Closed by:** ${closer.tag}\n**Closed at:** <t:${Math.floor(Date.now() / 1000)}:F>\n\nThank you for using our support system! If you have any further questions, feel free to create a new ticket.`,
+            title: '🎫 Váš ticket byl uzavřen',
+            description: `Váš ticket **${channel.name}** byl uzavřen.\n\n**Důvod:** ${reason}\n**Uzavřeno od:** ${closer.tag}\n**Uzavřeno v:** <t:${Math.floor(Date.now() / 1000)}:F>\n\nDěkujeme za použití našeho systému podpory! Pokud máte další otázky, neváhejte vytvořit nový ticket.`,
             color: '#e74c3c',
-            footer: { text: `Ticket ID: ${ticketData.id}` }
+            footer: { text: `ID ticketu: ${ticketData.id}` }
           });
 
           await ticketCreator.send({ embeds: [dmEmbed] });
@@ -308,10 +308,10 @@ export async function closeTicket(channel, closer, reason = 'No reason provided'
           // Post-close feedback survey — separate DM message so it can be updated on submit
           try {
             const feedbackEmbed = createEmbed({
-              title: '⭐ How was your support experience?',
-              description: `We'd love to know how we did with **${channel.name}**.\nSelect a rating below — it only takes a second!`,
+              title: '⭐ Jak byste ohodnotili naši podporu?',
+              description: `Rádi bychom věděli, jak jsme se vypořádali s **${channel.name}**.\nVyberte hodnocení níže!`,
               color: '#F1C40F',
-              footer: { text: 'Your feedback helps us improve.' },
+              footer: { text: 'Vaše zpětná vazba nám pomáhá se zlepšovat' },
             });
 
             const base = `ticket_feedback:${channel.guild.id}:${channel.id}`;
@@ -325,7 +325,7 @@ export async function closeTicket(channel, closer, reason = 'No reason provided'
             const declineRow = new ActionRowBuilder().addComponents(
               new ButtonBuilder()
                 .setCustomId(`ticket_feedback_decline:${channel.guild.id}:${channel.id}`)
-                .setLabel('❌ No thanks')
+                .setLabel('❌ Ne, děkuji')
                 .setStyle(ButtonStyle.Secondary),
             );
 
@@ -393,8 +393,8 @@ components: []
     }
     
     const closeEmbed = createEmbed({
-      title: 'Ticket Closed',
-      description: `This ticket has been closed by ${closer}.\n**Reason:** ${reason}${dmOnClose ? '\n\n📩 A DM has been sent to the ticket creator.' : ''}`,
+      title: '🔒 Ticket Uzavřen',
+      description: `Tento ticket byl uzavřen ${closer}.\n**Důvod:** ${reason}${dmOnClose ? '\n\n📩 Soukromá zpráva byla odeslána tvůrci ticketu.' : ''}`,
       color: '#e74c3c',
       footer: { text: `Ticket ID: ${ticketData.id}` }
     });
@@ -402,12 +402,12 @@ components: []
     const controlRow = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
         .setCustomId('ticket_reopen')
-        .setLabel('Reopen Ticket')
+        .setLabel('Opětovné otevření ticketu')
         .setStyle(ButtonStyle.Success)
         .setEmoji('🔓'),
       new ButtonBuilder()
         .setCustomId('ticket_delete')
-        .setLabel('Delete Ticket')
+        .setLabel('Smazat ticket')
         .setStyle(ButtonStyle.Danger)
         .setEmoji('🗑️')
     );
@@ -516,22 +516,22 @@ export async function claimTicket(channel, claimer) {
     }
     
     const claimEmbed = createEmbed({
-      title: 'Ticket Claimed',
-      description: `🎉 ${claimer} has claimed this ticket!`,
+      title: 'Ticket Převzat',
+      description: `🎉 ${claimer} převzal tento ticket!`,
       color: '#2ecc71'
     });
     
     const unclaimRow = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
         .setCustomId('ticket_unclaim')
-        .setLabel('Unclaim')
+        .setLabel('Odebrat')
         .setStyle(ButtonStyle.Secondary)
         .setEmoji('🔓')
     );
 
     const claimStatusMessage = messages.find(m =>
       m.embeds.length > 0 &&
-      (m.embeds[0].title === 'Ticket Claimed' || m.embeds[0].title === 'Ticket Unclaimed')
+      (m.embeds[0].title === 'Ticket Převzat' || m.embeds[0].title === 'Ticket Odevzdat')
     );
 
     if (claimStatusMessage) {

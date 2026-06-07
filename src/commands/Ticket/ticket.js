@@ -152,18 +152,43 @@ const panelMessage = interaction.options.getString("panel_message") || "Click th
             const maxTicketsPerUser = interaction.options.getInteger("max_tickets_per_user") || 3;
 const dmOnClose = interaction.options.getBoolean("dm_on_close") !== false;
 
-            const setupEmbed = createEmbed({ 
-                title: "🎫 Support Tickets", 
-description: panelMessage,
-                color: getColor('info')
-            });
+            const setupEmbed = createEmbed({
+    title: "🎫 Potřebuješ pomoc? Otevři ticket!",
+    description: "Vyber správnou kategorii a náš tým se ti bude věnovat co nejrychleji.",
+    color: '#ff2d55'
+});
+
+setupEmbed.addFields({
+    name: "📋 Informace",
+    value:
+`⏱️ Odpovídáme do 24 hodin.
+📜 Piš jasně a slušně jinak bude ticket uzavřen.
+📸 Pokud můžeš, přilož důkazy (screenshoty, videa, odkazy).`,
+    inline: false
+});
+
+setupEmbed.addFields({
+    name: "🔽 Výběr ticketu",
+    value: "Vyber typ ticketu pomocí tlačítek níže.",
+    inline: false
+});
 
             const ticketButton = new ActionRowBuilder().addComponents(
                 new ButtonBuilder()
-                    .setCustomId("create_ticket")
+                    .setCustomId("Support & problémy")
 .setLabel(buttonLabel)
                     .setStyle(ButtonStyle.Primary)
-                    .setEmoji("📩"),
+                    .setEmoji("🎫"),
+            new ButtonBuilder()
+                    .setCustomId("Výhry & eventy")
+.setLabel(buttonLabel)
+                    .setStyle(ButtonStyle.Primary)
+                    .setEmoji("🎁"),
+            new ButtonBuilder()
+                    .setCustomId("Návrhy & feedback")
+.setLabel(buttonLabel)
+                    .setStyle(ButtonStyle.Primary)
+                    .setEmoji("💡"),
             );
 
             try {
