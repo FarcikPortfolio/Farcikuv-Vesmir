@@ -14,7 +14,7 @@ export const COUNTER_TYPE_CONFIG = {
   },
   bots: {
     label: 'Bots Only',
-    baseName: '🤖 Boti',
+    baseName: '🤖 Discord Boti',
     emoji: '🤖'
   },
   boosters: {
