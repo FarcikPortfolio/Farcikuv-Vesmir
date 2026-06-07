@@ -26,7 +26,8 @@ export default {
                         .addChoices(
                             { name: "členi + boti", value: "members" },
                             { name: "pouze členové", value: "members_only" },
-                            { name: "pouze boti", value: "bots" }
+                            { name: "pouze boti", value: "bots" },
+                            { name: "boosteři", value: "boosters" }
                         )
                 )
                 .addStringOption(option =>
@@ -70,7 +71,8 @@ export default {
                         .addChoices(
                             { name: "členi + boti", value: "members" },
                             { name: "pouze členové", value: "members_only" },
-                            { name: "pouze boti", value: "bots" }
+                            { name: "pouze boti", value: "bots" },
+                            { name: "boosteři", value: "boosters" }
                         )
                 )
         )

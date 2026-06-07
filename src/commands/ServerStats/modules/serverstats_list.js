@@ -61,19 +61,19 @@ export async function handleList(interaction, client) {
             });
 
             embed.addFields({
-                name: "🔧 **Available Counter Types**",
-                value: "👥 **Members + Bots** - Total server members\n👤 **Members Only** - Human members only\n🤖 **Bots Only** - Bot members only",
+                name: "🔧 **Dostupné typy počítadel**",
+                value: "👥 **Členi + Bots** - Celkový počet členů serveru\n👤 **Pouze členové** - Pouze lidské členy\n🤖 **Pouze boti** - Pouze boti\n🚀 **Boosteři** - Pouze nitro boostery",
                 inline: false
             });
 
             embed.addFields({
-                name: "📝 **Usage Examples**",
+                name: "📝 **Příklady použití**",
                 value: "`/counter create type:members channel_type:voice category:Stats`\n`/counter create type:bots channel_type:text category:Server Info`\n`/counter list`",
                 inline: false
             });
 
             embed.setFooter({ 
-                text: "Counter System • Automatic updates every 15 minutes" 
+                text: "System počítadel • Automatické aktualizace každých 15 minut" 
             });
 
             await InteractionHelper.safeEditReply(interaction, { embeds: [embed] }).catch(logger.error);
@@ -81,8 +81,8 @@ export async function handleList(interaction, client) {
         }
 
         const embed = createEmbed({
-            title: `📋 Server Counters (${validCounters.length})`,
-            description: "Here are all the active counters for this server.\n\nCounters automatically update every 15 minutes.",
+            title: `📋 Server Počítadla (${validCounters.length})`,
+            description: "Zde jsou všechna nastavená počítadla pro tento server. Každé počítadlo se automaticky aktualizuje každých 15 minut.",
             color: getColor('info')
         });
 
@@ -107,8 +107,8 @@ export async function handleList(interaction, client) {
         }
 
         embed.addFields({
-            name: "📊 **Statistics**",
-            value: `**Total Counters:** ${validCounters.length}\n**Active Counters:** ${validCounters.filter(c => {
+            name: "📊 **Statistiky**",
+            value: `**Celkové počítadla:** ${validCounters.length}\n**Aktivní počítadla:** ${validCounters.filter(c => {
                 const channel = guild.channels.cache.get(c.channelId);
                 return channel && channel.name.includes(':');
             }).length}\n**Next Update:** <t:${Math.floor(Date.now() / 1000) + 900}:R>`,
@@ -116,13 +116,13 @@ export async function handleList(interaction, client) {
         });
 
         embed.addFields({
-            name: "🔧 **Management Commands**",
-            value: "`/counter create` - Create new counter\n`/counter update` - Update existing counter\n`/counter delete` - Delete counter",
+            name: "🔧 **Příkazy správy**",
+            value: "`/counter create` - Vytvořit nové počítadlo\n`/counter update` - Aktualizovat existující počítadlo\n`/counter delete` - Smazat počítadlo",
             inline: false
         });
 
         embed.setFooter({ 
-            text: "Counter System • Automatic updates every 15 minutes" 
+            text: "System počítadel • Automatické aktualizace každých 15 minut" 
         });
         embed.setTimestamp();
 
@@ -168,6 +168,8 @@ function getCurrentCount(stats, type) {
             return stats.botCount;
         case "members_only":
             return stats.humanCount;
+        case "boosters":
+            return stats.boosterCount;
         default:
             return 0;
     }

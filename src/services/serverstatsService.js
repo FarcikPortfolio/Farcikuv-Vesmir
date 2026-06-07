@@ -16,8 +16,13 @@ export const COUNTER_TYPE_CONFIG = {
     label: 'Bots Only',
     baseName: '🤖 Boti',
     emoji: '🤖'
+  },
+  boosters: {
+    label: 'Boosters',
+    baseName: '🚀 Boosteři',
+    emoji: '🚀'
   }
-};
+}
 
 function getCounterConfig(type) {
   return COUNTER_TYPE_CONFIG[type] || {
@@ -53,11 +58,13 @@ export async function getGuildCounterStats(guild) {
   const botCount = memberCollection.filter((member) => member.user.bot).size;
   const totalCount = typeof guild.memberCount === 'number' ? guild.memberCount : memberCollection.size;
   const humanCount = Math.max(totalCount - botCount, 0);
-
+  const boosterCount = guild.premiumSubscriptionCount || 0;
+  
   return {
     totalCount,
     botCount,
-    humanCount
+    humanCount,
+    boosterCount
   };
 }
 
@@ -71,6 +78,8 @@ export async function getCounterCount(guild, type) {
       return stats.botCount;
     case 'members_only':
       return stats.humanCount;
+    case 'boosters':
+      return stats.boosterCount;
     default:
       return null;
   }
