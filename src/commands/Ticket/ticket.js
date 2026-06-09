@@ -228,15 +228,15 @@ setupEmbed.addFields({
                 if (categoryChannel) {
                     successMessage += `Nové tickety budou vytvořeny v kategorii **${categoryChannel.name}**. `;
                 } else {
-                    successMessage += `Nové tickety budou vytvořeny v kategorii **${categoryChannel.name}**. `;
+                    successMessage += `Nové tickety nebudou přiřazené do kategorie (volný režim). `;
                 }
                 
                 if (closedCategoryChannel) {
-                    successMessage += `Uzavřené tickety budou přesunuty do kategorie **${closedCategoryChannel.name}**. `;
+                    successMessage += `Uzavřené tickety budou přesunuty do kategorie **${closedCategoryChannel?.name ?? "None"}**. `;
                 }
                 
                 if (staffRole) {
-                    successMessage += `Role **${staffRole.name}** bude mít přístup k ticketům. `;
+                    successMessage += `Role **${staffRole?.name ?? "None"}** bude mít přístup k ticketům. `;
                 }
                 
                 successMessage += `\n\n**Maximální počet ticketů na uživatele:** ${maxTicketsPerUser}\n**DM po uzavření:** ${dmOnClose ? 'Enabled' : 'Disabled'}`;
