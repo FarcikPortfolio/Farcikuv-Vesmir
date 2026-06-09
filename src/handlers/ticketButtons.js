@@ -130,7 +130,7 @@ const createTicketHandler = {
       }
       
       const modal = new ModalBuilder()
-        .setCustomId('create_ticket_modal')
+        .setCustomId('ticket_support_modal')
         .setTitle('Create a Ticket');
 
       const reasonInput = new TextInputBuilder()
@@ -159,7 +159,7 @@ const createTicketHandler = {
 };
 
 const createTicketModalHandler = {
-  name: 'create_ticket_modal',
+  name: 'ticket_support_modal',
   async execute(interaction, client) {
     try {
       if (!(await ensureGuildContext(interaction))) return;
