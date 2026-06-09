@@ -72,47 +72,47 @@ function buildSelectMenu(guildId) {
         .addOptions(
             new StringSelectMenuOptionBuilder()
                 .setLabel('Změnit zprávu na panelu')
-                .setDescription('Change the message displayed on the ticket creation panel')
+                .setDescription('Změnit zprávu, která se zobrazuje na panelu pro vytváření ticketů')
                 .setValue('panel_message')
                 .setEmoji('📝'),
             new StringSelectMenuOptionBuilder()
                 .setLabel('Změnit popisek tlačítka')
-                .setDescription('Change the label on the Create Ticket button')
+                .setDescription('Změnit popisek tlačítka pro vytváření ticketů')
                 .setValue('button_label1')
                 .setEmoji('🏷️'),
             new StringSelectMenuOptionBuilder()
                 .setLabel('Změnit popisek tlačítka')
-                .setDescription('Change the label on the Create Ticket button 2')
+                .setDescription('Změnit popisek tlačítka pro vytváření ticketů 2')
                 .setValue('button_label2')
                 .setEmoji('🏷️'),
             new StringSelectMenuOptionBuilder()
                 .setLabel('Změnit popisek tlačítka')
-                .setDescription('Change the label on the Create Ticket button 3')
+                .setDescription('Změnit popisek tlačítka pro vytváření ticketů 3')
                 .setValue('button_label3')
                 .setEmoji('🏷️'),
             new StringSelectMenuOptionBuilder()
                 .setLabel('Změnit kategorii otevřených ticketů')
-                .setDescription('Category where new tickets are created')
+                .setDescription('Kategorie kde budou vytvářeny nové tickety')
                 .setValue('open_category')
                 .setEmoji('📁'),
             new StringSelectMenuOptionBuilder()
                 .setLabel('Změnit kategorii uzavřených ticketů')
-                .setDescription('Category where closed tickets are moved')
+                .setDescription('Kategorie, do které jsou přesouvány uzavřené tickety')
                 .setValue('closed_category')
                 .setEmoji('📂'),
             new StringSelectMenuOptionBuilder()
-                .setLabel('Set Maximální počet otevřených ticketů na uživatele')
-                .setDescription('Limit how many open tickets one user can have at once')
+                .setLabel('Nastavit maximální počet otevřených ticketů na uživatele')
+                .setDescription('Limit kolik ticketů může mít jeden uživatel otevřených současně')
                 .setValue('max_tickets')
                 .setEmoji('🔢'),
             new StringSelectMenuOptionBuilder()
                 .setLabel('Nastavit kanál pro ticket logy')
-                .setDescription('Channel to receive ticket feedback, lifecycle events, and logs')
+                .setDescription('Kanák pro zpětné vazby.')
                 .setValue('logs_channel')
                 .setEmoji('🎫'),
             new StringSelectMenuOptionBuilder()
                 .setLabel('Nastavit kanál pro transkripty ticketů')
-                .setDescription('Channel to receive auto-generated transcripts on deletion')
+                .setDescription('Kanál pro přijímání automaticky generovaných transkriptů při smazání ticketu')
                 .setValue('transcript_channel')
                 .setEmoji('📜'),
         );

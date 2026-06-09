@@ -9,6 +9,9 @@ import createTicketHandler, {
 } from '../../handlers/ticketButtons.js';
 
 export default [
+  ticket_support,
+  ticket_event,
+  ticket_feedback,
   createTicketHandler,
   closeTicketHandler,
   claimTicketHandler,
