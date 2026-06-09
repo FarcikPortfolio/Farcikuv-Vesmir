@@ -96,10 +96,25 @@ async function ensureTicketPermission(interaction, client, actionLabel, options 
 }
 
 const createTicketHandler = {
-  name: 'create_ticket',
+  name: 'ticket_support',
   async execute(interaction, client) {
-    try {
-      if (!(await ensureGuildContext(interaction))) return;
+    return handleCreateTicket(interaction, client, 'support');
+  }
+};
+
+const eventTicketHandler = {
+  name: 'ticket_event',
+  async execute(interaction, client) {
+    return handleCreateTicket(interaction, client, 'event');
+  }
+};
+
+const feedbackTicketHandler = {
+  name: 'ticket_feedback',
+  async execute(interaction, client) {
+    return handleCreateTicket(interaction, client, 'feedback');
+  }
+};
 
       const rateLimitKey = `${interaction.user.id}:create_ticket`;
       const allowed = await checkRateLimit(rateLimitKey, 3, 60000);
@@ -145,16 +160,49 @@ const createTicketHandler = {
       modal.addComponents(actionRow);
       
       // showModal must be called directly without defer
-      await interaction.showModal(modal);
-    } catch (error) {
-      logger.error('Error creating ticket modal:', error);
-      if (!interaction.replied && !interaction.deferred) {
-        await interaction.reply({
-          embeds: [errorEmbed('Error', 'Could not open ticket creation form.')],
-          flags: MessageFlags.Ephemeral
-        });
-      }
+try {
+  await interaction.showModal(modal);
+} catch (error) {
+  logger.error('Error showing ticket modal:', error);
+
+  try {
+    if (!interaction.replied && !interaction.deferred) {
+      await interaction.reply({
+        embeds: [
+          errorEmbed(
+            'Error',
+            'Could not open ticket creation form. Please try again.'
+          )
+        ],
+        flags: MessageFlags.Ephemeral
+      });
+    } else if (interaction.deferred) {
+      await interaction.editReply({
+        embeds: [
+          errorEmbed(
+            'Error',
+            'Could not open ticket creation form. Please try again.'
+          )
+        ],
+        flags: MessageFlags.Ephemeral
+      });
     }
+  } catch (e) {
+    logger.error('Failed to send error response:', e);
+  }
+}
+
+const eventTicketHandler = {
+  name: 'ticket_event',
+  async execute(interaction, client) {
+    return createTicketHandler.execute(interaction, client);
+  }
+};
+
+const feedbackTicketHandler = {
+  name: 'ticket_feedback',
+  async execute(interaction, client) {
+    return createTicketHandler.execute(interaction, client);
   }
 };
 
