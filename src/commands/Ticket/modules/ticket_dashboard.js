@@ -78,17 +78,17 @@ function buildSelectMenu(guildId) {
             new StringSelectMenuOptionBuilder()
                 .setLabel('Změnit popisek tlačítka')
                 .setDescription('Change the label on the Create Ticket button')
-                .setValue('button_label')
+                .setValue('button_label1')
                 .setEmoji('🏷️'),
             new StringSelectMenuOptionBuilder()
                 .setLabel('Změnit popisek tlačítka')
                 .setDescription('Change the label on the Create Ticket button 2')
-                .setValue('button_label')
+                .setValue('button_label2')
                 .setEmoji('🏷️'),
             new StringSelectMenuOptionBuilder()
                 .setLabel('Změnit popisek tlačítka')
                 .setDescription('Change the label on the Create Ticket button 3')
-                .setValue('button_label')
+                .setValue('button_label3')
                 .setEmoji('🏷️'),
             new StringSelectMenuOptionBuilder()
                 .setLabel('Změnit kategorii otevřených ticketů')
